@@ -1,0 +1,48 @@
+match_id,kickoff_at,tournament,stage,season,home_team,away_team,home_score,away_score,winner,advancing_team,neutral,city,country,source
+H_2010_001,2010-06-11T13:00:00Z,FIFA World Cup,Group,2010,South Africa,Mexico,1,1,Draw,Draw,FALSE,Johannesburg,South Africa,local
+H_2010_002,2010-06-12T15:00:00Z,FIFA World Cup,Group,2010,Argentina,Nigeria,1,0,Argentina,Argentina,FALSE,Johannesburg,South Africa,local
+H_2010_003,2010-06-13T13:00:00Z,FIFA World Cup,Group,2010,England,USA,1,1,Draw,Draw,FALSE,Rustenburg,South Africa,local
+H_2010_004,2010-06-14T15:00:00Z,FIFA World Cup,Group,2010,Germany,Australia,4,0,Germany,Germany,FALSE,Durban,South Africa,local
+H_2010_005,2010-06-15T17:00:00Z,FIFA World Cup,Group,2010,Brazil,North Korea,2,1,Brazil,Brazil,FALSE,Johannesburg,South Africa,local
+H_2014_001,2014-06-12T20:00:00Z,FIFA World Cup,Group,2014,Brazil,Croatia,3,1,Brazil,Brazil,FALSE,Sao Paulo,Brazil,local
+H_2014_002,2014-06-13T17:00:00Z,FIFA World Cup,Group,2014,Mexico,Cameroon,1,0,Mexico,Mexico,FALSE,Natal,Brazil,local
+H_2014_003,2014-06-14T17:00:00Z,FIFA World Cup,Group,2014,Spain,Netherlands,1,5,Netherlands,Netherlands,FALSE,Salvador,Brazil,local
+H_2014_004,2014-06-15T20:00:00Z,FIFA World Cup,Group,2014,France,Honduras,3,0,France,France,FALSE,Porto Alegre,Brazil,local
+H_2014_005,2014-06-16T17:00:00Z,FIFA World Cup,Group,2014,Germany,Portugal,4,0,Germany,Germany,FALSE,Salvador,Brazil,local
+H_2014_006,2014-06-17T17:00:00Z,FIFA World Cup,Group,2014,Argentina,Bosnia and Herzegovina,2,1,Argentina,Argentina,FALSE,Rio de Janeiro,Brazil,local
+H_2014_007,2014-06-18T17:00:00Z,FIFA World Cup,Group,2014,England,Italy,1,2,Italy,Italy,FALSE,Manaus,Brazil,local
+H_2018_001,2018-06-14T15:00:00Z,FIFA World Cup,Group,2018,Russia,Saudi Arabia,5,0,Russia,Russia,FALSE,Moscow,Russia,local
+H_2018_002,2018-06-15T16:00:00Z,FIFA World Cup,Group,2018,Egypt,Uruguay,0,1,Uruguay,Uruguay,FALSE,Yekaterinburg,Russia,local
+H_2018_003,2018-06-16T12:00:00Z,FIFA World Cup,Group,2018,Morocco,Iran,0,1,Iran,Iran,FALSE,Saint Petersburg,Russia,local
+H_2018_004,2018-06-17T15:00:00Z,FIFA World Cup,Group,2018,France,Australia,2,1,France,France,FALSE,Kazan,Russia,local
+H_2018_005,2018-06-18T14:00:00Z,FIFA World Cup,Group,2018,Argentina,Iceland,1,1,Draw,Draw,FALSE,Moscow,Russia,local
+H_2018_006,2018-06-19T17:00:00Z,FIFA World Cup,Group,2018,Germany,Mexico,0,1,Mexico,Mexico,FALSE,Moscow,Russia,local
+H_2018_007,2018-06-20T15:00:00Z,FIFA World Cup,Group,2018,Brazil,Switzerland,1,1,Draw,Draw,FALSE,Rostov-on-Don,Russia,local
+KO_2018_R16_001,2018-06-30T14:00:00Z,FIFA World Cup,Round of 16,2018,France,Argentina,4,3,France,France,TRUE,Kazan,Russia,local
+KO_2018_R16_002,2018-07-01T14:00:00Z,FIFA World Cup,Round of 16,2018,Uruguay,Portugal,2,1,Uruguay,Uruguay,TRUE,Sochi,Russia,local
+KO_2018_R16_003,2018-07-02T14:00:00Z,FIFA World Cup,Round of 16,2018,Spain,Russia,1,1,Russia,Russia,TRUE,Moscow,Russia,local
+KO_2018_R16_004,2018-07-02T18:00:00Z,FIFA World Cup,Round of 16,2018,Croatia,Denmark,1,1,Croatia,Croatia,TRUE,Nizhny Novgorod,Russia,local
+KO_2018_QF_001,2018-07-06T14:00:00Z,FIFA World Cup,Quarter-final,2018,Uruguay,France,0,2,France,France,TRUE,Nizhny Novgorod,Russia,local
+KO_2018_QF_002,2018-07-07T14:00:00Z,FIFA World Cup,Quarter-final,2018,Brazil,Belgium,1,2,Belgium,Belgium,TRUE,Kazan,Russia,local
+KO_2018_QF_003,2018-07-07T18:00:00Z,FIFA World Cup,Quarter-final,2018,Sweden,England,0,2,England,England,TRUE,Samara,Russia,local
+KO_2018_QF_004,2018-07-08T18:00:00Z,FIFA World Cup,Quarter-final,2018,Russia,Croatia,2,2,Croatia,Croatia,TRUE,Sochi,Russia,local
+H_2022_001,2022-11-20T16:00:00Z,FIFA World Cup,Group,2022,Qatar,Ecuador,0,2,Ecuador,Ecuador,FALSE,Al Khor,Qatar,local
+H_2022_002,2022-11-21T16:00:00Z,FIFA World Cup,Group,2022,England,Iran,6,2,England,England,FALSE,Al Rayyan,Qatar,local
+H_2022_003,2022-11-22T13:00:00Z,FIFA World Cup,Group,2022,USA,Wales,1,1,Draw,Draw,FALSE,Al Rayyan,Qatar,local
+H_2022_004,2022-11-22T19:00:00Z,FIFA World Cup,Group,2022,Argentina,Saudi Arabia,1,2,Saudi Arabia,Saudi Arabia,FALSE,Lusail,Qatar,local
+H_2022_005,2022-11-23T13:00:00Z,FIFA World Cup,Group,2022,France,Australia,4,1,France,France,FALSE,Al Wakrah,Qatar,local
+H_2022_006,2022-11-23T16:00:00Z,FIFA World Cup,Group,2022,Spain,Costa Rica,7,0,Spain,Spain,FALSE,Al Rayyan,Qatar,local
+H_2022_007,2022-11-24T13:00:00Z,FIFA World Cup,Group,2022,Germany,Japan,1,2,Japan,Japan,FALSE,Al Khor,Qatar,local
+KO_2022_R16_001,2022-12-03T15:00:00Z,FIFA World Cup,Round of 16,2022,Netherlands,USA,3,1,Netherlands,Netherlands,TRUE,Al Rayyan,Qatar,local
+KO_2022_R16_002,2022-12-03T19:00:00Z,FIFA World Cup,Round of 16,2022,Argentina,Australia,2,1,Argentina,Argentina,TRUE,Al Khor,Qatar,local
+KO_2022_R16_003,2022-12-05T15:00:00Z,FIFA World Cup,Round of 16,2022,France,Poland,3,1,France,France,TRUE,Al Thumama,Qatar,local
+KO_2022_R16_004,2022-12-05T19:00:00Z,FIFA World Cup,Round of 16,2022,England,Senegal,3,0,England,England,TRUE,Al Bayt,Qatar,local
+KO_2022_R16_005,2022-12-06T15:00:00Z,FIFA World Cup,Round of 16,2022,Japan,Croatia,1,1,Croatia,Croatia,TRUE,Al Janoub,Qatar,local
+KO_2022_QF_001,2022-12-09T15:00:00Z,FIFA World Cup,Quarter-final,2022,Croatia,Brazil,1,1,Croatia,Croatia,TRUE,Al Rayyan,Qatar,local
+KO_2022_QF_002,2022-12-09T19:00:00Z,FIFA World Cup,Quarter-final,2022,Netherlands,Argentina,2,2,Argentina,Argentina,TRUE,Lusail,Qatar,local
+KO_2022_QF_003,2022-12-10T15:00:00Z,FIFA World Cup,Quarter-final,2022,Morocco,Portugal,1,0,Morocco,Morocco,TRUE,Al Thumama,Qatar,local
+KO_2022_QF_004,2022-12-10T19:00:00Z,FIFA World Cup,Quarter-final,2022,England,France,1,2,France,France,TRUE,Al Bayt,Qatar,local
+MATCH_KO_001,2026-07-01T04:00:00Z,FIFA World Cup,Quarter-final,2026,France,Sweden,,,,France,TRUE,Los Angeles,USA,local
+MATCH_KO_002,2026-07-03T04:00:00Z,FIFA World Cup,Quarter-final,2026,Brazil,Germany,,,,Brazil,TRUE,Dallas,USA,local
+MATCH_KO_003,2026-07-05T04:00:00Z,FIFA World Cup,Quarter-final,2026,Argentina,England,,,,Argentina,TRUE,Miami,USA,local
+MATCH_KO_004,2026-07-07T04:00:00Z,FIFA World Cup,Semi-final,2026,Spain,Italy,,,,Spain,TRUE,Atlanta,USA,local
