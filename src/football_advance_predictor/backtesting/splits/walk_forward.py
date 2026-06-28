@@ -26,26 +26,6 @@ class Fold:
 
 
 @dataclass
-class FoldMetrics:
-    """Per-fold metrics (filled by the backtest runner)."""
-
-    fold_name: str
-    n_train: int
-    n_validation: int
-    n_test: int
-    log_loss: float | None
-    brier_score: float | None
-    roc_auc: float | None
-    accuracy: float | None
-    coverage_clear_lean: float | None
-    accuracy_clear_lean: float | None
-    log_loss_market: float | None
-    brier_market: float | None
-    log_loss_elo: float | None
-    brier_elo: float | None
-
-
-@dataclass
 class WalkForwardConfig:
     folds: list[Fold]
 
@@ -64,7 +44,41 @@ class WalkForwardConfig:
                     test_end=to_utc(raw["test_end"]),
                 )
             )
-        return cls(folds=folds)
+        config = cls(folds=folds)
+        config._validate()
+        return config
+
+    def _validate(self) -> None:
+        """Validate fold contiguity: train < validation < test.
+
+        Raises:
+            ValueError: If any fold violates the chronological order or
+                has a non-positive-length window.
+        """
+        for fold in self.folds:
+            if fold.train_start >= fold.train_end:
+                raise ValueError(
+                    f"Fold {fold.name!r}: train_start must be < train_end "
+                    f"(got {fold.train_start.isoformat()} / {fold.train_end.isoformat()})."
+                )
+            if fold.train_end >= fold.validation_start:
+                raise ValueError(
+                    f"Fold {fold.name!r}: train_end must be < validation_start "
+                    f"(got {fold.train_end.isoformat()} / {fold.validation_start.isoformat()})."
+                )
+            if fold.validation_start >= fold.validation_end:
+                raise ValueError(
+                    f"Fold {fold.name!r}: validation_start must be < validation_end."
+                )
+            if fold.validation_end > fold.test_start:
+                raise ValueError(
+                    f"Fold {fold.name!r}: validation_end must be <= test_start "
+                    f"(got {fold.validation_end.isoformat()} / {fold.test_start.isoformat()})."
+                )
+            if fold.test_start >= fold.test_end:
+                raise ValueError(
+                    f"Fold {fold.name!r}: test_start must be < test_end."
+                )
 
 
 class WalkForwardSplitter:

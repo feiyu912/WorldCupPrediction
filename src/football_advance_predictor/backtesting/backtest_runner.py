@@ -9,10 +9,11 @@ is never touched for training.
 
 from __future__ import annotations
 
-from datetime import datetime
+from datetime import datetime, timedelta
 from pathlib import Path
 from typing import Any
 
+from sqlalchemy import select
 from sqlalchemy.orm import Session
 
 from football_advance_predictor.backtesting.reports.report_service import BacktestReportService
@@ -166,7 +167,7 @@ class BacktestRunner:
         rows = self.session.execute(stmt).all()
         out: list[dict[str, Any]] = []
         for match, result in rows:
-            cutoff = to_utc(match.kickoff_at) - __import__("datetime").timedelta(hours=24)
+            cutoff = to_utc(match.kickoff_at) - timedelta(hours=24)
             try:
                 prediction = service.predict(
                     match_id=match.match_id,
@@ -174,16 +175,20 @@ class BacktestRunner:
                     model_version=model_version,
                     feature_version=self.feature_version,
                 )
-            except Exception as exc:
+            except (ValueError, LookupError) as exc:
                 logger.warning("Skipping prediction in fold", extra={"error": str(exc)})
+                continue
+            ledger_row = service.ledger.get_prediction(prediction["prediction_id"])
+            if ledger_row is None:
+                logger.warning("Ledger row missing for prediction", extra={"prediction_id": prediction["prediction_id"]})
                 continue
             out.append(
                 {
                     "match_id": match.match_id,
                     "cutoff_time": cutoff.isoformat(),
                     "home_advance_probability": prediction["home_advance_probability"],
-                    "market_probability": service.ledger.get_prediction(prediction["prediction_id"]).market_probability,
-                    "elo_probability": service.ledger.get_prediction(prediction["prediction_id"]).elo_probability,
+                    "market_probability": ledger_row.market_probability,
+                    "elo_probability": ledger_row.elo_probability,
                     "home_advances": int(result.home_advances),
                 }
             )

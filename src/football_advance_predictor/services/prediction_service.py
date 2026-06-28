@@ -56,6 +56,8 @@ class PredictionService:
         self.market_min_bookmakers = market_min_bookmakers
         self.ledger = LedgerService(session)
         self.snapshot_service = FeatureSnapshotService(session)
+        # Lazy-cached Elo engine to avoid re-fitting on every predict call.
+        self._elo_model_cache: EloModel | None = None
 
     # ------------------------------------------------------------------
     # Public API
@@ -91,10 +93,9 @@ class PredictionService:
             match_id=match_id, cutoff_time=cutoff, feature_version=feature_version
         )
 
-        # 2. Run base models.
-        elo_model = EloModel(self.elo_config)
-        # Cold-start the engine with all known match results.
-        elo_model.fit(self._elo_training_data())
+        # 2. Run base models. The Elo engine is cached per-service-instance
+        #    to avoid an O(N) re-fit on every /predictions call.
+        elo_model = self._get_elo_model()
 
         elo_prob = elo_model.predict_proba(
             home_team_id=match.home_team_id,
@@ -176,6 +177,17 @@ class PredictionService:
     # ------------------------------------------------------------------
     # Helpers
     # ------------------------------------------------------------------
+
+    def _get_elo_model(self) -> EloModel:
+        """Return a cached, fit :class:`EloModel` for this service instance.
+
+        The engine is fit once and reused across ``predict`` calls.
+        """
+        if self._elo_model_cache is None:
+            elo_model = EloModel(self.elo_config)
+            elo_model.fit(self._elo_training_data())
+            self._elo_model_cache = elo_model
+        return self._elo_model_cache
 
     def _elo_training_data(self) -> list[dict[str, Any]]:
         from football_advance_predictor.db.models import Competition, Match, MatchResult

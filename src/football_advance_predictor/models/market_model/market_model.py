@@ -29,7 +29,15 @@ class MarketModel:
         min_bookmakers: Minimum number of contributing bookmakers.
     """
 
-    def __init__(self, session: Session, *, min_bookmakers: int = 1) -> None:
+    def __init__(self, session: Session, *, min_bookmakers: int = 2) -> None:
+        """Market consensus predictor.
+
+        Args:
+            session: SQLAlchemy session used to query odds at predict time.
+            min_bookmakers: Minimum number of contributing bookmakers.
+                Default 2; pass 1 only when your data has a single
+                bookmaker.
+        """
         self.session = session
         self.min_bookmakers = max(1, int(min_bookmakers))
 

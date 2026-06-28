@@ -152,7 +152,7 @@ class FeatureBuilder:
         competition_features = {
             "competition_importance": float(competition.importance_weight if competition else 1.0),
             "neutral_venue": bool(match.neutral_venue),
-            "is_knockout": True,  # MVP only handles knockout
+            "is_knockout": _is_knockout_match(match, competition),
         }
 
         features: dict[str, Any] = {
@@ -274,3 +274,41 @@ class FeatureBuilder:
                     )
                 )
         return form
+
+
+# ---------------------------------------------------------------------------
+# Module-level helpers
+# ---------------------------------------------------------------------------
+
+
+def _is_knockout_match(match: Match, competition: Competition | None) -> bool:
+    """Return True when the match is a knockout match.
+
+    A match is considered a knockout match if any of the following
+    holds (in priority order):
+
+    1. The competition is marked ``is_knockout_capable=False`` (group
+       tournament) AND the match's stage is "Group"/"League"/"Round
+       Robin"/"unknown" → not a knockout.
+    2. The match's stage contains a knockout keyword.
+    3. The competition is not marked and the stage is non-group.
+    """
+    if competition is not None and not competition.is_knockout_capable:
+        return _is_knockout_stage(match.stage)
+    return _is_knockout_stage(match.stage)
+
+
+def _is_knockout_stage(stage: str) -> bool:
+    if not stage:
+        return False
+    lowered = stage.lower()
+    group_terms = ("group", "league", "round robin", "round-robin")
+    knockout_terms = (
+        "round of 16", "r16", "round-of-16",
+        "quarter", "qf", "quarter-final",
+        "semi", "sf", "semi-final", "semifinal",
+        "final", "3rd place", "third place", "play-off", "playoff", "knockout",
+    )
+    if any(term in lowered for term in group_terms):
+        return False
+    return any(term in lowered for term in knockout_terms)

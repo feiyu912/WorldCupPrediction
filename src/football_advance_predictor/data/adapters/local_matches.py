@@ -17,6 +17,9 @@ from typing import Any
 from football_advance_predictor.core.logging import get_logger
 from football_advance_predictor.core.time import to_utc
 from football_advance_predictor.data.adapters.base import MatchDataProvider
+from football_advance_predictor.data.normalization.team_resolver import (
+    TeamNameResolver,
+)
 from football_advance_predictor.schemas.matches import MatchIn, MatchResultIn
 
 logger = get_logger(__name__)
@@ -47,14 +50,25 @@ ALIAS_LOOKUP: dict[str, str] = {
 
 
 class LocalHistoricalResultsProvider(MatchDataProvider):
-    """Read historical matches from a local CSV file."""
+    """Read historical matches from a local CSV file.
+
+    Args:
+        path: Path to the CSV file.
+        team_resolver: Optional :class:`TeamNameResolver` for alias
+            normalization. If not provided, a default resolver is used.
+    """
 
     name = "local_historical_results"
 
-    def __init__(self, path: str | Path) -> None:
+    def __init__(
+        self,
+        path: str | Path,
+        team_resolver: TeamNameResolver | None = None,
+    ) -> None:
         self.path = Path(path)
         if not self.path.exists():
             raise FileNotFoundError(f"Match CSV not found: {self.path}")
+        self._resolver = team_resolver or TeamNameResolver()
 
     # ------------------------------------------------------------------
     # Public API
@@ -113,10 +127,18 @@ class LocalHistoricalResultsProvider(MatchDataProvider):
         return ALIAS_LOOKUP.get(key.lower().strip(), key.lower().strip())
 
     def _canonicalize_team_id(self, row: dict[str, str], canonical_col: str) -> str | None:
+        """Map a free-form team name to a stable slug via the resolver.
+
+        The resolver normalizes whitespace, accents, and applies the
+        alias table. Unresolved names are quarantined and the slug
+        fallback is returned (so the row is not silently dropped).
+        """
         value = row.get(canonical_col)
         if not value:
             return None
-        return value.strip().lower().replace(" ", "_")
+        if value.strip().lower() in {"draw", "tbd", "n/a", "unknown"}:
+            return None
+        return self._resolver.resolve(value)
 
     def _row_to_match(self, row: dict[str, str]) -> MatchIn:
         kickoff = self._parse_datetime(row.get("kickoff_at"))
@@ -141,13 +163,27 @@ class LocalHistoricalResultsProvider(MatchDataProvider):
             source=row.get("source", "local"),
         )
 
-    @staticmethod
-    def _match_to_result(match: MatchIn, row: dict[str, str]) -> MatchResultIn | None:
+    def _match_to_result(self, match: MatchIn, row: dict[str, str]) -> MatchResultIn | None:
+        """Build a :class:`MatchResultIn` for a match, or ``None`` if not derivable.
+
+        Returns ``None`` (and emits a debug log) when:
+        - either 90-minute score is missing, or
+        - the match is a draw with no explicit ``advancing_team`` (group
+          draws have no advancer).
+
+        For knockout matches that went to extra time or penalties, the
+        CSV should provide ``advancing_team`` explicitly; otherwise we
+        fall back to the 90-minute winner.
+        """
         if match.home_goals is None or match.away_goals is None:
+            logger.debug("Skipping result: missing goals", extra={"match_id": match.match_id})
             return None
         if match.advancing_team_id is None:
-            # Without an explicit advancer, assume home advances if not a draw.
             if match.home_goals == match.away_goals:
+                logger.debug(
+                    "Skipping result: draw with no advancer (group stage?)",
+                    extra={"match_id": match.match_id, "stage": match.stage},
+                )
                 return None
             advancer = match.home_team_id if match.home_goals > match.away_goals else match.away_team_id
             home_advances = advancer == match.home_team_id

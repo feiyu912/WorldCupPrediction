@@ -149,6 +149,7 @@ def train_model(config: Path = typer.Option(..., "--config")) -> None:
     mvp = data.get("mvp", data)
     settings = get_settings()
     registry = ModelRegistry(settings.model_registry_dir)
+    cat_cfg, stk_cfg, cal_cfg = _load_sub_configs(config)
     with session_scope() as session:
         service = TrainingService(session, registry)
         result = service.train(
@@ -156,9 +157,9 @@ def train_model(config: Path = typer.Option(..., "--config")) -> None:
             training_window=(to_utc(mvp["training_window"]["start"]), to_utc(mvp["training_window"]["end"])),
             validation_window=(to_utc(mvp["validation_window"]["start"]), to_utc(mvp["validation_window"]["end"])),
             test_window=(to_utc(mvp["test_window"]["start"]), to_utc(mvp["test_window"]["end"])),
-            catboost_config=CatBoostConfig.from_dict(_load_yaml(Path("configs/catboost.yaml"))["catboost"]),
-            stacking_config=StackingConfig.from_dict(_load_yaml(Path("configs/stacking.yaml"))["stacking"]),
-            calibration_config=CalibrationConfig.from_dict(_load_yaml(Path("configs/calibration.yaml"))["calibration"]),
+            catboost_config=CatBoostConfig.from_dict(cat_cfg),
+            stacking_config=StackingConfig.from_dict(stk_cfg),
+            calibration_config=CalibrationConfig.from_dict(cal_cfg),
         )
     typer.echo(json.dumps(result, indent=2, default=str))
 
@@ -221,14 +222,15 @@ def backtest_run(
     registry = ModelRegistry(settings.model_registry_dir)
     from football_advance_predictor.db.session import session_scope
 
+    cat_cfg, stk_cfg, cal_cfg = _load_sub_configs(config)
     with session_scope() as session:
         runner = BacktestRunner(session, registry)
         result = runner.run(
             model_version=model_version,
             config=cfg,
-            catboost_config=CatBoostConfig.from_dict(_load_yaml(Path("configs/catboost.yaml"))["catboost"]),
-            stacking_config=StackingConfig.from_dict(_load_yaml(Path("configs/stacking.yaml"))["stacking"]),
-            calibration_config=CalibrationConfig.from_dict(_load_yaml(Path("configs/calibration.yaml"))["calibration"]),
+            catboost_config=CatBoostConfig.from_dict(cat_cfg),
+            stacking_config=StackingConfig.from_dict(stk_cfg),
+            calibration_config=CalibrationConfig.from_dict(cal_cfg),
         )
     typer.echo(json.dumps(result, indent=2, default=str))
 
@@ -327,6 +329,19 @@ def ledger_export(
 def _load_yaml(path: Path) -> dict[str, Any]:
     with path.open("r", encoding="utf-8") as f:
         return yaml.safe_load(f)
+
+
+def _load_sub_configs(primary_config: Path) -> tuple[dict[str, Any], dict[str, Any], dict[str, Any]]:
+    """Load the catboost / stacking / calibration sub-configs.
+
+    Sibling YAML files are resolved relative to ``primary_config``'s
+    parent directory so the CLI works from any CWD.
+    """
+    base = primary_config.parent
+    cat = _load_yaml(base / "catboost.yaml")["catboost"]
+    stk = _load_yaml(base / "stacking.yaml")["stacking"]
+    cal = _load_yaml(base / "calibration.yaml")["calibration"]
+    return cat, stk, cal
 
 
 if __name__ == "__main__":

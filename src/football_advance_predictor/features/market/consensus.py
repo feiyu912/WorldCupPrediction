@@ -83,9 +83,20 @@ class MarketAdvanceProbabilityModel:
         self,
         snapshots: Iterable[MarketOddsSnapshot],
         *,
-        min_bookmakers: int = 1,
+        min_bookmakers: int = 2,
         prefer_advance_market: bool = True,
     ) -> None:
+        """Construct a market consensus model.
+
+        Args:
+            snapshots: Iterable of market-odds snapshots.
+            min_bookmakers: Minimum number of contributing bookmakers.
+                Default 2. Use 1 only when you know your data has a
+                single bookmaker (dispersion will be 0.0).
+            prefer_advance_market: Prefer the ``home_to_advance`` /
+                ``away_to_advance`` market when both 90-minute and
+                advance markets exist.
+        """
         self.snapshots = list(snapshots)
         self.min_bookmakers = max(1, int(min_bookmakers))
         self.prefer_advance_market = prefer_advance_market
@@ -93,7 +104,12 @@ class MarketAdvanceProbabilityModel:
     def consensus_at(self, cutoff: datetime) -> MarketConsensus | None:
         """Return market consensus as of ``cutoff``.
 
-        Only snapshots with ``captured_at <= cutoff`` are considered.
+        Only pre-match snapshots are considered:
+
+        - ``captured_at <= cutoff`` (anti-leakage),
+        - ``is_live is False`` (live in-play odds are not pre-match
+          consensus and would silently contaminate the baseline).
+
         The most recent snapshot per (bookmaker, market_type, selection)
         wins.
         """
@@ -101,6 +117,8 @@ class MarketAdvanceProbabilityModel:
         latest: dict[tuple[str, str, str], MarketOddsSnapshot] = {}
         for snap in sorted(self.snapshots, key=lambda s: s.captured_at):
             if to_utc(snap.captured_at) > cutoff_utc:
+                continue
+            if getattr(snap, "is_live", False):
                 continue
             key = (snap.bookmaker, snap.market_type, snap.selection)
             latest[key] = snap

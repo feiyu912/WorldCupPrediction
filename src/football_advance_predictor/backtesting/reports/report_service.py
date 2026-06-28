@@ -93,10 +93,8 @@ class BacktestReportService:
             fold_metrics["log_loss"] = log_loss(model_p, y)
             fold_metrics["brier_score"] = brier_score(model_p, y)
             fold_metrics["accuracy"] = accuracy(model_p, y)
-            try:
-                fold_metrics["roc_auc"] = roc_auc(model_p, y)
-            except Exception:
-                fold_metrics["roc_auc"] = None
+            # roc_auc returns NaN for degenerate inputs; no try/except needed.
+            fold_metrics["roc_auc"] = roc_auc(model_p, y)
             fold_metrics["ece"] = expected_calibration_error(model_p, y)
 
             clear_mask = (model_p >= clear_lean_min) | (model_p <= 1.0 - clear_lean_min)
@@ -177,9 +175,6 @@ def _aggregate_summary(per_fold: list[dict[str, Any]]) -> dict[str, Any]:
 
 
 def _is_nan(value: Any) -> bool:
-    try:
-        import math
+    import math
 
-        return isinstance(value, float) and math.isnan(value)
-    except Exception:
-        return False
+    return isinstance(value, float) and math.isnan(value)

@@ -9,7 +9,7 @@ from __future__ import annotations
 
 import uuid
 from collections.abc import Iterable
-from datetime import datetime
+from datetime import UTC, datetime
 from pathlib import Path
 from typing import Any
 
@@ -164,18 +164,9 @@ class LedgerService:
             actual_home_advances=actual_home_advances,
             log_loss=float(log_loss),
             brier_score=float(brier),
-            correct_classification=(prediction.predicted_advancer_id == (
-                # predicted advancer is home iff calibrated prob >= 0.5
-                _home_advancer_for(prediction, actual_home_advances)
-            )),
-            evaluated_at=to_utc(datetime.now(tz=__import__("datetime").timezone.utc)),
+            correct_classification=_is_correct(prediction, actual_home_advances),
+            evaluated_at=to_utc(datetime.now(tz=UTC)),
         )
-        # Simpler correct_classification based on the prediction's advancer.
-        predicted_advancer = prediction.predicted_advancer_id
-        # We need to know which team was home to compare; the prediction stores
-        # predicted_advancer_id; combine with Match to know if prediction was right.
-        # This is computed by the caller-friendly API in evaluate_match below.
-        record.correct_classification = _is_correct(prediction, actual_home_advances)
         self.session.add(record)
         self.session.flush()
         return record
@@ -290,18 +281,13 @@ def _safe_log(p: float) -> float:
     return math.log(max(p, 1e-12))
 
 
-def _home_advancer_for(prediction: Prediction, actual_home_advances: bool) -> str:
-    """The team that would have been the advancer IF home advanced."""
-
-    return prediction.predicted_advancer_id  # placeholder; not used for correctness
-
-
 def _is_correct(prediction: Prediction, actual_home_advances: bool) -> bool:
     """Return True iff the predicted advancer matches the actual outcome.
 
-    The actual advancer requires knowing the home team; the caller
-    provides ``actual_home_advances`` which is sufficient because
-    predictions store which side they picked.
+    The ``Prediction.predicted_advancer_id`` is the home team iff the
+    calibrated ``home_advance_probability`` is >= 0.5. Comparing that
+    threshold to the actual outcome gives us correctness without
+    needing the home-team id at evaluation time.
     """
     predicted_p_home = prediction.home_advance_probability
     if actual_home_advances:

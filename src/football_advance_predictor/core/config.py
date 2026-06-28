@@ -43,6 +43,9 @@ class AppSettings(BaseSettings):
     # Model registry
     model_registry_dir: Path = Field(default=Path("./data/processed/models"))
 
+    # Backtest report output directory
+    reports_dir: Path = Field(default=Path("./reports"))
+
     # Global deterministic seed
     global_random_seed: int = Field(default=42)
 
