@@ -1,0 +1,16 @@
+# Dynamic Elo configuration. Documented in docs/modeling.md.
+elo:
+  initial_rating: 1500.0
+  base_k_factor: 20.0
+  k_floor: 5.0
+  k_ceiling: 40.0
+  home_advantage: 60.0
+  # Optional exponential time decay per day of inactivity.
+  time_decay_per_day: 0.0
+  # Margin-of-victory adjustment multiplier (0 disables it).
+  mov_multiplier: 0.0
+  # Scale parameter for margin-of-victory log formula.
+  mov_scale: 2.0
+  # Tie (90-minute draw) resolution when predicting 90-minute probability
+  # for knockout matches: "draw_treated_as_50_50".
+  tie_resolution: "draw_treated_as_50_50"

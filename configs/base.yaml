@@ -1,0 +1,39 @@
+# Base configuration shared across the football-advance-predictor system.
+# All values can be overridden by environment variables prefixed with APP_.
+
+paths:
+  raw_data: "./data/raw"
+  processed_data: "./data/processed"
+  fixtures: "./data/fixtures"
+  warehouse: "./data/warehouse.duckdb"
+  model_registry: "./data/processed/models"
+  reports: "./reports"
+
+# Global seed for deterministic runs.
+random_seed: 42
+
+# Cutoff definitions. Any prediction for a match with kickoff T may have
+# one or more snapshots at these cutoffs (in hours before kickoff).
+cutoffs:
+  - name: "T-24h"
+    hours_before_kickoff: 24
+  - name: "T-6h"
+    hours_before_kickoff: 6
+  - name: "T-75min"
+    minutes_before_kickoff: 75
+  - name: "lineup-confirmed"
+    special: "lineup_confirmed"
+
+# Confidence band thresholds (on calibrated home advance probability).
+confidence:
+  clear_lean_min: 0.62
+  slight_lean_min: 0.55
+
+# Market consensus minimum number of contributing bookmakers.
+market:
+  min_bookmakers: 1
+  prefer_advance_market: true
+
+# Logging
+logging:
+  level: "INFO"

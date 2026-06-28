@@ -1,0 +1,14 @@
+# CatBoost model hyperparameters.
+catboost:
+  iterations: 500
+  learning_rate: 0.05
+  depth: 6
+  l2_leaf_reg: 3.0
+  loss_function: "Logloss"
+  eval_metric: "Logloss"
+  random_seed: 42
+  thread_count: 4
+  allow_writing_files: false
+  class_weights: []    # e.g. [1.0, 1.0] only if justified
+  early_stopping_rounds: 50
+  verbose: false

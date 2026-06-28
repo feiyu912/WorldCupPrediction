@@ -1,0 +1,18 @@
+# Top-level MVP configuration that aggregates all sub-configs.
+# Used by `uv run football train --config configs/mvp.yaml`.
+mvp:
+  model_name: "football_advance_v0_1_0"
+  model_version: "v0.1.0"
+  feature_version: "v1"
+  training_window:
+    start: "2010-01-01"
+    end: "2017-12-31"
+  validation_window:
+    start: "2018-01-01"
+    end: "2019-12-31"
+  test_window:
+    start: "2020-01-01"
+    end: "2022-12-31"
+  cutoffs_used: ["T-24h", "T-6h", "T-75min", "lineup-confirmed"]
+  require_market_data: false
+  require_odds_for_final_baseline: true

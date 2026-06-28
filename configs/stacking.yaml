@@ -1,0 +1,15 @@
+# Out-of-fold stacking configuration.
+stacking:
+  method: "logistic_regression"   # alternatives: "weighted_blend"
+  logistic_regression:
+    C: 1.0
+    max_iter: 1000
+    random_state: 42
+  weighted_blend:
+    market_weight: 0.5
+    elo_weight: 0.1
+    catboost_weight: 0.4
+  # Must be at least one; more folds => better OOF coverage.
+  n_splits: 5
+  # Whether to use a holdout-only stacker (True) or generate OOF preds (False)
+  use_oof_predictions: true

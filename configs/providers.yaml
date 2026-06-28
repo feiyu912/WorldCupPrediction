@@ -1,0 +1,21 @@
+# Provider configuration. Local-first; external providers are skeletons.
+providers:
+  matches:
+    name: "local_historical_results"
+    path: "./data/fixtures/matches.csv"
+  odds:
+    name: "local_odds"
+    path: "./data/fixtures/odds.csv"
+  availability:
+    name: "local_availability"
+    path: "./data/fixtures/availability.json"
+  event_data:
+    name: "statsbomb_local"
+    enabled: false
+    path: "./data/fixtures/events"
+  external_odds:
+    name: "skeleton_external_odds"
+    enabled: false
+  external_football_data:
+    name: "skeleton_football_data"
+    enabled: false

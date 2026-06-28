@@ -1,0 +1,23 @@
+# Feature engineering configuration.
+features:
+  feature_version: "v1"
+  elo:
+    use_rating: true
+    use_rating_difference: true
+  recent_form:
+    windows: [5, 8, 12]
+    half_life_days: 180.0
+  rest_days:
+    default: 7
+  schedule:
+    travel_distance_proxy: false
+  squad:
+    use_lineup_data: true
+  matchup:
+    enabled: false   # requires event data; off by default in MVP
+  market:
+    use_advance_market: true
+    use_90_minute_odds: true
+    dispersion_metrics: true
+  missingness:
+    explicit_flags: true

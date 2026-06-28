@@ -1,0 +1,9 @@
+# Calibration configuration.
+calibration:
+  method: "isotonic"     # alternatives: "platt" (sigmoid)
+  isotonic:
+    out_of_bounds: "clip"
+  platt:
+    C: 1.0
+    max_iter: 1000
+  reliability_bins: 10

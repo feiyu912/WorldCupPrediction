@@ -1,0 +1,27 @@
+# Backtest configuration. Strict temporal split only.
+backtest:
+  folds:
+    - name: "fold_2018_2020"
+      train_start: "2010-01-01"
+      train_end: "2017-12-31"
+      validation_start: "2018-01-01"
+      validation_end: "2019-12-31"
+      test_start: "2020-01-01"
+      test_end: "2022-12-31"
+    - name: "fold_2020_2022"
+      train_start: "2010-01-01"
+      train_end: "2019-12-31"
+      validation_start: "2020-01-01"
+      validation_end: "2021-12-31"
+      test_start: "2022-01-01"
+      test_end: "2024-12-31"
+  metrics:
+    - "log_loss"
+    - "brier"
+    - "roc_auc"
+    - "accuracy"
+    - "calibration_curve"
+    - "reliability_table"
+    - "coverage"
+    - "market_comparison"
+  minimum_matches_per_fold_test: 1
