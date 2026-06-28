@@ -1,0 +1,14 @@
+__pycache__/
+*.py[cod]
+.venv/
+.env
+.git/
+.ruff_cache/
+.mypy_cache/
+.pytest_cache/
+data/processed/
+data/warehouse.duckdb
+notebooks/
+reports/
+tests/
+*.log
