@@ -20,6 +20,48 @@ from football_advance_predictor.backtesting.splits.walk_forward import (
 )
 
 
+def test_walk_forward_rejects_inverted_fold() -> None:
+    import pytest
+
+    with pytest.raises(ValueError, match="train_start must be < train_end"):
+        WalkForwardConfig.from_yaml(
+            {
+                "folds": [
+                    {
+                        "name": "bad",
+                        "train_start": "2020-01-01",
+                        "train_end": "2019-01-01",
+                        "validation_start": "2021-01-01",
+                        "validation_end": "2021-12-31",
+                        "test_start": "2022-01-01",
+                        "test_end": "2022-12-31",
+                    }
+                ]
+            }
+        )
+
+
+def test_walk_forward_rejects_overlapping_windows() -> None:
+    import pytest
+
+    with pytest.raises(ValueError, match="validation_end must be <= test_start"):
+        WalkForwardConfig.from_yaml(
+            {
+                "folds": [
+                    {
+                        "name": "overlap",
+                        "train_start": "2010-01-01",
+                        "train_end": "2017-12-31",
+                        "validation_start": "2018-01-01",
+                        "validation_end": "2022-06-30",  # ends after test_start
+                        "test_start": "2022-01-01",
+                        "test_end": "2022-12-31",
+                    }
+                ]
+            }
+        )
+
+
 def test_walk_forward_splitter_returns_folds_in_order() -> None:
     cfg = WalkForwardConfig(
         folds=[
