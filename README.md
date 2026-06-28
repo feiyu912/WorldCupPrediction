@@ -108,9 +108,9 @@ Brier score before being treated as useful.
 uv sync --extra dev
 
 # 2) Ingest the bundled local fixtures
-uv run football ingest-matches --file data/fixtures/matches.csv
-uv run football ingest-odds --file data/fixtures/odds.csv
-uv run football ingest-availability --file data/fixtures/availability.json
+uv run football ingest matches --file data/fixtures/matches.csv
+uv run football ingest odds --file data/fixtures/odds.csv
+uv run football ingest availability --file data/fixtures/availability.json
 
 # 3) Build a feature snapshot for a future match
 uv run football features build --match-id MATCH_KO_001 --cutoff 2026-06-29T00:00:00Z
@@ -130,7 +130,7 @@ uv run football backtest run --config configs/backtest.yaml --model-version v0_b
 ```bash
 docker compose up -d
 # Wait for the healthcheck, then:
-docker compose exec api uv run football ingest-matches --file data/fixtures/matches.csv
+docker compose exec api uv run football ingest matches --file data/fixtures/matches.csv
 docker compose exec api uv run football models train --config configs/mvp.yaml
 docker compose exec api uv run football predict one --match-id MATCH_KO_001 --cutoff 2026-06-29T00:00:00Z --model-version v0.1.0
 ```

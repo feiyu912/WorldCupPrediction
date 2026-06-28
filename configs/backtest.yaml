@@ -1,20 +1,28 @@
 # Backtest configuration. Strict temporal split only.
+# Folds are validated at load time to ensure chronological ordering
+# (train_end < validation_start < validation_end < test_start < test_end).
 backtest:
   folds:
+    # Fold 1: train on 2010-2017 group matches, validate on 2018 KO,
+    # test on 2022 KO. Requires 2018 + 2022 World Cup data.
     - name: "fold_2018_2020"
       train_start: "2010-01-01"
       train_end: "2017-12-31"
       validation_start: "2018-01-01"
-      validation_end: "2019-12-31"
-      test_start: "2020-01-01"
-      test_end: "2022-12-31"
-    - name: "fold_2020_2022"
-      train_start: "2010-01-01"
-      train_end: "2019-12-31"
-      validation_start: "2020-01-01"
-      validation_end: "2021-12-31"
+      validation_end: "2018-12-31"
       test_start: "2022-01-01"
-      test_end: "2024-12-31"
+      test_end: "2022-12-31"
+    # Fold 2: expanding window. Train on 2010-2018, validate on the
+    # first half of 2022 (group + R16), test on QF + SF + Final of 2022.
+    # The split is intentionally within 2022 because there is no
+    # international knockout data for 2020-2021 in the fixture.
+    - name: "fold_2022_expand"
+      train_start: "2010-01-01"
+      train_end: "2018-12-31"
+      validation_start: "2019-01-01"
+      validation_end: "2022-06-30"
+      test_start: "2022-07-01"
+      test_end: "2022-12-31"
   metrics:
     - "log_loss"
     - "brier"
@@ -25,3 +33,4 @@ backtest:
     - "coverage"
     - "market_comparison"
   minimum_matches_per_fold_test: 1
+  minimum_matches_per_fold_validation: 1
