@@ -24,10 +24,15 @@ from typing import Any
 
 from football_advance_predictor.core.logging import get_logger
 from football_advance_predictor.data.aliases.alias_registry import AliasRegistry
+from football_advance_predictor.data.bootstrap.sha_resolver import (
+    parse_github_repo_from_url,
+    resolve_repo_head_sha,
+)
 from football_advance_predictor.data.bootstrap.source_downloader import (
     DownloadResult,
     SourceDownloader,
 )
+from football_advance_predictor.data.bootstrap.source_lock import SourceLock
 from football_advance_predictor.data.bootstrap.source_registry import SourceRegistry
 from football_advance_predictor.data.knockout.manifest import (
     KnockoutManifest,
@@ -111,25 +116,70 @@ class BootstrapRunner:
         artifacts_dir: str | Path,
         *,
         offline: bool = False,
+        allow_first_run_resolution: bool = True,
     ) -> None:
         self.registry = SourceRegistry(registry_path)
         self.raw_dir = Path(raw_dir)
         self.aliases_dir = Path(aliases_dir)
         self.artifacts_dir = Path(artifacts_dir)
         self.artifacts_dir.mkdir(parents=True, exist_ok=True)
+        self.lock_path = self.raw_dir / "lock.json"
+        self.lock = SourceLock.load(self.lock_path)
         self.downloader = SourceDownloader(
-            self.registry, self.raw_dir, offline=offline
+            self.registry, self.lock, self.raw_dir, offline=offline,
         )
+        self._allow_first_run_resolution = allow_first_run_resolution
+
+    def update_sources(self) -> BootstrapReport:
+        """Explicitly re-resolve every source's HEAD SHA and update the lock.
+
+        This is the only path that intentionally fetches a newer HEAD.
+        Ordinary ``bootstrap()`` uses the locked SHAs.
+        """
+        from datetime import UTC, datetime
+
+        report = BootstrapReport(generated_at=datetime.now(tz=UTC))
+        # Refresh required sources.
+        for spec in self.registry.all_required():
+            try:
+                # Force re-resolution by temporarily clearing the lock entry.
+                if self.lock.is_locked(spec.name):
+                    del self.lock.sources[spec.name]
+                result = self.downloader.download(spec.name)
+                report.required_sources.append(result)
+            except Exception as exc:
+                report.errors.append(
+                    f"Failed to refresh {spec.name!r}: {exc}"
+                )
+                return report
+        for spec in self.registry.all_optional():
+            try:
+                if self.lock.is_locked(spec.name):
+                    del self.lock.sources[spec.name]
+                result = self.downloader.download(spec.name)
+                report.optional_sources.append(result)
+            except Exception as exc:
+                logger.warning("Optional source refresh failed", extra={"source": spec.name, "error": str(exc)})
+        # Persist the new lock.
+        self.lock.save(self.lock_path)
+        # Re-run the rest of the bootstrap.
+        report = self._finalize_report(report)
+        return report
 
     def run(self) -> BootstrapReport:
+        from datetime import UTC, datetime
 
         report = BootstrapReport(generated_at=datetime.now(tz=UTC))
 
-        # 1. Download required sources.
+        # 1. Download required sources. Once locked, the downloader will
+        # refuse to fall back to HEAD.
         required_specs = self.registry.all_required()
         for spec in required_specs:
             try:
-                result = self.downloader.download(spec.name)
+                result = self.downloader.download(
+                    spec.name,
+                    allow_first_run_resolution=self._allow_first_run_resolution,
+                )
                 report.required_sources.append(result)
             except Exception as exc:
                 report.errors.append(
@@ -140,7 +190,10 @@ class BootstrapRunner:
         # 2. Best-effort optional sources.
         for spec in self.registry.all_optional():
             try:
-                result = self.downloader.download(spec.name)
+                result = self.downloader.download(
+                    spec.name,
+                    allow_first_run_resolution=self._allow_first_run_resolution,
+                )
                 report.optional_sources.append(result)
             except Exception as exc:
                 logger.warning(
@@ -148,7 +201,13 @@ class BootstrapRunner:
                     extra={"source": spec.name, "error": str(exc)},
                 )
 
-        # 3. Alias registry.
+        # 3. Persist the (possibly first-run) lock.
+        self.lock.save(self.lock_path)
+        return self._finalize_report(report)
+
+    def _finalize_report(self, report: BootstrapReport) -> BootstrapReport:
+
+        # Alias registry.
         aliases = AliasRegistry.open(self.aliases_dir)
         # Seed the registry with names observed in the canonical result file.
         results_csv = self._resolve_path("martj42_results", "martj42_results.csv")
@@ -169,29 +228,31 @@ class BootstrapRunner:
                 alias_registry=aliases,
             )
             provider.tournament_name = "international_friendly_and_competitive"
-            builder.add_provider(provider)
-        for source_name, filename, default_name in (
-            ("openfootball_worldcup", "openfootball_worldcup.json", "FIFA World Cup"),
-            ("openfootball_euro", "openfootball_euro.json", "UEFA Euro"),
-            ("openfootball_copa_america", "openfootball_copa_america.json", "Copa América"),
-            ("openfootball_gold_cup", "openfootball_gold_cup.json", "CONCACAF Gold Cup"),
+            builder.add_provider("martj42_results", provider)
+        for source_name, default_name in (
+            ("openfootball_worldcup_2018", "FIFA World Cup 2018"),
+            ("openfootball_worldcup_2022", "FIFA World Cup 2022"),
+            ("openfootball_worldcup_2014", "FIFA World Cup 2014"),
         ):
-            path = self._resolve_path(source_name, filename)
-            if path is None:
+            try:
+                spec = self.registry.get(source_name)
+            except KeyError:
+                continue
+            target = self.raw_dir / (spec.local_filename or "")
+            if not target.exists():
                 continue
             provider = OpenFootballTournamentProvider(
-                path=path, alias_registry=aliases, tournament_name=default_name
+                path=target, alias_registry=aliases, tournament_name=default_name
             )
-            builder.add_provider(provider)
+            builder.add_provider(source_name, provider)
         manifest = builder.build()
         report.knockout_manifest = manifest
         report.unresolved_aliases = aliases.unresolved_names()
 
-        # 5. StatsBomb coverage.
+        # 5. StatsBomb coverage (only if the local clone exists).
         sb_root = self._resolve_path("statsbomb_open_data", None)
-        if sb_root is not None:
-            sb = StatsBombOpenDataProvider(sb_root)
-            report.statsbomb_available = sb.is_available()
+        if sb_root is not None and sb_root.is_dir():
+            report.statsbomb_available = (sb_root / "matches").is_dir()
         report.feature_coverage = {
             "statsbomb_events": report.statsbomb_available,
             "historical_odds": False,

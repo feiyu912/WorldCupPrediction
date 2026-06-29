@@ -34,13 +34,18 @@ logger = get_logger(__name__)
 
 @dataclass
 class LogisticRegressionBaselineConfig:
-    """Configuration for the logistic regression baseline."""
+    """Configuration for the logistic regression baseline.
+
+    Defaults are conservative: no class weighting (we report natural
+    target prevalence; balanced is configurable but off by default),
+    median imputation, and missingness indicator columns.
+    """
 
     C: float = 1.0
     max_iter: int = 1000
     random_state: int = 42
     penalty: str = "l2"
-    class_weight: str | None = "balanced"
+    class_weight: str | None = None
     solver: str = "lbfgs"
     add_missingness_indicators: bool = True
     min_samples_required: int = 64
@@ -62,6 +67,15 @@ class LogisticRegressionBaseline:
         self.training_log_loss: float | None = None
         self.validation_log_loss: float | None = None
         self.training_size: int = 0
+        self.training_prevalence: float | None = None
+        self.validation_prevalence: float | None = None
+
+    @staticmethod
+    def prevalence(y: Any) -> float:
+        """Return the mean of ``y`` as a prevalence estimator."""
+        import numpy as np
+
+        return float(np.mean(np.asarray(y, dtype=float)))
 
     # ------------------------------------------------------------------
     # Training
@@ -89,10 +103,12 @@ class LogisticRegressionBaseline:
         train_pred = self.model.predict_proba(X_train)[:, 1]
         self.training_log_loss = float(log_loss(y_train, train_pred, labels=[0, 1]))
         self.training_size = len(X_train)
+        self.training_prevalence = self.prevalence(y_train)
         if X_val is not None and y_val is not None:
             self._ensure_missingness_indicators(X_val)
             val_pred = self.model.predict_proba(X_val)[:, 1]
             self.validation_log_loss = float(log_loss(y_val, val_pred, labels=[0, 1]))
+            self.validation_prevalence = self.prevalence(y_val)
         return self
 
     def predict_proba(self, X: pd.DataFrame) -> np.ndarray:

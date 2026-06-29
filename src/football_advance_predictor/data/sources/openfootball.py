@@ -156,8 +156,15 @@ class OpenFootballTournamentProvider(MatchDataProvider):
             raise ValueError(
                 f"Expected top-level dict in {self.path}, got {type(data).__name__}"
             )
-        if "rounds" not in data or not isinstance(data["rounds"], list):
-            raise ValueError(f"Missing or invalid 'rounds' in {self.path}")
+        # Two valid layouts:
+        # 1) {"name": ..., "rounds": [{"name": ..., "matches": [...]}, ...]}
+        # 2) {"name": ..., "matches": [{"round": ..., ...}, ...]}
+        has_rounds = isinstance(data.get("rounds"), list)
+        has_matches = isinstance(data.get("matches"), list)
+        if not has_rounds and not has_matches:
+            raise ValueError(
+                f"Missing or invalid 'rounds'/'matches' in {self.path}"
+            )
         return data
 
     def _resolve_tournament_name(self, document: dict[str, Any]) -> str:
@@ -171,13 +178,27 @@ class OpenFootballTournamentProvider(MatchDataProvider):
         return name.strip()
 
     def _iter_matches(self, document: dict[str, Any]):
-        """Yield ``(round_name, match_dict)`` for every match in the document."""
-        for round_obj in document.get("rounds", []):
-            round_name = (round_obj.get("name") or "unknown") if isinstance(round_obj, dict) else "unknown"
+        """Yield ``(round_name, match_dict)`` for every match in the document.
+
+        Supports both layouts:
+        - rounds: each round is {"name": str, "matches": [...]}
+        - matches: each match has its own "round" field
+        """
+        for round_obj in document.get("rounds", []) or []:
+            round_name = (
+                (round_obj.get("name") or "unknown")
+                if isinstance(round_obj, dict)
+                else "unknown"
+            )
             for match in round_obj.get("matches", []) or []:
                 if not isinstance(match, dict):
                     continue
                 yield round_name, match
+        for match in document.get("matches", []) or []:
+            if not isinstance(match, dict):
+                continue
+            round_name = match.get("round") or "unknown"
+            yield round_name, match
 
     # ------------------------------------------------------------------
     # Match -> schema mapping

@@ -69,9 +69,15 @@ class SourceRegistry:
         return sorted(self._data["sources"].keys())
 
     def all_required(self) -> list[SourceSpec]:
-        """Sources required for a minimal bootstrap (results + shootouts + worldcup)."""
-        return [self.get(n) for n in ("martj42_results", "martj42_shootouts", "openfootball_worldcup")]
+        """Sources required for a minimal bootstrap (results + shootouts only).
+
+        The Open Football per-year files are optional because the
+        martj42 results already carry tournament and stage info, and
+        the per-year directory layout of the openfootball worldcup
+        repo does not map cleanly to a single CSV-style fetch.
+        """
+        return [self.get(n) for n in ("martj42_results", "martj42_shootouts")]
 
     def all_optional(self) -> list[SourceSpec]:
         """Sources that are downloaded opportunistically when reachable."""
-        return [self.get(n) for n in self.all_names() if n not in {"martj42_results", "martj42_shootouts", "openfootball_worldcup"}]
+        return [self.get(n) for n in self.all_names() if n not in {"martj42_results", "martj42_shootouts"}]

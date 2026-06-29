@@ -20,9 +20,12 @@ env/
 htmlcov/
 
 # Local data (raw / processed)
-data/raw/*
-!data/raw/.gitkeep
+data/raw/sources/*
+!data/raw/sources/.gitkeep
 !data/raw/sources/registry.json
+!data/raw/sources/lock.json
+data/aliases/alias_registry.json
+data/aliases/unresolved.jsonl
 data/processed/*
 !data/processed/.gitkeep
 data/warehouse.duckdb

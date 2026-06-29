@@ -12,6 +12,7 @@ from football_advance_predictor.data.bootstrap.source_downloader import (
     DownloadError,
     SourceDownloader,
 )
+from football_advance_predictor.data.bootstrap.source_lock import SourceLock
 from football_advance_predictor.data.bootstrap.source_registry import SourceRegistry
 
 REGISTRY_PATH = (
@@ -103,8 +104,18 @@ def test_cache_hit_returns_zero_bytes(tmp_path: Path, results_registry) -> None:
     # propagates DownloadError from the schema validator.
     valid_csv = b"date,home_team,away_team,home_score,away_score,tournament,city,country,neutral\n2024-01-01,A,B,0,0,Friendly,X,Y,FALSE\n"
     target.write_bytes(valid_csv)
+    # Pre-lock so the downloader uses the lock URL (test URL is not GitHub).
+    lock = SourceLock()
+    lock.set_or_update(
+        name="martj42_results",
+        requested_ref="test",
+        resolved_sha="0" * 40,
+        source_url="https://example.test/results/0000000000000000000000000000000000000000.csv",
+        raw_sha256=hashlib.sha256(valid_csv).hexdigest(),
+        local_path=str(target),
+    )
 
-    downloader = SourceDownloader(registry, raw_dir, fetcher=FakeFetcher())
+    downloader = SourceDownloader(registry, lock, raw_dir, fetcher=FakeFetcher())
     result = downloader.download("martj42_results")
 
     assert result.cache_hit is True
@@ -120,9 +131,20 @@ def test_fresh_download_writes_file_with_correct_sha(tmp_path: Path, results_reg
         b"date,home_team,away_team,home_score,away_score,tournament,city,country,neutral\n"
         b"2024-01-01,Brazil,Argentina,2,0,Friendly,Rio,Brazil,FALSE\n"
     )
+    # Pre-lock the source with a fake 40-char SHA so the downloader
+    # uses the lock URL (non-GitHub) rather than trying to resolve HEAD.
+    lock = SourceLock()
+    lock.set_or_update(
+        name="martj42_results",
+        requested_ref="test",
+        resolved_sha="0" * 40,
+        source_url="https://example.test/results/0000000000000000000000000000000000000000.csv",
+        raw_sha256=hashlib.sha256(payload).hexdigest(),
+        local_path=str(raw_dir / "martj42_results.csv"),
+    )
 
     downloader = SourceDownloader(
-        registry, raw_dir, fetcher=FakeFetcher(payload=payload)
+        registry, lock, raw_dir, fetcher=FakeFetcher(payload=payload)
     )
     result = downloader.download("martj42_results")
 
@@ -138,8 +160,17 @@ def test_schema_validation_failure_raises(tmp_path: Path, results_registry) -> N
     _registry_path, raw_dir, registry = results_registry
     # Missing required columns
     bad_payload = b"date,home_team,away_team\n2024-01-01,Brazil,Argentina\n"
+    lock = SourceLock()
+    lock.set_or_update(
+        name="martj42_results",
+        requested_ref="test",
+        resolved_sha="0" * 40,
+        source_url="https://example.test/results/0000000000000000000000000000000000000000.csv",
+        raw_sha256=hashlib.sha256(bad_payload).hexdigest(),
+        local_path=str(raw_dir / "martj42_results.csv"),
+    )
     downloader = SourceDownloader(
-        registry, raw_dir, fetcher=FakeFetcher(payload=bad_payload)
+        registry, lock, raw_dir, fetcher=FakeFetcher(payload=bad_payload)
     )
 
     with pytest.raises(DownloadError, match="schema mismatch"):
@@ -148,8 +179,18 @@ def test_schema_validation_failure_raises(tmp_path: Path, results_registry) -> N
 
 def test_network_failure_propagates(tmp_path: Path, results_registry) -> None:
     _registry_path, raw_dir, registry = results_registry
+    lock = SourceLock()
+    lock.set_or_update(
+        name="martj42_results",
+        requested_ref="test",
+        resolved_sha="0" * 40,
+        source_url="https://example.test/results/0000000000000000000000000000000000000000.csv",
+        raw_sha256="0" * 64,
+        local_path=str(raw_dir / "martj42_results.csv"),
+    )
     downloader = SourceDownloader(
         registry,
+        lock,
         raw_dir,
         fetcher=FakeFetcher(raise_exc=DownloadError("network down")),
     )
@@ -160,12 +201,23 @@ def test_network_failure_propagates(tmp_path: Path, results_registry) -> None:
 def test_write_manifest_writes_json(tmp_path: Path, results_registry) -> None:
     _registry_path, raw_dir, registry = results_registry
     payload = b"date,home_team,away_team,home_score,away_score,tournament,city,country,neutral\n2024-01-01,Brazil,Argentina,1,0,Friendly,X,Y,FALSE\n"
+    shootouts_payload = b"date,home_team,away_team,winner\n"
+    # Pre-create cached files with the same hashes as the lock.
+    (raw_dir / "martj42_results.csv").write_bytes(payload)
+    (raw_dir / "martj42_shootouts.csv").write_bytes(shootouts_payload)
+    lock = SourceLock()
+    for name, body in (("martj42_results", payload), ("martj42_shootouts", shootouts_payload)):
+        lock.set_or_update(
+            name=name,
+            requested_ref="test",
+            resolved_sha="0" * 40,
+            source_url=f"https://example.test/{name}.csv",
+            raw_sha256=hashlib.sha256(body).hexdigest(),
+            local_path=str(raw_dir / f"{name}.csv"),
+        )
     downloader = SourceDownloader(
-        registry, raw_dir, fetcher=FakeFetcher(payload=payload)
+        registry, lock, raw_dir, fetcher=FakeFetcher(payload=payload)
     )
-    # Pre-create cached shootouts file so we can list two results.
-    shootouts = raw_dir / "martj42_shootouts.csv"
-    shootouts.write_bytes(b"date,home_team,away_team,winner\n")
 
     manifest_path = tmp_path / "manifests" / "download_manifest.json"
     results = [
@@ -192,6 +244,7 @@ def test_offline_mode_with_cache_miss_raises(tmp_path: Path, results_registry) -
     _registry_path, raw_dir, registry = results_registry
     downloader = SourceDownloader(
         registry,
+        SourceLock(),
         raw_dir,
         fetcher=FakeFetcher(payload=b"unused"),
         offline=True,

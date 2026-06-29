@@ -1,55 +1,46 @@
 {
-  "_comment": "Source registry. Update `pinned_sha` to a real Git commit SHA before running `uv run football data bootstrap`. The values below are PLACEHOLDERS — the system will fail loudly until they are updated. To update: 1) clone the source repo locally, 2) `git rev-parse HEAD` to get the SHA, 3) replace the placeholder. For StatsBomb use a release tag (e.g. `v0.0.7`).",
   "schema_version": 1,
   "updated_at": "2026-06-29T00:00:00Z",
   "sources": {
     "martj42_results": {
       "kind": "results_csv",
-      "url_template": "https://raw.githubusercontent.com/martj42/international-results/{sha}/results.csv",
-      "pinned_sha": "PIN_ME_TO_REAL_COMMIT_SHA",
+      "url_template": "https://raw.githubusercontent.com/martj42/international_results/{sha}/results.csv",
+      "pinned_sha": "HEAD",
       "local_filename": "martj42_results.csv",
       "expected_columns": ["date", "home_team", "away_team", "home_score", "away_score", "tournament", "city", "country", "neutral"],
       "description": "International football results (Mart Jürisoo). Used for the canonical result backbone and Elo history."
     },
     "martj42_shootouts": {
       "kind": "shootouts_csv",
-      "url_template": "https://raw.githubusercontent.com/martj42/international-results/{sha}/shootouts.csv",
-      "pinned_sha": "PIN_ME_TO_REAL_COMMIT_SHA",
+      "url_template": "https://raw.githubusercontent.com/martj42/international_results/{sha}/shootouts.csv",
+      "pinned_sha": "HEAD",
       "local_filename": "martj42_shootouts.csv",
       "expected_columns": ["date", "home_team", "away_team", "winner"],
       "description": "Penalty shootout results. Used to derive the advancer on knockout matches that ended in a 90-minute draw."
     },
-    "openfootball_worldcup": {
+    "openfootball_worldcup_2018": {
       "kind": "openfootball_worldcup",
-      "url_template": "https://raw.githubusercontent.com/openfootball/worldcup.json/master/world-cup.json",
+      "url_template": "https://raw.githubusercontent.com/openfootball/worldcup.json/master/2018/worldcup.json",
       "pinned_sha": "master",
-      "local_filename": "openfootball_worldcup.json",
-      "expected_keys": ["name", "rounds"],
-      "description": "Open Football World Cup dataset. Provides round/stage metadata for World Cup matches."
+      "local_filename": "openfootball_worldcup_2018.json",
+      "expected_keys": ["name", "matches", "rounds"],
+      "description": "Open Football 2018 World Cup dataset. Provides per-match round metadata for the 2018 World Cup."
     },
-    "openfootball_euro": {
-      "kind": "openfootball_euro",
-      "url_template": "https://raw.githubusercontent.com/openfootball/euro.json/master/euro-cup.json",
+    "openfootball_worldcup_2022": {
+      "kind": "openfootball_worldcup",
+      "url_template": "https://raw.githubusercontent.com/openfootball/worldcup.json/master/2022/worldcup.json",
       "pinned_sha": "master",
-      "local_filename": "openfootball_euro.json",
-      "expected_keys": ["name", "rounds"],
-      "description": "Open Football Euro dataset. Optional; provides Euro stage metadata."
+      "local_filename": "openfootball_worldcup_2022.json",
+      "expected_keys": ["name", "matches", "rounds"],
+      "description": "Open Football 2022 World Cup dataset. Provides per-match round metadata for the 2022 World Cup."
     },
-    "openfootball_copa_america": {
-      "kind": "openfootball_copa_america",
-      "url_template": "https://raw.githubusercontent.com/openfootball/copa-america.json/master/copa-america.json",
+    "openfootball_worldcup_2014": {
+      "kind": "openfootball_worldcup",
+      "url_template": "https://raw.githubusercontent.com/openfootball/worldcup.json/master/2014/worldcup.json",
       "pinned_sha": "master",
-      "local_filename": "openfootball_copa_america.json",
-      "expected_keys": ["name", "rounds"],
-      "description": "Open Football Copa América dataset. Optional."
-    },
-    "openfootball_gold_cup": {
-      "kind": "openfootball_gold_cup",
-      "url_template": "https://raw.githubusercontent.com/openfootball/gold-cup.json/master/concacaf-gold-cup.json",
-      "pinned_sha": "master",
-      "local_filename": "openfootball_gold_cup.json",
-      "expected_keys": ["name", "rounds"],
-      "description": "Open Football Gold Cup dataset. Optional."
+      "local_filename": "openfootball_worldcup_2014.json",
+      "expected_keys": ["name", "matches", "rounds"],
+      "description": "Open Football 2014 World Cup dataset. Provides per-match round metadata for the 2014 World Cup."
     },
     "statsbomb_open_data": {
       "kind": "statsbomb_open_data",

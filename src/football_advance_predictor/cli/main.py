@@ -322,6 +322,79 @@ def data_status() -> None:
     typer.echo(json.dumps(payload, indent=2, default=str))
 
 
+@data_app.command("update-sources")
+def data_update_sources() -> None:
+    """Explicitly re-resolve HEAD SHAs and update the lock.
+
+    Ordinary ``data bootstrap`` uses the locked SHAs and never fetches
+    a newer HEAD. Use this command when you intentionally want to
+    refresh sources.
+    """
+    from football_advance_predictor.data.bootstrap.bootstrap_runner import (
+        BootstrapRunner,
+    )
+    from football_advance_predictor.data.bootstrap.source_registry import (
+        SourceRegistry,
+    )
+
+    settings = get_settings()
+    configure_logging(settings.log_level)
+    repo_root = Path(__file__).resolve().parents[3]
+    registry_path = repo_root / "data" / "raw" / "sources" / "registry.json"
+    raw_dir = repo_root / "data" / "raw" / "sources"
+    aliases_dir = repo_root / "data" / "aliases"
+    artifacts_dir = repo_root / "data" / "processed" / "bootstrap"
+    if not SourceRegistry(registry_path)._data:  # type: ignore[attr-defined]
+        typer.echo(f"Source registry missing: {registry_path}", err=True)
+        raise typer.Exit(code=1)
+    runner = BootstrapRunner(
+        registry_path=registry_path,
+        raw_dir=raw_dir,
+        aliases_dir=aliases_dir,
+        artifacts_dir=artifacts_dir,
+        offline=False,
+    )
+    report = runner.update_sources()
+    typer.echo(json.dumps(report.to_dict(), indent=2, default=str))
+    if report.errors:
+        raise typer.Exit(code=1)
+
+
+@data_app.command("validate")
+def data_validate(
+    strict: bool = typer.Option(False, "--strict", help="Fail non-zero on any error."),
+    unresolved_alias_threshold: int = typer.Option(
+        0, "--unresolved-alias-threshold",
+        help="Maximum allowed unresolved aliases before failing.",
+    ),
+) -> None:
+    """Run the strict validation gate.
+
+    Without --strict this prints the report. With --strict the process
+    exits non-zero on any failed check.
+    """
+    from football_advance_predictor.data.bootstrap.validator import validate_strict
+
+    settings = get_settings()
+    configure_logging(settings.log_level)
+    repo_root = Path(__file__).resolve().parents[3]
+    raw_dir = repo_root / "data" / "raw" / "sources"
+    aliases_dir = repo_root / "data" / "aliases"
+    artifacts_dir = repo_root / "data" / "processed" / "bootstrap"
+    report = validate_strict(
+        lock_path=raw_dir / "lock.json",
+        raw_dir=raw_dir,
+        aliases_dir=aliases_dir,
+        knockout_manifest_path=artifacts_dir / "knockout_match_manifest.json",
+        matches_csv_path=raw_dir / "martj42_results.csv",
+        shootouts_csv_path=raw_dir / "martj42_shootouts.csv",
+        unresolved_alias_threshold=unresolved_alias_threshold,
+    )
+    typer.echo(json.dumps(report.to_dict(), indent=2, default=str))
+    if strict and not report.passed:
+        raise typer.Exit(code=1)
+
+
 # ---------------------------------------------------------------------------
 # Report
 # ---------------------------------------------------------------------------

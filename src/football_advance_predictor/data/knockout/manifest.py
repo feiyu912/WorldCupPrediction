@@ -80,6 +80,22 @@ class KnockoutRow:
     home_advances: bool
     source: str  # which provider contributed it
 
+    def to_dict(self) -> dict[str, Any]:
+        return {
+            "match_id": self.match_id,
+            "kickoff_at": self.kickoff_at.isoformat(),
+            "competition_id": self.competition_id,
+            "competition_name": self.competition_name,
+            "stage": self.stage,
+            "season_or_year": self.season_or_year,
+            "home_team_id": self.home_team_id,
+            "away_team_id": self.away_team_id,
+            "home_goals_90": self.home_goals_90,
+            "away_goals_90": self.away_goals_90,
+            "home_advances": self.home_advances,
+            "source": self.source,
+        }
+
 
 @dataclass
 class QuarantineReason:
@@ -88,6 +104,13 @@ class QuarantineReason:
     raw_match_id: str
     reason: str
     detail: str
+
+    def to_dict(self) -> dict[str, Any]:
+        return {
+            "raw_match_id": self.raw_match_id,
+            "reason": self.reason,
+            "detail": self.detail,
+        }
 
 
 @dataclass
@@ -98,6 +121,15 @@ class KnockoutManifest:
     tournament_coverage: dict[str, int] = field(default_factory=dict)
     quarantined: list[QuarantineReason] = field(default_factory=list)
     total: int = 0
+
+    def to_dict(self) -> dict[str, Any]:
+        return {
+            "total": self.total,
+            "tournament_coverage": dict(self.tournament_coverage),
+            "quarantined_count": len(self.quarantined),
+            "rows": [r.to_dict() for r in self.rows],
+            "quarantined": [q.to_dict() for q in self.quarantined],
+        }
 
 
 # ---------------------------------------------------------------------------

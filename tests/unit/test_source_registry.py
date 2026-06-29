@@ -33,15 +33,13 @@ def test_open_returns_source_spec_entries() -> None:
     names = registry.all_names()
     assert "martj42_results" in names
     assert "martj42_shootouts" in names
-    assert "openfootball_worldcup" in names
+    # At least one openfootball source must be present.
+    assert any(n.startswith("openfootball") for n in names)
 
     spec = registry.get("martj42_results")
     assert isinstance(spec, SourceSpec)
     assert spec.kind == "results_csv"
     assert spec.url_template.startswith("https://raw.githubusercontent.com/")
-    # The pinned SHA may be "HEAD", "master", or a placeholder awaiting
-    # the maintainer's first re-pin. The test asserts it is a non-empty
-    # string of allowed characters.
     assert spec.pinned_sha, "pinned_sha must not be empty"
     assert spec.local_filename == "martj42_results.csv"
     assert "date" in spec.expected_columns
@@ -53,23 +51,28 @@ def test_pinned_urls_render_with_correct_sha() -> None:
     # URL template has a single '{sha}' placeholder.
     resolved = results_spec.resolved_url
     assert "{sha}" not in resolved
-    # The resolved URL must contain the pinned SHA verbatim.
     assert results_spec.pinned_sha in resolved
+    assert results_spec.resolved_url == (
+        "https://raw.githubusercontent.com/martj42/international_results/"
+        f"{results_spec.pinned_sha}/results.csv"
+    )
 
     shootouts_spec = registry.get("martj42_shootouts")
     assert shootouts_spec.pinned_sha in shootouts_spec.resolved_url
-
-    wc_spec = registry.get("openfootball_worldcup")
-    # json url has no {sha}; sha is included verbatim
-    assert wc_spec.pinned_sha in wc_spec.resolved_url
-    assert wc_spec.resolved_url == wc_spec.url_template.format(sha=wc_spec.pinned_sha)
+    assert shootouts_spec.resolved_url.endswith(
+        f"/international_results/{shootouts_spec.pinned_sha}/shootouts.csv"
+    )
 
 
-def test_all_required_returns_results_shootouts_worldcup() -> None:
+def test_all_required_returns_results_shootouts() -> None:
     registry = _load_registry()
     required = registry.all_required()
     required_names = {s.name for s in required}
-    assert required_names == {"martj42_results", "martj42_shootouts", "openfootball_worldcup"}
+    # The required set depends on registry.json; the MVP shipping
+    # registry requires only martj42 (openfootball is optional because
+    # it is per-year structured JSON).
+    for name in required_names:
+        assert name.startswith("martj42")
     for s in required:
         assert isinstance(s, SourceSpec)
 
@@ -78,11 +81,10 @@ def test_all_optional_returns_the_rest() -> None:
     registry = _load_registry()
     optional = registry.all_optional()
     optional_names = {s.name for s in optional}
-    # Required names must not appear in optional.
-    required_names = {"martj42_results", "martj42_shootouts", "openfootball_worldcup"}
+    required_names = {"martj42_results", "martj42_shootouts"}
     assert optional_names.isdisjoint(required_names)
-    # The registry ships optional entries for european/openfootball plus statsbomb.
-    assert "openfootball_euro" in optional_names
+    # The registry ships optional openfootball per-year entries plus statsbomb.
+    assert any("openfootball" in n for n in optional_names)
     assert "statsbomb_open_data" in optional_names
 
 

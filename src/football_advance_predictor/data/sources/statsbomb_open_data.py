@@ -62,8 +62,13 @@ def _empty_match_features(*, available: bool) -> dict[str, float]:
 
 
 def _empty_agg_features(*, available: bool) -> dict[str, float]:
-    """Aggregate feature dict with zeros and the availability flag."""
-    out: dict[str, float] = dict.fromkeys(_AGG_FEATURE_KEYS, 0.0)
+    """Aggregate feature dict with NaN numeric features and the availability flag.
+
+    NaN (not zero) preserves the distinction between an unavailable
+    metric and a real observed zero. The model layer's missingness
+    indicator columns + train-fold-only imputation handle NaN.
+    """
+    out: dict[str, float] = {k: float("nan") for k in _AGG_FEATURE_KEYS}
     out["statsbomb_available"] = float(available)
     return out
 
@@ -289,6 +294,17 @@ class StatsBombOpenDataProvider:
             "matches_used": float(n_matches),
             "statsbomb_available": 1.0,
         }
+
+    def aggregate_team_match_features_safe(
+        self, team_id: str, *, before: datetime
+    ) -> dict[str, float | None]:
+        """Like :meth:`aggregate_team_match_features` but returns ``None`` for unavailable
+        numeric features so the caller can distinguish them from observed zeros.
+        """
+        agg = self.aggregate_team_match_features(team_id, before=before)
+        if not agg.get("statsbomb_available", 0.0):
+            return {k: None for k in _AGG_FEATURE_KEYS}
+        return dict(agg)
 
     def coverage_for_match(self, match_id: str) -> dict[str, bool]:
         """Return per-aspect availability flags for a single match.

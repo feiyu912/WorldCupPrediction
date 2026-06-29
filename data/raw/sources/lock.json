@@ -1,0 +1,25 @@
+{
+  "created_at": "2026-06-29T15:11:54.638660+00:00",
+  "schema_version": 1,
+  "sources": {
+    "martj42_results": {
+      "local_path": "/Users/kaicheng/PycharmProjects/WorldCupPrediction/data/raw/sources/martj42_results.csv",
+      "name": "martj42_results",
+      "raw_sha256": "df6a30676640fc647f2af51d387765996f75c7cda10d70d7c81ef9180c23df08",
+      "requested_ref": "HEAD",
+      "resolved_sha": "0006be80a08de2eeaa5eaefb81e91754b8159f16",
+      "retrieved_at": "2026-06-29T15:11:56.526579+00:00",
+      "source_url": "https://raw.githubusercontent.com/martj42/international_results/0006be80a08de2eeaa5eaefb81e91754b8159f16/results.csv"
+    },
+    "martj42_shootouts": {
+      "local_path": "/Users/kaicheng/PycharmProjects/WorldCupPrediction/data/raw/sources/martj42_shootouts.csv",
+      "name": "martj42_shootouts",
+      "raw_sha256": "e52e503badc11021d5d243ddf2288346f63ad028bf8de75ae9cfb72c5475d807",
+      "requested_ref": "HEAD",
+      "resolved_sha": "0006be80a08de2eeaa5eaefb81e91754b8159f16",
+      "retrieved_at": "2026-06-29T15:11:57.865777+00:00",
+      "source_url": "https://raw.githubusercontent.com/martj42/international_results/0006be80a08de2eeaa5eaefb81e91754b8159f16/shootouts.csv"
+    }
+  },
+  "updated_at": "2026-06-29T15:13:05.708833+00:00"
+}

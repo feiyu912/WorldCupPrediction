@@ -172,48 +172,46 @@ class FeatureBuilder:
         }
 
         # ---- 6. Optional StatsBomb xG features --------------------
-        # Always include the missingness flag; numeric features are zero
-        # unless the StatsBomb data is locally available AND a coverage
-        # call returned non-empty data.
+        # Always include the missingness flag. Unavailable numeric
+        # metrics are NaN (not 0) so the model layer's train-fold-only
+        # imputation and missingness indicators can distinguish
+        # "observed zero" from "unavailable".
         statsbomb_features: dict[str, Any] = {
             "statsbomb_available": False,
-            "statsbomb_xg_home": 0.0,
-            "statsbomb_xg_away": 0.0,
-            "statsbomb_xg_difference": 0.0,
-            "statsbomb_shots_in_box_home": 0.0,
-            "statsbomb_shots_in_box_away": 0.0,
-            "statsbomb_set_piece_xg_difference": 0.0,
+            "statsbomb_xg_home": float("nan"),
+            "statsbomb_xg_away": float("nan"),
+            "statsbomb_xg_difference": float("nan"),
+            "statsbomb_shots_in_box_home": float("nan"),
+            "statsbomb_shots_in_box_away": float("nan"),
+            "statsbomb_set_piece_xg_difference": float("nan"),
         }
         if self.statsbomb_provider is not None:
             try:
-                sb_home = self.statsbomb_provider.aggregate_team_match_features(
+                sb_home = self.statsbomb_provider.aggregate_team_match_features_safe(
                     home_id, before=cutoff
                 )
-                sb_away = self.statsbomb_provider.aggregate_team_match_features(
+                sb_away = self.statsbomb_provider.aggregate_team_match_features_safe(
                     away_id, before=cutoff
                 )
             except Exception:
                 sb_home = sb_away = None
-            if sb_home and sb_away:
+            if sb_home is not None and sb_away is not None:
                 statsbomb_features["statsbomb_available"] = bool(
-                    sb_home.get("statsbomb_available", False)
-                    or sb_away.get("statsbomb_available", False)
+                    (sb_home.get("statsbomb_available") or 0.0)
+                    or (sb_away.get("statsbomb_available") or 0.0)
                 )
-                statsbomb_features["statsbomb_xg_home"] = float(sb_home.get("xg_total", 0.0))
-                statsbomb_features["statsbomb_xg_away"] = float(sb_away.get("xg_total", 0.0))
-                statsbomb_features["statsbomb_xg_difference"] = float(
-                    statsbomb_features["statsbomb_xg_home"]
-                    - statsbomb_features["statsbomb_xg_away"]
-                )
-                statsbomb_features["statsbomb_shots_in_box_home"] = float(
-                    sb_home.get("shots_in_box_total", 0.0)
-                )
-                statsbomb_features["statsbomb_shots_in_box_away"] = float(
-                    sb_away.get("shots_in_box_total", 0.0)
-                )
-                statsbomb_features["statsbomb_set_piece_xg_difference"] = float(
-                    sb_home.get("set_piece_xg_total", 0.0)
-                    - sb_away.get("set_piece_xg_total", 0.0)
+                statsbomb_features["statsbomb_xg_home"] = sb_home.get("xg_total")
+                statsbomb_features["statsbomb_xg_away"] = sb_away.get("xg_total")
+                if statsbomb_features["statsbomb_xg_home"] is not None and statsbomb_features["statsbomb_xg_away"] is not None:
+                    statsbomb_features["statsbomb_xg_difference"] = (
+                        statsbomb_features["statsbomb_xg_home"]
+                        - statsbomb_features["statsbomb_xg_away"]
+                    )
+                statsbomb_features["statsbomb_shots_in_box_home"] = sb_home.get("shots_in_box_total")
+                statsbomb_features["statsbomb_shots_in_box_away"] = sb_away.get("shots_in_box_total")
+                statsbomb_features["statsbomb_set_piece_xg_difference"] = (
+                    (sb_home.get("set_piece_xg_total") or 0.0)
+                    - (sb_away.get("set_piece_xg_total") or 0.0)
                 )
 
         features: dict[str, Any] = {
