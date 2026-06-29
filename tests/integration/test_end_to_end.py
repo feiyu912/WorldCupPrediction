@@ -111,7 +111,10 @@ def test_full_flow_with_fixtures(in_memory_engine, fixture_dir):
         # lineup_confirmed is 0.0 when no record exists before cutoff.
         assert snapshot.features_json.get("lineup_confirmed", 0.0) == 0.0
 
-    # Train a tiny model on the 2018+2022 knockout matches.
+    # Train a tiny model on the 2018+2022 knockout matches. This test
+    # explicitly enables CatBoost (with a 1-sample minimum) to exercise
+    # the catboost path; the default training pipeline uses the logistic
+    # regression baseline.
     with session_scope() as session:
         training = TrainingService(
             session,
@@ -119,6 +122,7 @@ def test_full_flow_with_fixtures(in_memory_engine, fixture_dir):
             elo_config=EloConfig(base_k_factor=10.0),
             feature_version="v1",
             market_min_bookmakers=1,
+            models_config={"catboost": {"enabled": True, "min_samples_to_enable": 1}},
         )
         catboost_cfg = CatBoostConfig(iterations=30, depth=4, learning_rate=0.05, random_seed=42)
         stacking_cfg = StackingConfig(method="logistic_regression")
@@ -131,6 +135,7 @@ def test_full_flow_with_fixtures(in_memory_engine, fixture_dir):
             stacking_config=stacking_cfg,
         )
         assert result["model_version"] == "v_smoke"
+        assert result["base_learner"] == "catboost"
 
     # Generate a prediction and verify the ledger.
     with session_scope() as session:

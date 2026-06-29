@@ -53,11 +53,27 @@ class FeatureBuilder:
         elo_config: EloConfig | None = None,
         feature_version: str = "v1",
         market_min_bookmakers: int = 1,
+        statsbomb_provider: Any | None = None,
     ) -> None:
+        """Construct a feature builder.
+
+        Args:
+            session: SQLAlchemy session.
+            elo_config: Optional Elo configuration.
+            feature_version: Logical feature version, recorded in the snapshot.
+            market_min_bookmakers: Minimum number of bookmakers for
+                market consensus.
+            statsbomb_provider: Optional
+                :class:`StatsBombOpenDataProvider` for xG enrichment. If
+                provided and the data is locally available, xG features
+                are added; otherwise they remain zero with an explicit
+                ``statsbomb_available`` flag.
+        """
         self.session = session
         self.elo_config = elo_config or EloConfig()
         self.feature_version = feature_version
         self.market_min_bookmakers = market_min_bookmakers
+        self.statsbomb_provider = statsbomb_provider
 
     # ------------------------------------------------------------------
     # Public API
@@ -155,6 +171,51 @@ class FeatureBuilder:
             "is_knockout": _is_knockout_match(match, competition),
         }
 
+        # ---- 6. Optional StatsBomb xG features --------------------
+        # Always include the missingness flag; numeric features are zero
+        # unless the StatsBomb data is locally available AND a coverage
+        # call returned non-empty data.
+        statsbomb_features: dict[str, Any] = {
+            "statsbomb_available": False,
+            "statsbomb_xg_home": 0.0,
+            "statsbomb_xg_away": 0.0,
+            "statsbomb_xg_difference": 0.0,
+            "statsbomb_shots_in_box_home": 0.0,
+            "statsbomb_shots_in_box_away": 0.0,
+            "statsbomb_set_piece_xg_difference": 0.0,
+        }
+        if self.statsbomb_provider is not None:
+            try:
+                sb_home = self.statsbomb_provider.aggregate_team_match_features(
+                    home_id, before=cutoff
+                )
+                sb_away = self.statsbomb_provider.aggregate_team_match_features(
+                    away_id, before=cutoff
+                )
+            except Exception:
+                sb_home = sb_away = None
+            if sb_home and sb_away:
+                statsbomb_features["statsbomb_available"] = bool(
+                    sb_home.get("statsbomb_available", False)
+                    or sb_away.get("statsbomb_available", False)
+                )
+                statsbomb_features["statsbomb_xg_home"] = float(sb_home.get("xg_total", 0.0))
+                statsbomb_features["statsbomb_xg_away"] = float(sb_away.get("xg_total", 0.0))
+                statsbomb_features["statsbomb_xg_difference"] = float(
+                    statsbomb_features["statsbomb_xg_home"]
+                    - statsbomb_features["statsbomb_xg_away"]
+                )
+                statsbomb_features["statsbomb_shots_in_box_home"] = float(
+                    sb_home.get("shots_in_box_total", 0.0)
+                )
+                statsbomb_features["statsbomb_shots_in_box_away"] = float(
+                    sb_away.get("shots_in_box_total", 0.0)
+                )
+                statsbomb_features["statsbomb_set_piece_xg_difference"] = float(
+                    sb_home.get("set_piece_xg_total", 0.0)
+                    - sb_away.get("set_piece_xg_total", 0.0)
+                )
+
         features: dict[str, Any] = {
             # Elo
             "home_elo_pre_match": elo_home,
@@ -180,6 +241,8 @@ class FeatureBuilder:
             **market_features,
             # Competition
             **competition_features,
+            # Optional StatsBomb xG enrichment
+            **statsbomb_features,
         }
 
         # Compute the maximum source timestamp we've consumed.

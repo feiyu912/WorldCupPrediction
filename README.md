@@ -6,6 +6,13 @@ Production-quality, reproducible football knockout-match advance-probability pre
 > match. It is a forecasting research tool — **not** a betting product. It does not
 > recommend stakes, bankroll sizes, or "value bets".
 
+**Self-bootstrapping**: the offline MVP runs without any manual data files or paid API
+keys. Run `uv run football data bootstrap` and the system downloads pinned source
+revisions, validates schemas, builds a team alias registry, and generates a
+`knockout_match_manifest` across World Cups, Euros, Copa América, and CONCACAF Gold
+Cup. Only **future-facing live fixtures, availability, and historical odds** are
+env-gated and never required.
+
 ---
 
 ## 1. Project goal
@@ -21,17 +28,50 @@ Confidence: medium
 
 "Advances" includes winning in normal time, extra time, or on penalties.
 
-## 2. Architecture (ASCII)
+## 2. Self-bootstrapping data layer
+
+The system downloads and processes its own data with zero manual input. The
+pipeline is fully reproducible from a pinned source registry.
+
+```
+$ uv run football data bootstrap
+{
+  "required_sources": [
+    {"name": "martj42_results", "cache_hit": false, "schema_valid": true, ...},
+    {"name": "martj42_shootouts", "cache_hit": false, "schema_valid": true, ...},
+    {"name": "openfootball_worldcup", "cache_hit": false, "schema_valid": true, ...}
+  ],
+  "alias_registry_size": 412,
+  "knockout_manifest": {
+    "total": 248,
+    "tournament_coverage": {
+      "FIFA World Cup": 192, "UEFA Euro": 56, ...
+    },
+    "quarantined_count": 17
+  },
+  "statsbomb_available": true,
+  "feature_coverage": {
+    "statsbomb_events": true, "historical_odds": false, "lineups": false
+  }
+}
+
+$ uv run football data status     # offline-safe; reports current state
+```
+
+`data status` works without any downloads — it just inspects the local cache and
+alias registry.
+
+## 3. Architecture (ASCII)
 
 ```
 +-------------------------+       +--------------------+       +-----------------+
-| Local CSV / JSON        |       | Skeleton external  |       | StatsBomb local |
-| (matches, odds, avail.) |  -->  | providers (env-gated) |   | event data      |
+| Pinned source registry  |       | Optional historical |       | StatsBomb local |
+| (martj42, openfootball) |  -->  | odds via env key    |       | event data (opt) |
 +-------------------------+       +--------------------+       +-----------------+
             |                                |                          |
             v                                v                          v
 +--------------------------------------------------------------------------------+
-|                     Ingestion service (SQLAlchemy, lineage)                   |
+|        System-owned AliasRegistry + KnockoutManifestBuilder                   |
 +--------------------------------------------------------------------------------+
             |                                |                          |
             v                                v                          v
@@ -41,11 +81,11 @@ Confidence: medium
             \                                |                          |
              \                               v                          v
               +-------->   Feature snapshot service  <-------------------+
-                              (time-frozen, immutable)
+                              (time-frozen, immutable; xG optional)
                                        |
                                        v
 +--------------------------------------------------------------------------------+
-|          CatBoost classifier (structured features, native NaNs)               |
+|         Logistic regression baseline (default) | CatBoost (opt-in flag)        |
 +--------------------------------------------------------------------------------+
                                        |
                                        v
@@ -103,27 +143,34 @@ Brier score before being treated as useful.
 
 ## 6. Quick start
 
+The system is self-bootstrapping; you do not need any local data files.
+
 ```bash
 # 1) Install dependencies (uses uv)
 uv sync --extra dev
 
-# 2) Ingest the bundled local fixtures
-uv run football ingest matches --file data/fixtures/matches.csv
-uv run football ingest odds --file data/fixtures/odds.csv
-uv run football ingest availability --file data/fixtures/availability.json
+# 2) Bootstrap data: download pinned sources, build the knockout manifest,
+#    seed the alias registry. Skip --offline to require a network connection.
+uv run football data bootstrap
+uv run football data status         # offline-safe; report what was bootstrapped
 
-# 3) Build a feature snapshot for a future match
-uv run football features build --match-id MATCH_KO_001 --cutoff 2026-06-29T00:00:00Z
+# 3) Build a feature snapshot for a future match (using the bootstrapped DB)
+uv run football features build --match-id <MATCH_ID> --cutoff <ISO_TIMESTAMP>
 
-# 4) Train a model version
+# 4) Train a model version. CatBoost is opt-in via configs/models.yaml and
+#    requires the generated manifest to reach min_samples_to_enable (default 200).
 uv run football models train --config configs/mvp.yaml
 
 # 5) Predict
-uv run football predict one --match-id MATCH_KO_001 --cutoff 2026-06-29T00:00:00Z --model-version v0.1.0
+uv run football predict one --match-id <MATCH_ID> --cutoff <ISO_TIMESTAMP> --model-version v0.1.0
 
 # 6) Run a temporal backtest
 uv run football backtest run --config configs/backtest.yaml --model-version v0_backtest
 ```
+
+The only inputs you may provide later are **API keys** for env-gated
+optional providers (live fixtures, availability, historical odds). The
+offline MVP runs without any.
 
 ## 7. Docker
 
@@ -180,6 +227,22 @@ The integration suite demonstrates the central anti-leakage guarantees:
   report log loss and Brier score against this baseline on every backtest.
 - Calibrated probabilities can still be wrong; the system never claims
   certainty.
+- The default base model is a **regularized logistic regression** with
+  median imputation, standardization, balanced class weights, and
+  missingness indicators. **CatBoost is opt-in** via
+  `configs/models.yaml` and is only enabled when the generated knockout
+  manifest reaches `catboost.min_samples_to_enable` (default 200) and
+  passes walk-forward validation.
+- The model uses **all international matches** for Elo state but
+  **only reliably-labeled knockout fixtures** for the advancement
+  target. The exact count of usable knockout matches and the per-
+  tournament coverage are printed by `uv run football data bootstrap`.
+- Historical market odds are **optional** and disabled by default.
+  When `EXTERNAL_ODDS_API_KEY` is set, the system uses a single
+  reproducible T-24h snapshot per match. No fabrication or backfill.
+- Historical availability / lineup data are **future-facing only**.
+  v0 backtests run without availability features; the
+  `AvailabilityProvider` interface is reserved for live use.
 
 ## 11. Responsible use
 

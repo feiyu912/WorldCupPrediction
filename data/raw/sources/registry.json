@@ -1,19 +1,20 @@
 {
+  "_comment": "Source registry. Update `pinned_sha` to a real Git commit SHA before running `uv run football data bootstrap`. The values below are PLACEHOLDERS — the system will fail loudly until they are updated. To update: 1) clone the source repo locally, 2) `git rev-parse HEAD` to get the SHA, 3) replace the placeholder. For StatsBomb use a release tag (e.g. `v0.0.7`).",
   "schema_version": 1,
   "updated_at": "2026-06-29T00:00:00Z",
   "sources": {
     "martj42_results": {
       "kind": "results_csv",
       "url_template": "https://raw.githubusercontent.com/martj42/international-results/{sha}/results.csv",
-      "pinned_sha": "HEAD",
+      "pinned_sha": "PIN_ME_TO_REAL_COMMIT_SHA",
       "local_filename": "martj42_results.csv",
       "expected_columns": ["date", "home_team", "away_team", "home_score", "away_score", "tournament", "city", "country", "neutral"],
-      "description": "International football results 1872-present (Mart Jürisoo). Used for the canonical result backbone and Elo history."
+      "description": "International football results (Mart Jürisoo). Used for the canonical result backbone and Elo history."
     },
     "martj42_shootouts": {
       "kind": "shootouts_csv",
       "url_template": "https://raw.githubusercontent.com/martj42/international-results/{sha}/shootouts.csv",
-      "pinned_sha": "HEAD",
+      "pinned_sha": "PIN_ME_TO_REAL_COMMIT_SHA",
       "local_filename": "martj42_shootouts.csv",
       "expected_columns": ["date", "home_team", "away_team", "winner"],
       "description": "Penalty shootout results. Used to derive the advancer on knockout matches that ended in a 90-minute draw."
@@ -53,7 +54,7 @@
     "statsbomb_open_data": {
       "kind": "statsbomb_open_data",
       "url_template": "https://github.com/statsbomb/open-data.git",
-      "pinned_sha": "v0.0.7",
+      "pinned_sha": "master",
       "local_path": "statsbomb",
       "description": "StatsBomb open-data repo (git). Used only for optional xG / event enrichment; coverage is partial and missingness is tracked."
     }

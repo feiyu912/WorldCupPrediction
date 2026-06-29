@@ -284,6 +284,44 @@ def data_bootstrap(
         raise typer.Exit(code=1)
 
 
+@data_app.command("status")
+def data_status() -> None:
+    """Print the current bootstrap state (offline-safe)."""
+    from football_advance_predictor.data.aliases.alias_registry import (
+        AliasRegistry,
+    )
+
+    settings = get_settings()
+    configure_logging(settings.log_level)
+    repo_root = Path(__file__).resolve().parents[3]
+    registry_path = repo_root / "data" / "raw" / "sources" / "registry.json"
+    raw_dir = repo_root / "data" / "raw" / "sources"
+    aliases_dir = repo_root / "data" / "aliases"
+    artifacts_dir = repo_root / "data" / "processed" / "bootstrap"
+    payload: dict[str, Any] = {
+        "registry_present": registry_path.exists(),
+        "raw_dir": str(raw_dir),
+        "raw_files": sorted(p.name for p in raw_dir.glob("*")) if raw_dir.exists() else [],
+        "aliases_dir_present": aliases_dir.exists(),
+    }
+    # Alias registry state.
+    if aliases_dir.exists():
+        reg = AliasRegistry.open(aliases_dir)
+        payload["alias_registry_size"] = reg.size()
+        payload["unresolved_aliases"] = reg.unresolved_count()
+    # Bootstrap artifact state.
+    summary_path = artifacts_dir / "bootstrap_report.json"
+    if summary_path.exists():
+        try:
+            with summary_path.open("r", encoding="utf-8") as f:
+                payload["last_bootstrap"] = json.load(f)
+        except Exception as exc:  # pragma: no cover
+            payload["last_bootstrap_error"] = str(exc)
+    else:
+        payload["last_bootstrap"] = "never run"
+    typer.echo(json.dumps(payload, indent=2, default=str))
+
+
 # ---------------------------------------------------------------------------
 # Report
 # ---------------------------------------------------------------------------

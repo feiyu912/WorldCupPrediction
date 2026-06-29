@@ -189,18 +189,22 @@ class LogisticRegressionBaseline:
     ) -> None:
         """Augment ``X_train`` (and optionally ``X_val``) with missingness indicators.
 
-        Operates in place. New columns are named ``{col}_isna``.
+        Operates in place. New columns are named ``{col}_isna`` and are
+        ONLY added for source feature columns (never for existing
+        indicator columns themselves).
         """
         if not self.config.add_missingness_indicators:
             return
-        for col in list(X_train.columns):
-            indicator = f"{col}_isna"
-            if indicator in X_train.columns:
-                continue
-            X_train[indicator] = X_train[col].isna().astype(int)
-        if X_val is not None:
-            for col in list(X_val.columns):
+
+        def _augment(frame: pd.DataFrame) -> None:
+            for col in list(frame.columns):
+                if col.endswith("_isna"):
+                    continue  # Don't double-augment an indicator.
                 indicator = f"{col}_isna"
-                if indicator in X_val.columns:
+                if indicator in frame.columns:
                     continue
-                X_val[indicator] = X_val[col].isna().astype(int)
+                frame[indicator] = frame[col].isna().astype(int)
+
+        _augment(X_train)
+        if X_val is not None:
+            _augment(X_val)

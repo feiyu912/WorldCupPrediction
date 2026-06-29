@@ -4,7 +4,11 @@ The service is responsible for:
 
 1. Building a training table with one row per knockout match and its
    time-frozen features.
-2. Fitting the CatBoost model on the training window.
+2. Fitting the **default base model** (regularized logistic regression)
+   on the training window. CatBoost is opt-in via
+   ``catboost.enabled`` AND requires the training set to be at least
+   ``catboost.min_samples_to_enable`` rows; otherwise the system stays
+   on logistic regression with a warning.
 3. Generating out-of-fold predictions on the validation window.
 4. Fitting the stacker and calibrator on the validation window.
 5. Recording the model run, including metrics and artifact paths.
@@ -40,6 +44,10 @@ from football_advance_predictor.models.catboost_model.catboost_model import (
     CatBoostModel,
 )
 from football_advance_predictor.models.elo_model.elo_model import EloModel
+from football_advance_predictor.models.logistic_baseline import (
+    LogisticRegressionBaseline,
+    LogisticRegressionBaselineConfig,
+)
 from football_advance_predictor.models.market_model.market_model import MarketModel
 from football_advance_predictor.models.registry.registry import ModelRegistry
 from football_advance_predictor.models.stacking.stacker import StackingConfig, StackingModel
@@ -58,12 +66,14 @@ class TrainingService:
         elo_config: EloConfig | None = None,
         feature_version: str = "v1",
         market_min_bookmakers: int = 1,
+        models_config: dict[str, Any] | None = None,
     ) -> None:
         self.session = session
         self.registry = registry
         self.elo_config = elo_config or EloConfig()
         self.feature_version = feature_version
         self.market_min_bookmakers = market_min_bookmakers
+        self.models_config = models_config or {}
 
     # ------------------------------------------------------------------
     # Public API
@@ -79,6 +89,7 @@ class TrainingService:
         catboost_config: CatBoostConfig | None = None,
         stacking_config: StackingConfig | None = None,
         calibration_config: CalibrationConfig | None = None,
+        logistic_config: LogisticRegressionBaselineConfig | None = None,
     ) -> dict[str, Any]:
         """Run the full training pipeline.
 
@@ -88,6 +99,7 @@ class TrainingService:
         catboost_config = catboost_config or CatBoostConfig()
         stacking_config = stacking_config or StackingConfig()
         calibration_config = calibration_config or CalibrationConfig()
+        logistic_config = logistic_config or self._default_logistic_config()
 
         train_start, train_end = training_window
         val_start, val_end = validation_window
@@ -105,16 +117,37 @@ class TrainingService:
         feature_cols = self._feature_columns(train_df)
         target_col = "home_advances"
 
-        # 1. Fit CatBoost.
-        catboost = CatBoostModel(catboost_config)
-        catboost.fit(
-            X_train=train_df[feature_cols],
-            y_train=train_df[target_col].astype(int),
-            X_val=val_df[feature_cols],
-            y_val=val_df[target_col].astype(int),
+        # 1. Pick the base learner.
+        use_catboost, base_learner_name, _reason = self._select_base_learner(
+            n_train=len(train_df), n_val=len(val_df)
         )
-        catboost_path = catboost.save(self.registry.root / "catboost" / model_version)
-        feature_importance = catboost.feature_importance()
+        feature_importance: list[tuple[str, float]] = []
+        if use_catboost:
+            base_learner = CatBoostModel(catboost_config)
+            base_learner.fit(
+                X_train=train_df[feature_cols],
+                y_train=train_df[target_col].astype(int),
+                X_val=val_df[feature_cols],
+                y_val=val_df[target_col].astype(int),
+            )
+            base_learner_path = base_learner.save(
+                self.registry.root / "catboost" / model_version
+            )
+            feature_importance = base_learner.feature_importance()
+            base_learner_artifacts = {"catboost": str(base_learner_path)}
+        else:
+            base_learner = LogisticRegressionBaseline(logistic_config)
+            base_learner.fit(
+                X_train=train_df[feature_cols],
+                y_train=train_df[target_col].astype(int),
+                X_val=val_df[feature_cols],
+                y_val=val_df[target_col].astype(int),
+            )
+            base_learner_path = base_learner.save(
+                self.registry.root / "logistic_baseline" / model_version
+            )
+            feature_importance = base_learner.feature_importance()
+            base_learner_artifacts = {"logistic_baseline": str(base_learner_path)}
 
         # 2. Build base predictions on the validation window.
         elo_model = EloModel(self.elo_config).fit(
@@ -123,7 +156,7 @@ class TrainingService:
         market_model = MarketModel(self.session, min_bookmakers=self.market_min_bookmakers)
 
         val_elo, val_market, val_cat, val_y = self._predict_components(
-            df=val_df, elo_model=elo_model, market_model=market_model, catboost=catboost
+            df=val_df, elo_model=elo_model, market_model=market_model, base_learner=base_learner
         )
 
         # 3. Fit the stacker on OOF predictions.
@@ -159,15 +192,26 @@ class TrainingService:
             val_metrics["roc_auc_calibrated"] = None
 
         # 6. Register artifacts.
-        self.registry.register(
-            model_type="catboost",
-            model_version=model_version,
-            artifact_path=catboost_path,
-            feature_version=self.feature_version,
-            metrics=val_metrics,
-            hyperparameters=asdict(catboost_config),
-            feature_hash=stable_hash(feature_cols),
-        )
+        if use_catboost:
+            self.registry.register(
+                model_type="catboost",
+                model_version=model_version,
+                artifact_path=base_learner_path,
+                feature_version=self.feature_version,
+                metrics=val_metrics,
+                hyperparameters=asdict(catboost_config),
+                feature_hash=stable_hash(feature_cols),
+            )
+        else:
+            self.registry.register(
+                model_type="logistic_baseline",
+                model_version=model_version,
+                artifact_path=base_learner_path,
+                feature_version=self.feature_version,
+                metrics=val_metrics,
+                hyperparameters=asdict(logistic_config),
+                feature_hash=stable_hash(feature_cols),
+            )
         self.registry.register(
             model_type="stacking",
             model_version=model_version,
@@ -190,9 +234,12 @@ class TrainingService:
         # 7. Persist a model run record.
         from football_advance_predictor.db.models import ModelRun
 
+        model_type_str = (
+            "catboost_stacked_calibrated" if use_catboost else "logistic_stacked_calibrated"
+        )
         model_run = ModelRun(
             model_run_id=f"run_{uuid.uuid4().hex[:16]}",
-            model_type="catboost_stacked_calibrated",
+            model_type=model_type_str,
             model_version=model_version,
             training_start=train_start,
             training_end=train_end,
@@ -202,7 +249,9 @@ class TrainingService:
             test_end=test_end,
             feature_version=self.feature_version,
             hyperparameters_json={
+                "base_learner": base_learner_name,
                 "catboost": asdict(catboost_config),
+                "logistic_regression": asdict(logistic_config),
                 "stacking": asdict(stacking_config),
                 "calibration": asdict(calibration_config),
             },
@@ -210,7 +259,7 @@ class TrainingService:
                 "validation": val_metrics,
                 "feature_importance_top10": feature_importance[:10],
             },
-            artifact_path=str(catboost_path),
+            artifact_path=str(base_learner_path),
         )
         self.session.add(model_run)
         self.session.flush()
@@ -218,11 +267,12 @@ class TrainingService:
         return {
             "model_run_id": model_run.model_run_id,
             "model_version": model_version,
+            "base_learner": base_learner_name,
             "feature_count": len(feature_cols),
             "feature_importance": feature_importance,
             "validation_metrics": val_metrics,
             "artifact_paths": {
-                "catboost": str(catboost_path),
+                **base_learner_artifacts,
                 "stacking": str(stacker_path),
                 "calibration": str(calibrator_path),
             },
@@ -315,11 +365,11 @@ class TrainingService:
         df: pd.DataFrame,
         elo_model: EloModel,
         market_model: MarketModel,
-        catboost: CatBoostModel,
+        base_learner: CatBoostModel | LogisticRegressionBaseline,
     ) -> tuple[np.ndarray, list[float | None], np.ndarray, np.ndarray]:
         elo_probs: list[float] = []
         market_probs: list[float | None] = []
-        cat_probs: list[float] = []
+        base_probs: list[float] = []
         y: list[int] = []
         for _, row in df.iterrows():
             cutoff = to_utc(row["cutoff_time"])
@@ -339,14 +389,49 @@ class TrainingService:
                 market_model.predict_proba(match_id=match_id, as_of_time=cutoff)
             )
             feature_row = pd.DataFrame([row.to_dict()])
-            cat_probs.append(float(catboost.predict_proba(feature_row)[0]))
+            base_probs.append(float(base_learner.predict_proba(feature_row)[0]))
             y.append(int(row["home_advances"]))
         return (
             np.array(elo_probs, dtype=float),
             market_probs,
-            np.array(cat_probs, dtype=float),
+            np.array(base_probs, dtype=float),
             np.array(y, dtype=int),
         )
+
+    def _select_base_learner(
+        self, *, n_train: int, n_val: int
+    ) -> tuple[bool, str, str]:
+        """Decide whether to enable CatBoost for this training run.
+
+        Returns:
+            (use_catboost, base_learner_name, reason).
+        """
+        catboost_cfg = self.models_config.get("catboost", {}) if self.models_config else {}
+        enabled = bool(catboost_cfg.get("enabled", False))
+        min_samples = int(catboost_cfg.get("min_samples_to_enable", 200))
+        if not enabled:
+            return False, "logistic_regression", "catboost_disabled_in_config"
+        if n_train < min_samples:
+            logger.warning(
+                "CatBoost requires more training samples than are available; falling back to logistic regression",
+                extra={"n_train": n_train, "min_samples": min_samples},
+            )
+            return (
+                False,
+                "logistic_regression",
+                f"n_train={n_train} < catboost.min_samples_to_enable={min_samples}",
+            )
+        if n_val < 1:
+            return False, "logistic_regression", "no_validation_examples"
+        return True, "catboost", "enabled"
+
+    def _default_logistic_config(self) -> LogisticRegressionBaselineConfig:
+        baseline_cfg = (
+            self.models_config.get("baseline", {}).get("logistic_regression", {})
+            if self.models_config
+            else {}
+        )
+        return LogisticRegressionBaselineConfig.from_dict(baseline_cfg)
 
     @staticmethod
     def _feature_columns(df: pd.DataFrame) -> list[str]:
