@@ -1,0 +1,222 @@
+{
+  "entries": [
+    {
+      "added_at": "2026-06-29T14:20:36.335050+00:00",
+      "alias": "bosnia",
+      "source": "builtin_default",
+      "team_id": "bosnia_and_herzegovina"
+    },
+    {
+      "added_at": "2026-06-29T14:20:36.335052+00:00",
+      "alias": "bosnia & herzegovina",
+      "source": "builtin_default",
+      "team_id": "bosnia_and_herzegovina"
+    },
+    {
+      "added_at": "2026-06-29T14:20:36.334998+00:00",
+      "alias": "britain",
+      "source": "builtin_default",
+      "team_id": "england"
+    },
+    {
+      "added_at": "2026-06-29T14:20:36.335055+00:00",
+      "alias": "cabo verde",
+      "source": "builtin_default",
+      "team_id": "cape_verde"
+    },
+    {
+      "added_at": "2026-06-29T14:20:36.335057+00:00",
+      "alias": "cape verde",
+      "source": "builtin_default",
+      "team_id": "cape_verde"
+    },
+    {
+      "added_at": "2026-06-29T14:20:36.335063+00:00",
+      "alias": "czech",
+      "source": "builtin_default",
+      "team_id": "czech_republic"
+    },
+    {
+      "added_at": "2026-06-29T14:20:36.335027+00:00",
+      "alias": "czech republic",
+      "source": "builtin_default",
+      "team_id": "czech_republic"
+    },
+    {
+      "added_at": "2026-06-29T14:20:36.335029+00:00",
+      "alias": "czechia",
+      "source": "builtin_default",
+      "team_id": "czech_republic"
+    },
+    {
+      "added_at": "2026-06-29T14:20:36.335018+00:00",
+      "alias": "c\u00f4te d\u2019ivoire",
+      "source": "builtin_default",
+      "team_id": "ivory_coast"
+    },
+    {
+      "added_at": "2026-06-29T14:20:36.335059+00:00",
+      "alias": "eswatini",
+      "source": "builtin_default",
+      "team_id": "eswatini"
+    },
+    {
+      "added_at": "2026-06-29T14:20:36.334996+00:00",
+      "alias": "great britain",
+      "source": "builtin_default",
+      "team_id": "england"
+    },
+    {
+      "added_at": "2026-06-29T14:20:36.335065+00:00",
+      "alias": "holland",
+      "source": "builtin_default",
+      "team_id": "netherlands"
+    },
+    {
+      "added_at": "2026-06-29T14:20:36.335037+00:00",
+      "alias": "iran",
+      "source": "builtin_default",
+      "team_id": "iran"
+    },
+    {
+      "added_at": "2026-06-29T14:20:36.335013+00:00",
+      "alias": "ivory coast",
+      "source": "builtin_default",
+      "team_id": "ivory_coast"
+    },
+    {
+      "added_at": "2026-06-29T14:20:36.335069+00:00",
+      "alias": "korea",
+      "source": "builtin_default",
+      "team_id": "south_korea"
+    },
+    {
+      "added_at": "2026-06-29T14:20:36.335009+00:00",
+      "alias": "korea dpr",
+      "source": "builtin_default",
+      "team_id": "north_korea"
+    },
+    {
+      "added_at": "2026-06-29T14:20:36.335002+00:00",
+      "alias": "korea republic",
+      "source": "builtin_default",
+      "team_id": "south_korea"
+    },
+    {
+      "added_at": "2026-06-29T14:20:36.335007+00:00",
+      "alias": "korea south",
+      "source": "builtin_default",
+      "team_id": "south_korea"
+    },
+    {
+      "added_at": "2026-06-29T14:20:36.335011+00:00",
+      "alias": "north korea",
+      "source": "builtin_default",
+      "team_id": "north_korea"
+    },
+    {
+      "added_at": "2026-06-29T14:20:36.335073+00:00",
+      "alias": "northern ireland",
+      "source": "builtin_default",
+      "team_id": "northern_ireland"
+    },
+    {
+      "added_at": "2026-06-29T14:20:36.335070+00:00",
+      "alias": "republic of ireland",
+      "source": "builtin_default",
+      "team_id": "ireland"
+    },
+    {
+      "added_at": "2026-06-29T14:20:36.335031+00:00",
+      "alias": "russia",
+      "source": "builtin_default",
+      "team_id": "russia"
+    },
+    {
+      "added_at": "2026-06-29T14:20:36.335000+00:00",
+      "alias": "south korea",
+      "source": "builtin_default",
+      "team_id": "south_korea"
+    },
+    {
+      "added_at": "2026-06-29T14:20:36.335061+00:00",
+      "alias": "swaziland",
+      "source": "builtin_default",
+      "team_id": "eswatini"
+    },
+    {
+      "added_at": "2026-06-29T14:20:36.335066+00:00",
+      "alias": "the netherlands",
+      "source": "builtin_default",
+      "team_id": "netherlands"
+    },
+    {
+      "added_at": "2026-06-29T14:20:36.335043+00:00",
+      "alias": "trinidad",
+      "source": "builtin_default",
+      "team_id": "trinidad_and_tobago"
+    },
+    {
+      "added_at": "2026-06-29T14:20:36.335045+00:00",
+      "alias": "trinidad & tobago",
+      "source": "builtin_default",
+      "team_id": "trinidad_and_tobago"
+    },
+    {
+      "added_at": "2026-06-29T14:20:36.335048+00:00",
+      "alias": "trinidad and tobago",
+      "source": "builtin_default",
+      "team_id": "trinidad_and_tobago"
+    },
+    {
+      "added_at": "2026-06-29T14:20:36.335033+00:00",
+      "alias": "turkey",
+      "source": "builtin_default",
+      "team_id": "turkiye"
+    },
+    {
+      "added_at": "2026-06-29T14:20:36.335035+00:00",
+      "alias": "t\u00fcrkiye",
+      "source": "builtin_default",
+      "team_id": "turkiye"
+    },
+    {
+      "added_at": "2026-06-29T14:20:36.335041+00:00",
+      "alias": "u.a.e.",
+      "source": "builtin_default",
+      "team_id": "united_arab_emirates"
+    },
+    {
+      "added_at": "2026-06-29T14:20:36.334984+00:00",
+      "alias": "u.s.a.",
+      "source": "builtin_default",
+      "team_id": "united_states"
+    },
+    {
+      "added_at": "2026-06-29T14:20:36.334994+00:00",
+      "alias": "uk",
+      "source": "builtin_default",
+      "team_id": "england"
+    },
+    {
+      "added_at": "2026-06-29T14:20:36.334988+00:00",
+      "alias": "united states",
+      "source": "builtin_default",
+      "team_id": "united_states"
+    },
+    {
+      "added_at": "2026-06-29T14:20:36.334991+00:00",
+      "alias": "united states of america",
+      "source": "builtin_default",
+      "team_id": "united_states"
+    },
+    {
+      "added_at": "2026-06-29T14:20:36.334980+00:00",
+      "alias": "us",
+      "source": "builtin_default",
+      "team_id": "united_states"
+    }
+  ],
+  "updated_at": "2026-06-29T14:20:36.335075+00:00",
+  "version": 1
+}
