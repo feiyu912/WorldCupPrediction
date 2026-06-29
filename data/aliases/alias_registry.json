@@ -1,2166 +1,2202 @@
 {
   "entries": [
     {
-      "added_at": "2026-06-29T16:53:50.113540+00:00",
+      "added_at": "2026-06-29T17:17:56.056015+00:00",
       "alias": "Abkhazia",
       "source": "martj42_results",
       "team_id": "abkhazia"
     },
     {
-      "added_at": "2026-06-29T16:53:50.041331+00:00",
+      "added_at": "2026-06-29T17:17:55.985926+00:00",
       "alias": "Afghanistan",
       "source": "martj42_results",
       "team_id": "afghanistan"
     },
     {
-      "added_at": "2026-06-29T16:53:50.041851+00:00",
+      "added_at": "2026-06-29T17:17:55.986463+00:00",
       "alias": "Albania",
       "source": "martj42_results",
       "team_id": "albania"
     },
     {
-      "added_at": "2026-06-29T16:53:50.035913+00:00",
+      "added_at": "2026-06-29T17:17:55.980943+00:00",
       "alias": "Alderney",
       "source": "martj42_results",
       "team_id": "alderney"
     },
     {
-      "added_at": "2026-06-29T16:53:50.047801+00:00",
+      "added_at": "2026-06-29T17:17:55.992214+00:00",
       "alias": "Algeria",
       "source": "martj42_results",
       "team_id": "algeria"
     },
     {
-      "added_at": "2026-06-29T16:53:50.098263+00:00",
+      "added_at": "2026-06-29T17:17:56.041149+00:00",
       "alias": "Ambazonia",
       "source": "martj42_results",
       "team_id": "ambazonia"
     },
     {
-      "added_at": "2026-06-29T16:53:50.064880+00:00",
+      "added_at": "2026-06-29T17:17:56.008644+00:00",
       "alias": "American Samoa",
       "source": "martj42_results",
       "team_id": "american_samoa"
     },
     {
-      "added_at": "2026-06-29T16:53:50.037263+00:00",
+      "added_at": "2026-06-29T17:17:55.982248+00:00",
       "alias": "Andalusia",
       "source": "martj42_results",
       "team_id": "andalusia"
     },
     {
-      "added_at": "2026-06-29T16:53:50.081530+00:00",
+      "added_at": "2026-06-29T17:17:56.024829+00:00",
       "alias": "Andorra",
       "source": "martj42_results",
       "team_id": "andorra"
     },
     {
-      "added_at": "2026-06-29T16:53:50.057797+00:00",
+      "added_at": "2026-06-29T17:17:56.001772+00:00",
       "alias": "Angola",
       "source": "martj42_results",
       "team_id": "angola"
     },
     {
-      "added_at": "2026-06-29T16:53:50.067538+00:00",
+      "added_at": "2026-06-29T17:17:56.011160+00:00",
       "alias": "Anguilla",
       "source": "martj42_results",
       "team_id": "anguilla"
     },
     {
-      "added_at": "2026-06-29T16:53:50.055073+00:00",
+      "added_at": "2026-06-29T17:17:55.998991+00:00",
       "alias": "Antigua and Barbuda",
       "source": "martj42_results",
       "team_id": "antigua_and_barbuda"
     },
     {
-      "added_at": "2026-06-29T16:53:50.104605+00:00",
+      "added_at": "2026-06-29T17:17:56.047091+00:00",
       "alias": "Arameans Suryoye",
       "source": "martj42_results",
       "team_id": "arameans_suryoye"
     },
     {
-      "added_at": "2026-06-29T16:53:50.035838+00:00",
+      "added_at": "2026-06-29T17:17:55.980874+00:00",
       "alias": "Argentina",
       "source": "martj42_results",
       "team_id": "argentina"
     },
     {
-      "added_at": "2026-06-29T16:53:50.060752+00:00",
+      "added_at": "2026-06-29T17:17:56.004651+00:00",
       "alias": "Armenia",
       "source": "martj42_results",
       "team_id": "armenia"
     },
     {
-      "added_at": "2026-06-29T16:53:50.113542+00:00",
+      "added_at": "2026-06-29T17:17:56.056017+00:00",
       "alias": "Artsakh",
       "source": "martj42_results",
       "team_id": "artsakh"
     },
     {
-      "added_at": "2026-06-29T16:53:50.037558+00:00",
+      "added_at": "2026-06-29T17:17:55.982461+00:00",
       "alias": "Aruba",
       "source": "martj42_results",
       "team_id": "aruba"
     },
     {
-      "added_at": "2026-06-29T16:53:50.037277+00:00",
+      "added_at": "2026-06-29T17:17:55.982261+00:00",
       "alias": "Asturias",
       "source": "martj42_results",
       "team_id": "asturias"
     },
     {
-      "added_at": "2026-06-29T16:53:50.037151+00:00",
+      "added_at": "2026-06-29T17:17:55.982117+00:00",
       "alias": "Australia",
       "source": "martj42_results",
       "team_id": "australia"
     },
     {
-      "added_at": "2026-06-29T16:53:50.035840+00:00",
+      "added_at": "2026-06-29T17:17:55.980876+00:00",
       "alias": "Austria",
       "source": "martj42_results",
       "team_id": "austria"
     },
     {
-      "added_at": "2026-06-29T16:53:50.133527+00:00",
+      "added_at": "2026-06-29T17:17:56.075721+00:00",
       "alias": "Aymara",
       "source": "martj42_results",
       "team_id": "aymara"
     },
     {
-      "added_at": "2026-06-29T16:53:50.060766+00:00",
+      "added_at": "2026-06-29T17:17:56.004661+00:00",
       "alias": "Azerbaijan",
       "source": "martj42_results",
       "team_id": "azerbaijan"
     },
     {
-      "added_at": "2026-06-29T16:53:50.053533+00:00",
+      "added_at": "2026-06-29T17:17:55.997458+00:00",
       "alias": "Bahamas",
       "source": "martj42_results",
       "team_id": "bahamas"
     },
     {
-      "added_at": "2026-06-29T16:53:50.049926+00:00",
+      "added_at": "2026-06-29T17:17:55.993960+00:00",
       "alias": "Bahrain",
       "source": "martj42_results",
       "team_id": "bahrain"
     },
     {
-      "added_at": "2026-06-29T16:53:50.055721+00:00",
+      "added_at": "2026-06-29T17:17:55.999661+00:00",
       "alias": "Bangladesh",
       "source": "martj42_results",
       "team_id": "bangladesh"
     },
     {
-      "added_at": "2026-06-29T16:53:50.121547+00:00",
+      "added_at": "2026-06-29T17:17:56.063963+00:00",
       "alias": "Barawa",
       "source": "martj42_results",
       "team_id": "barawa"
     },
     {
-      "added_at": "2026-06-29T16:53:50.038648+00:00",
+      "added_at": "2026-06-29T17:17:55.983419+00:00",
       "alias": "Barbados",
       "source": "martj42_results",
       "team_id": "barbados"
     },
     {
-      "added_at": "2026-06-29T16:53:50.036513+00:00",
+      "added_at": "2026-06-29T17:17:55.981515+00:00",
       "alias": "Basque Country",
       "source": "martj42_results",
       "team_id": "basque_country"
     },
     {
-      "added_at": "2026-06-29T16:53:50.038515+00:00",
+      "added_at": "2026-06-29T17:17:55.983334+00:00",
       "alias": "Belarus",
       "source": "martj42_results",
       "team_id": "belarus"
     },
     {
-      "added_at": "2026-06-29T16:53:50.035882+00:00",
+      "added_at": "2026-06-29T17:17:55.980915+00:00",
       "alias": "Belgium",
       "source": "martj42_results",
       "team_id": "belgium"
     },
     {
-      "added_at": "2026-06-29T16:53:50.065199+00:00",
+      "added_at": "2026-06-29T17:17:56.008965+00:00",
       "alias": "Belize",
       "source": "martj42_results",
       "team_id": "belize"
     },
     {
-      "added_at": "2026-06-29T16:53:50.046221+00:00",
+      "added_at": "2026-06-29T17:17:55.990710+00:00",
       "alias": "Benin",
       "source": "martj42_results",
       "team_id": "benin"
     },
     {
-      "added_at": "2026-06-29T16:53:50.048828+00:00",
+      "added_at": "2026-06-29T17:17:55.993028+00:00",
       "alias": "Bermuda",
       "source": "martj42_results",
       "team_id": "bermuda"
     },
     {
-      "added_at": "2026-06-29T16:53:50.063639+00:00",
+      "added_at": "2026-06-29T17:17:56.007412+00:00",
       "alias": "Bhutan",
       "source": "martj42_results",
       "team_id": "bhutan"
     },
     {
-      "added_at": "2026-06-29T16:53:50.132888+00:00",
+      "added_at": "2026-06-29T17:17:56.075030+00:00",
       "alias": "Biafra",
       "source": "martj42_results",
       "team_id": "biafra"
     },
     {
-      "added_at": "2026-06-29T16:53:50.038086+00:00",
+      "added_at": "2026-06-29T17:17:55.982990+00:00",
       "alias": "Bolivia",
       "source": "martj42_results",
       "team_id": "bolivia"
     },
     {
-      "added_at": "2026-06-29T16:53:50.109251+00:00",
+      "added_at": "2026-06-29T17:17:56.051674+00:00",
       "alias": "Bonaire",
       "source": "martj42_results",
       "team_id": "bonaire"
     },
     {
-      "added_at": "2026-06-29T16:53:50.051575+00:00",
+      "added_at": "2026-06-29T17:17:55.995521+00:00",
       "alias": "Botswana",
       "source": "martj42_results",
       "team_id": "botswana"
     },
     {
-      "added_at": "2026-06-29T16:53:50.036503+00:00",
+      "added_at": "2026-06-29T17:17:55.981506+00:00",
       "alias": "Brazil",
       "source": "martj42_results",
       "team_id": "brazil"
     },
     {
-      "added_at": "2026-06-29T16:53:50.067542+00:00",
+      "added_at": "2026-06-29T17:17:56.011164+00:00",
       "alias": "British Virgin Islands",
       "source": "martj42_results",
       "team_id": "british_virgin_islands"
     },
     {
-      "added_at": "2026-06-29T16:53:50.037100+00:00",
+      "added_at": "2026-06-29T17:17:55.982066+00:00",
       "alias": "Brittany",
       "source": "martj42_results",
       "team_id": "brittany"
     },
     {
-      "added_at": "2026-06-29T16:53:50.053643+00:00",
+      "added_at": "2026-06-29T17:17:55.997564+00:00",
       "alias": "Brunei",
       "source": "martj42_results",
       "team_id": "brunei"
     },
     {
-      "added_at": "2026-06-29T16:53:50.037598+00:00",
+      "added_at": "2026-06-29T17:17:55.982500+00:00",
       "alias": "Bulgaria",
       "source": "martj42_results",
       "team_id": "bulgaria"
     },
     {
-      "added_at": "2026-06-29T16:53:50.046379+00:00",
+      "added_at": "2026-06-29T17:17:55.990867+00:00",
       "alias": "Burkina Faso",
       "source": "martj42_results",
       "team_id": "burkina_faso"
     },
     {
-      "added_at": "2026-06-29T16:53:50.043850+00:00",
+      "added_at": "2026-06-29T17:17:55.988451+00:00",
       "alias": "Burundi",
       "source": "martj42_results",
       "team_id": "burundi"
     },
     {
-      "added_at": "2026-06-29T16:53:50.044273+00:00",
+      "added_at": "2026-06-29T17:17:55.988860+00:00",
       "alias": "Cambodia",
       "source": "martj42_results",
       "team_id": "cambodia"
     },
     {
-      "added_at": "2026-06-29T16:53:50.043864+00:00",
+      "added_at": "2026-06-29T17:17:55.988464+00:00",
       "alias": "Cameroon",
       "source": "martj42_results",
       "team_id": "cameroon"
     },
     {
-      "added_at": "2026-06-29T16:53:50.035598+00:00",
+      "added_at": "2026-06-29T17:17:55.980630+00:00",
       "alias": "Canada",
       "source": "martj42_results",
       "team_id": "canada"
     },
     {
-      "added_at": "2026-06-29T16:53:50.080041+00:00",
+      "added_at": "2026-06-29T17:17:56.023421+00:00",
       "alias": "Canary Islands",
       "source": "martj42_results",
       "team_id": "canary_islands"
     },
     {
-      "added_at": "2026-06-29T16:53:50.124901+00:00",
+      "added_at": "2026-06-29T17:17:56.067333+00:00",
       "alias": "Cascadia",
       "source": "martj42_results",
       "team_id": "cascadia"
     },
     {
-      "added_at": "2026-06-29T16:53:50.036263+00:00",
+      "added_at": "2026-06-29T17:17:55.981282+00:00",
       "alias": "Catalonia",
       "source": "martj42_results",
       "team_id": "catalonia"
     },
     {
-      "added_at": "2026-06-29T16:53:50.066661+00:00",
+      "added_at": "2026-06-29T17:17:56.010301+00:00",
       "alias": "Cayman Islands",
       "source": "martj42_results",
       "team_id": "cayman_islands"
     },
     {
-      "added_at": "2026-06-29T16:53:50.046392+00:00",
+      "added_at": "2026-06-29T17:17:55.990879+00:00",
       "alias": "Central African Republic",
       "source": "martj42_results",
       "team_id": "central_african_republic"
     },
     {
-      "added_at": "2026-06-29T16:53:50.037241+00:00",
+      "added_at": "2026-06-29T17:17:55.982226+00:00",
       "alias": "Central Spain",
       "source": "martj42_results",
       "team_id": "central_spain"
     },
     {
-      "added_at": "2026-06-29T16:53:50.047261+00:00",
+      "added_at": "2026-06-29T17:17:55.991691+00:00",
       "alias": "Chad",
       "source": "martj42_results",
       "team_id": "chad"
     },
     {
-      "added_at": "2026-06-29T16:53:50.111996+00:00",
+      "added_at": "2026-06-29T17:17:56.054499+00:00",
       "alias": "Chagos Islands",
       "source": "martj42_results",
       "team_id": "chagos_islands"
     },
     {
-      "added_at": "2026-06-29T16:53:50.126968+00:00",
+      "added_at": "2026-06-29T17:17:56.069354+00:00",
       "alias": "Chameria",
       "source": "martj42_results",
       "team_id": "chameria"
     },
     {
-      "added_at": "2026-06-29T16:53:50.097940+00:00",
+      "added_at": "2026-06-29T17:17:56.040835+00:00",
       "alias": "Chechnya",
       "source": "martj42_results",
       "team_id": "chechnya"
     },
     {
-      "added_at": "2026-06-29T16:53:50.036158+00:00",
+      "added_at": "2026-06-29T17:17:55.981179+00:00",
       "alias": "Chile",
       "source": "martj42_results",
       "team_id": "chile"
     },
     {
-      "added_at": "2026-06-29T16:53:50.036372+00:00",
+      "added_at": "2026-06-29T17:17:55.981382+00:00",
       "alias": "China",
       "source": "martj42_results",
       "team_id": "china"
     },
     {
-      "added_at": "2026-06-29T16:53:50.112052+00:00",
+      "added_at": "2026-06-29T17:17:56.054557+00:00",
       "alias": "Cilento",
       "source": "martj42_results",
       "team_id": "cilento"
     },
     {
-      "added_at": "2026-06-29T16:53:50.040667+00:00",
+      "added_at": "2026-06-29T17:17:55.985250+00:00",
       "alias": "Colombia",
       "source": "martj42_results",
       "team_id": "colombia"
     },
     {
-      "added_at": "2026-06-29T16:53:50.060839+00:00",
+      "added_at": "2026-06-29T17:17:56.004733+00:00",
       "alias": "Comoros",
       "source": "martj42_results",
       "team_id": "comoros"
     },
     {
-      "added_at": "2026-06-29T16:53:50.046383+00:00",
+      "added_at": "2026-06-29T17:17:55.990870+00:00",
       "alias": "Congo",
       "source": "martj42_results",
       "team_id": "congo"
     },
     {
-      "added_at": "2026-06-29T16:53:50.053946+00:00",
+      "added_at": "2026-06-29T17:17:55.997856+00:00",
       "alias": "Cook Islands",
       "source": "martj42_results",
       "team_id": "cook_islands"
     },
     {
-      "added_at": "2026-06-29T16:53:50.050711+00:00",
+      "added_at": "2026-06-29T17:17:55.994721+00:00",
       "alias": "Corsica",
       "source": "martj42_results",
       "team_id": "corsica"
     },
     {
-      "added_at": "2026-06-29T16:53:50.037040+00:00",
+      "added_at": "2026-06-29T17:17:55.982005+00:00",
       "alias": "Costa Rica",
       "source": "martj42_results",
       "team_id": "costa_rica"
     },
     {
-      "added_at": "2026-06-29T16:53:50.116918+00:00",
+      "added_at": "2026-06-29T17:17:56.059258+00:00",
       "alias": "County of Nice",
       "source": "martj42_results",
       "team_id": "county_of_nice"
     },
     {
-      "added_at": "2026-06-29T16:53:50.100885+00:00",
+      "added_at": "2026-06-29T17:17:56.043680+00:00",
       "alias": "Crimea",
       "source": "martj42_results",
       "team_id": "crimea"
     },
     {
-      "added_at": "2026-06-29T16:53:50.041182+00:00",
+      "added_at": "2026-06-29T17:17:55.985768+00:00",
       "alias": "Croatia",
       "source": "martj42_results",
       "team_id": "croatia"
     },
     {
-      "added_at": "2026-06-29T16:53:50.038818+00:00",
+      "added_at": "2026-06-29T17:17:55.983575+00:00",
       "alias": "Cuba",
       "source": "martj42_results",
       "team_id": "cuba"
     },
     {
-      "added_at": "2026-06-29T16:53:50.037564+00:00",
+      "added_at": "2026-06-29T17:17:55.982466+00:00",
       "alias": "Cura\u00e7ao",
       "source": "martj42_results",
       "team_id": "curacao"
     },
     {
-      "added_at": "2026-06-29T16:53:50.042721+00:00",
+      "added_at": "2026-06-29T17:17:55.987334+00:00",
       "alias": "Cyprus",
       "source": "martj42_results",
       "team_id": "cyprus"
     },
     {
-      "added_at": "2026-06-29T16:53:50.035861+00:00",
-      "alias": "Czechoslovakia",
-      "source": "martj42_results",
-      "team_id": "czechoslovakia"
-    },
-    {
-      "added_at": "2026-06-29T16:53:50.042363+00:00",
+      "added_at": "2026-06-29T17:17:55.986970+00:00",
       "alias": "DR Congo",
       "source": "martj42_results",
       "team_id": "dr_congo"
     },
     {
-      "added_at": "2026-06-29T16:53:50.112768+00:00",
+      "added_at": "2026-06-29T17:17:56.055224+00:00",
       "alias": "Darfur",
       "source": "martj42_results",
       "team_id": "darfur"
     },
     {
-      "added_at": "2026-06-29T16:53:50.036069+00:00",
+      "added_at": "2026-06-29T17:17:55.981089+00:00",
       "alias": "Denmark",
       "source": "martj42_results",
       "team_id": "denmark"
     },
     {
-      "added_at": "2026-06-29T16:53:50.042206+00:00",
+      "added_at": "2026-06-29T17:17:55.986818+00:00",
       "alias": "Djibouti",
       "source": "martj42_results",
       "team_id": "djibouti"
     },
     {
-      "added_at": "2026-06-29T16:53:50.039301+00:00",
+      "added_at": "2026-06-29T17:17:55.984005+00:00",
       "alias": "Dominica",
       "source": "martj42_results",
       "team_id": "dominica"
     },
     {
-      "added_at": "2026-06-29T16:53:50.042661+00:00",
+      "added_at": "2026-06-29T17:17:55.987269+00:00",
       "alias": "Dominican Republic",
       "source": "martj42_results",
       "team_id": "dominican_republic"
     },
     {
-      "added_at": "2026-06-29T16:53:50.118655+00:00",
+      "added_at": "2026-06-29T17:17:56.061094+00:00",
       "alias": "Donetsk PR",
       "source": "martj42_results",
       "team_id": "donetsk_pr"
     },
     {
-      "added_at": "2026-06-29T16:53:50.121518+00:00",
+      "added_at": "2026-06-29T17:17:56.063933+00:00",
       "alias": "D\u00e9lvid\u00e9k",
       "source": "martj42_results",
       "team_id": "delvidek"
     },
     {
-      "added_at": "2026-06-29T16:53:50.128526+00:00",
+      "added_at": "2026-06-29T17:17:56.070870+00:00",
       "alias": "East Turkestan",
       "source": "martj42_results",
       "team_id": "east_turkestan"
     },
     {
-      "added_at": "2026-06-29T16:53:50.040872+00:00",
+      "added_at": "2026-06-29T17:17:55.985460+00:00",
       "alias": "Ecuador",
       "source": "martj42_results",
       "team_id": "ecuador"
     },
     {
-      "added_at": "2026-06-29T16:53:50.036896+00:00",
+      "added_at": "2026-06-29T17:17:55.981846+00:00",
       "alias": "Egypt",
       "source": "martj42_results",
       "team_id": "egypt"
     },
     {
-      "added_at": "2026-06-29T16:53:50.037043+00:00",
+      "added_at": "2026-06-29T17:17:55.982009+00:00",
       "alias": "El Salvador",
       "source": "martj42_results",
       "team_id": "el_salvador"
     },
     {
-      "added_at": "2026-06-29T16:53:50.132857+00:00",
+      "added_at": "2026-06-29T17:17:56.075000+00:00",
       "alias": "Elba Island",
       "source": "martj42_results",
       "team_id": "elba_island"
     },
     {
-      "added_at": "2026-06-29T16:53:50.116576+00:00",
+      "added_at": "2026-06-29T17:17:56.058932+00:00",
       "alias": "Ellan Vannin",
       "source": "martj42_results",
       "team_id": "ellan_vannin"
     },
     {
-      "added_at": "2026-06-29T16:53:50.035504+00:00",
+      "added_at": "2026-06-29T17:17:55.980539+00:00",
       "alias": "England",
       "source": "martj42_results",
       "team_id": "england"
     },
     {
-      "added_at": "2026-06-29T16:53:50.057209+00:00",
+      "added_at": "2026-06-29T17:17:56.001193+00:00",
       "alias": "Equatorial Guinea",
       "source": "martj42_results",
       "team_id": "equatorial_guinea"
     },
     {
-      "added_at": "2026-06-29T16:53:50.074763+00:00",
+      "added_at": "2026-06-29T17:17:56.018056+00:00",
       "alias": "Eritrea",
       "source": "martj42_results",
       "team_id": "eritrea"
     },
     {
-      "added_at": "2026-06-29T16:53:50.036944+00:00",
+      "added_at": "2026-06-29T17:17:55.981894+00:00",
       "alias": "Estonia",
       "source": "martj42_results",
       "team_id": "estonia"
     },
     {
-      "added_at": "2026-06-29T16:53:50.042208+00:00",
+      "added_at": "2026-06-29T17:17:55.986820+00:00",
       "alias": "Ethiopia",
       "source": "martj42_results",
       "team_id": "ethiopia"
     },
     {
-      "added_at": "2026-06-29T16:53:50.090730+00:00",
+      "added_at": "2026-06-29T17:17:56.033795+00:00",
       "alias": "Falkland Islands",
       "source": "martj42_results",
       "team_id": "falkland_islands"
     },
     {
-      "added_at": "2026-06-29T16:53:50.054789+00:00",
+      "added_at": "2026-06-29T17:17:55.998693+00:00",
       "alias": "Faroe Islands",
       "source": "martj42_results",
       "team_id": "faroe_islands"
     },
     {
-      "added_at": "2026-06-29T16:53:50.118731+00:00",
+      "added_at": "2026-06-29T17:17:56.061171+00:00",
       "alias": "Felvid\u00e9k",
       "source": "martj42_results",
       "team_id": "felvidek"
     },
     {
-      "added_at": "2026-06-29T16:53:50.043304+00:00",
+      "added_at": "2026-06-29T17:17:55.987908+00:00",
       "alias": "Fiji",
       "source": "martj42_results",
       "team_id": "fiji"
     },
     {
-      "added_at": "2026-06-29T16:53:50.036239+00:00",
+      "added_at": "2026-06-29T17:17:55.981261+00:00",
       "alias": "Finland",
       "source": "martj42_results",
       "team_id": "finland"
     },
     {
-      "added_at": "2026-06-29T16:53:50.035885+00:00",
+      "added_at": "2026-06-29T17:17:55.980917+00:00",
       "alias": "France",
       "source": "martj42_results",
       "team_id": "france"
     },
     {
-      "added_at": "2026-06-29T16:53:50.116783+00:00",
+      "added_at": "2026-06-29T17:17:56.059132+00:00",
       "alias": "Franconia",
       "source": "martj42_results",
       "team_id": "franconia"
     },
     {
-      "added_at": "2026-06-29T16:53:50.040214+00:00",
+      "added_at": "2026-06-29T17:17:55.984816+00:00",
       "alias": "French Guiana",
       "source": "martj42_results",
       "team_id": "french_guiana"
     },
     {
-      "added_at": "2026-06-29T16:53:50.082923+00:00",
+      "added_at": "2026-06-29T17:17:56.026089+00:00",
       "alias": "Fr\u00f8ya",
       "source": "martj42_results",
       "team_id": "frya"
     },
     {
-      "added_at": "2026-06-29T16:53:50.046381+00:00",
+      "added_at": "2026-06-29T17:17:55.990869+00:00",
       "alias": "Gabon",
       "source": "martj42_results",
       "team_id": "gabon"
     },
     {
-      "added_at": "2026-06-29T16:53:50.037238+00:00",
+      "added_at": "2026-06-29T17:17:55.982222+00:00",
       "alias": "Galicia",
       "source": "martj42_results",
       "team_id": "galicia"
     },
     {
-      "added_at": "2026-06-29T16:53:50.043603+00:00",
+      "added_at": "2026-06-29T17:17:55.988201+00:00",
       "alias": "Gambia",
       "source": "martj42_results",
       "team_id": "gambia"
     },
     {
-      "added_at": "2026-06-29T16:53:50.060758+00:00",
+      "added_at": "2026-06-29T17:17:56.004654+00:00",
       "alias": "Georgia",
       "source": "martj42_results",
       "team_id": "georgia"
     },
     {
-      "added_at": "2026-06-29T16:53:50.043447+00:00",
+      "added_at": "2026-06-29T17:17:55.988046+00:00",
       "alias": "German DR",
       "source": "martj42_results",
       "team_id": "german_dr"
     },
     {
-      "added_at": "2026-06-29T16:53:50.036025+00:00",
+      "added_at": "2026-06-29T17:17:55.981054+00:00",
       "alias": "Germany",
       "source": "martj42_results",
       "team_id": "germany"
     },
     {
-      "added_at": "2026-06-29T16:53:50.042941+00:00",
+      "added_at": "2026-06-29T17:17:55.987557+00:00",
       "alias": "Ghana",
       "source": "martj42_results",
       "team_id": "ghana"
     },
     {
-      "added_at": "2026-06-29T16:53:50.076577+00:00",
+      "added_at": "2026-06-29T17:17:56.020008+00:00",
       "alias": "Gibraltar",
       "source": "martj42_results",
       "team_id": "gibraltar"
     },
     {
-      "added_at": "2026-06-29T16:53:50.086176+00:00",
+      "added_at": "2026-06-29T17:17:56.029273+00:00",
       "alias": "Gotland",
       "source": "martj42_results",
       "team_id": "gotland"
     },
     {
-      "added_at": "2026-06-29T16:53:50.106664+00:00",
+      "added_at": "2026-06-29T17:17:56.049104+00:00",
       "alias": "Gozo",
       "source": "martj42_results",
       "team_id": "gozo"
     },
     {
-      "added_at": "2026-06-29T16:53:50.036787+00:00",
+      "added_at": "2026-06-29T17:17:55.981740+00:00",
       "alias": "Greece",
       "source": "martj42_results",
       "team_id": "greece"
     },
     {
-      "added_at": "2026-06-29T16:53:50.061687+00:00",
+      "added_at": "2026-06-29T17:17:56.005559+00:00",
       "alias": "Greenland",
       "source": "martj42_results",
       "team_id": "greenland"
     },
     {
-      "added_at": "2026-06-29T16:53:50.040894+00:00",
+      "added_at": "2026-06-29T17:17:55.985484+00:00",
       "alias": "Grenada",
       "source": "martj42_results",
       "team_id": "grenada"
     },
     {
-      "added_at": "2026-06-29T16:53:50.039731+00:00",
+      "added_at": "2026-06-29T17:17:55.984389+00:00",
       "alias": "Guadeloupe",
       "source": "martj42_results",
       "team_id": "guadeloupe"
     },
     {
-      "added_at": "2026-06-29T16:53:50.057410+00:00",
+      "added_at": "2026-06-29T17:17:56.001395+00:00",
       "alias": "Guam",
       "source": "martj42_results",
       "team_id": "guam"
     },
     {
-      "added_at": "2026-06-29T16:53:50.037047+00:00",
+      "added_at": "2026-06-29T17:17:55.982014+00:00",
       "alias": "Guatemala",
       "source": "martj42_results",
       "team_id": "guatemala"
     },
     {
-      "added_at": "2026-06-29T16:53:50.035910+00:00",
+      "added_at": "2026-06-29T17:17:55.980941+00:00",
       "alias": "Guernsey",
       "source": "martj42_results",
       "team_id": "guernsey"
     },
     {
-      "added_at": "2026-06-29T16:53:50.047375+00:00",
+      "added_at": "2026-06-29T17:17:55.991808+00:00",
       "alias": "Guinea",
       "source": "martj42_results",
       "team_id": "guinea"
     },
     {
-      "added_at": "2026-06-29T16:53:50.043774+00:00",
+      "added_at": "2026-06-29T17:17:55.988371+00:00",
       "alias": "Guinea-Bissau",
       "source": "martj42_results",
       "team_id": "guinea_bissau"
     },
     {
-      "added_at": "2026-06-29T16:53:50.035926+00:00",
+      "added_at": "2026-06-29T17:17:55.980956+00:00",
       "alias": "Guyana",
       "source": "martj42_results",
       "team_id": "guyana"
     },
     {
-      "added_at": "2026-06-29T16:53:50.100876+00:00",
+      "added_at": "2026-06-29T17:17:56.043671+00:00",
       "alias": "G\u0103g\u0103uzia",
       "source": "martj42_results",
       "team_id": "gagauzia"
     },
     {
-      "added_at": "2026-06-29T16:53:50.037788+00:00",
+      "added_at": "2026-06-29T17:17:55.982673+00:00",
       "alias": "Haiti",
       "source": "martj42_results",
       "team_id": "haiti"
     },
     {
-      "added_at": "2026-06-29T16:53:50.082931+00:00",
+      "added_at": "2026-06-29T17:17:56.026095+00:00",
       "alias": "Hitra",
       "source": "martj42_results",
       "team_id": "hitra"
     },
     {
-      "added_at": "2026-06-29T16:53:50.135319+00:00",
+      "added_at": "2026-06-29T17:17:56.077593+00:00",
       "alias": "Hmong",
       "source": "martj42_results",
       "team_id": "hmong"
     },
     {
-      "added_at": "2026-06-29T16:53:50.038348+00:00",
+      "added_at": "2026-06-29T17:17:55.983175+00:00",
       "alias": "Honduras",
       "source": "martj42_results",
       "team_id": "honduras"
     },
     {
-      "added_at": "2026-06-29T16:53:50.043706+00:00",
+      "added_at": "2026-06-29T17:17:55.988301+00:00",
       "alias": "Hong Kong",
       "source": "martj42_results",
       "team_id": "hong_kong"
     },
     {
-      "added_at": "2026-06-29T16:53:50.035842+00:00",
+      "added_at": "2026-06-29T17:17:55.980879+00:00",
       "alias": "Hungary",
       "source": "martj42_results",
       "team_id": "hungary"
     },
     {
-      "added_at": "2026-06-29T16:53:50.041846+00:00",
+      "added_at": "2026-06-29T17:17:55.986458+00:00",
       "alias": "Iceland",
       "source": "martj42_results",
       "team_id": "iceland"
     },
     {
-      "added_at": "2026-06-29T16:53:50.040908+00:00",
+      "added_at": "2026-06-29T17:17:55.985498+00:00",
       "alias": "India",
       "source": "martj42_results",
       "team_id": "india"
     },
     {
-      "added_at": "2026-06-29T16:53:50.039801+00:00",
+      "added_at": "2026-06-29T17:17:55.984440+00:00",
       "alias": "Indonesia",
       "source": "martj42_results",
       "team_id": "indonesia"
     },
     {
-      "added_at": "2026-06-29T16:53:50.046469+00:00",
+      "added_at": "2026-06-29T17:17:55.990958+00:00",
       "alias": "Iraq",
       "source": "martj42_results",
       "team_id": "iraq"
     },
     {
-      "added_at": "2026-06-29T16:53:50.104588+00:00",
+      "added_at": "2026-06-29T17:17:56.047079+00:00",
       "alias": "Iraqi Kurdistan",
       "source": "martj42_results",
       "team_id": "iraqi_kurdistan"
     },
     {
-      "added_at": "2026-06-29T16:53:50.076585+00:00",
+      "added_at": "2026-06-29T17:17:56.020029+00:00",
       "alias": "Isle of Man",
       "source": "martj42_results",
       "team_id": "isle_of_man"
     },
     {
-      "added_at": "2026-06-29T16:53:50.073720+00:00",
+      "added_at": "2026-06-29T17:17:56.016994+00:00",
       "alias": "Isle of Wight",
       "source": "martj42_results",
       "team_id": "isle_of_wight"
     },
     {
-      "added_at": "2026-06-29T16:53:50.039736+00:00",
+      "added_at": "2026-06-29T17:17:55.984393+00:00",
       "alias": "Israel",
       "source": "martj42_results",
       "team_id": "israel"
     },
     {
-      "added_at": "2026-06-29T16:53:50.036151+00:00",
+      "added_at": "2026-06-29T17:17:55.981172+00:00",
       "alias": "Italy",
       "source": "martj42_results",
       "team_id": "italy"
     },
     {
-      "added_at": "2026-06-29T16:53:50.037790+00:00",
+      "added_at": "2026-06-29T17:17:55.982675+00:00",
       "alias": "Jamaica",
       "source": "martj42_results",
       "team_id": "jamaica"
     },
     {
-      "added_at": "2026-06-29T16:53:50.036651+00:00",
+      "added_at": "2026-06-29T17:17:55.981610+00:00",
       "alias": "Japan",
       "source": "martj42_results",
       "team_id": "japan"
     },
     {
-      "added_at": "2026-06-29T16:53:50.035915+00:00",
+      "added_at": "2026-06-29T17:17:55.980945+00:00",
       "alias": "Jersey",
       "source": "martj42_results",
       "team_id": "jersey"
     },
     {
-      "added_at": "2026-06-29T16:53:50.047811+00:00",
+      "added_at": "2026-06-29T17:17:55.992219+00:00",
       "alias": "Jordan",
       "source": "martj42_results",
       "team_id": "jordan"
     },
     {
-      "added_at": "2026-06-29T16:53:50.124921+00:00",
+      "added_at": "2026-06-29T17:17:56.067354+00:00",
       "alias": "Kabylia",
       "source": "martj42_results",
       "team_id": "kabylia"
     },
     {
-      "added_at": "2026-06-29T16:53:50.060802+00:00",
+      "added_at": "2026-06-29T17:17:56.004695+00:00",
       "alias": "Kazakhstan",
       "source": "martj42_results",
       "team_id": "kazakhstan"
     },
     {
-      "added_at": "2026-06-29T16:53:50.037997+00:00",
+      "added_at": "2026-06-29T17:17:55.982903+00:00",
       "alias": "Kenya",
       "source": "martj42_results",
       "team_id": "kenya"
     },
     {
-      "added_at": "2026-06-29T16:53:50.043868+00:00",
+      "added_at": "2026-06-29T17:17:55.988469+00:00",
       "alias": "Kernow",
       "source": "martj42_results",
       "team_id": "kernow"
     },
     {
-      "added_at": "2026-06-29T16:53:50.060872+00:00",
+      "added_at": "2026-06-29T17:17:56.004769+00:00",
       "alias": "Kiribati",
       "source": "martj42_results",
       "team_id": "kiribati"
     },
     {
-      "added_at": "2026-06-29T16:53:50.099657+00:00",
+      "added_at": "2026-06-29T17:17:56.042468+00:00",
       "alias": "Kosovo",
       "source": "martj42_results",
       "team_id": "kosovo"
     },
     {
-      "added_at": "2026-06-29T16:53:50.112464+00:00",
+      "added_at": "2026-06-29T17:17:56.054953+00:00",
       "alias": "Kurdistan",
       "source": "martj42_results",
       "team_id": "kurdistan"
     },
     {
-      "added_at": "2026-06-29T16:53:50.047809+00:00",
+      "added_at": "2026-06-29T17:17:55.992217+00:00",
       "alias": "Kuwait",
       "source": "martj42_results",
       "team_id": "kuwait"
     },
     {
-      "added_at": "2026-06-29T16:53:50.044838+00:00",
+      "added_at": "2026-06-29T17:17:55.989426+00:00",
       "alias": "Kyrgyzstan",
       "source": "martj42_results",
       "team_id": "kyrgyzstan"
     },
     {
-      "added_at": "2026-06-29T16:53:50.121515+00:00",
+      "added_at": "2026-06-29T17:17:56.063931+00:00",
       "alias": "K\u00e1rp\u00e1talja",
       "source": "martj42_results",
       "team_id": "karpatalja"
     },
     {
-      "added_at": "2026-06-29T16:53:50.047223+00:00",
+      "added_at": "2026-06-29T17:17:55.991652+00:00",
       "alias": "Laos",
       "source": "martj42_results",
       "team_id": "laos"
     },
     {
-      "added_at": "2026-06-29T16:53:50.037201+00:00",
+      "added_at": "2026-06-29T17:17:55.982179+00:00",
       "alias": "Latvia",
       "source": "martj42_results",
       "team_id": "latvia"
     },
     {
-      "added_at": "2026-06-29T16:53:50.041195+00:00",
+      "added_at": "2026-06-29T17:17:55.985785+00:00",
       "alias": "Lebanon",
       "source": "martj42_results",
       "team_id": "lebanon"
     },
     {
-      "added_at": "2026-06-29T16:53:50.053111+00:00",
+      "added_at": "2026-06-29T17:17:55.997029+00:00",
       "alias": "Lesotho",
       "source": "martj42_results",
       "team_id": "lesotho"
     },
     {
-      "added_at": "2026-06-29T16:53:50.047254+00:00",
+      "added_at": "2026-06-29T17:17:55.991684+00:00",
       "alias": "Liberia",
       "source": "martj42_results",
       "team_id": "liberia"
     },
     {
-      "added_at": "2026-06-29T16:53:50.045198+00:00",
+      "added_at": "2026-06-29T17:17:55.989787+00:00",
       "alias": "Libya",
       "source": "martj42_results",
       "team_id": "libya"
     },
     {
-      "added_at": "2026-06-29T16:53:50.062762+00:00",
+      "added_at": "2026-06-29T17:17:56.006567+00:00",
       "alias": "Liechtenstein",
       "source": "martj42_results",
       "team_id": "liechtenstein"
     },
     {
-      "added_at": "2026-06-29T16:53:50.037390+00:00",
+      "added_at": "2026-06-29T17:17:55.982343+00:00",
       "alias": "Lithuania",
       "source": "martj42_results",
       "team_id": "lithuania"
     },
     {
-      "added_at": "2026-06-29T16:53:50.118633+00:00",
+      "added_at": "2026-06-29T17:17:56.061071+00:00",
       "alias": "Luhansk PR",
       "source": "martj42_results",
       "team_id": "luhansk_pr"
     },
     {
-      "added_at": "2026-06-29T16:53:50.036245+00:00",
+      "added_at": "2026-06-29T17:17:55.981268+00:00",
       "alias": "Luxembourg",
       "source": "martj42_results",
       "team_id": "luxembourg"
     },
     {
-      "added_at": "2026-06-29T16:53:50.042539+00:00",
+      "added_at": "2026-06-29T17:17:55.987145+00:00",
       "alias": "Macau",
       "source": "martj42_results",
       "team_id": "macau"
     },
     {
-      "added_at": "2026-06-29T16:53:50.041974+00:00",
+      "added_at": "2026-06-29T17:17:55.986586+00:00",
       "alias": "Madagascar",
       "source": "martj42_results",
       "team_id": "madagascar"
     },
     {
-      "added_at": "2026-06-29T16:53:50.115083+00:00",
+      "added_at": "2026-06-29T17:17:56.057466+00:00",
       "alias": "Madrid",
       "source": "martj42_results",
       "team_id": "madrid"
     },
     {
-      "added_at": "2026-06-29T16:53:50.045297+00:00",
+      "added_at": "2026-06-29T17:17:55.989886+00:00",
       "alias": "Malawi",
       "source": "martj42_results",
       "team_id": "malawi"
     },
     {
-      "added_at": "2026-06-29T16:53:50.043717+00:00",
+      "added_at": "2026-06-29T17:17:55.988313+00:00",
       "alias": "Malaysia",
       "source": "martj42_results",
       "team_id": "malaysia"
     },
     {
-      "added_at": "2026-06-29T16:53:50.060842+00:00",
+      "added_at": "2026-06-29T17:17:56.004737+00:00",
       "alias": "Maldives",
       "source": "martj42_results",
       "team_id": "maldives"
     },
     {
-      "added_at": "2026-06-29T16:53:50.046389+00:00",
+      "added_at": "2026-06-29T17:17:55.990875+00:00",
       "alias": "Mali",
       "source": "martj42_results",
       "team_id": "mali"
     },
     {
-      "added_at": "2026-06-29T16:53:50.045051+00:00",
+      "added_at": "2026-06-29T17:17:55.989643+00:00",
       "alias": "Malta",
       "source": "martj42_results",
       "team_id": "malta"
     },
     {
-      "added_at": "2026-06-29T16:53:50.041117+00:00",
+      "added_at": "2026-06-29T17:17:55.985704+00:00",
       "alias": "Manchukuo",
       "source": "martj42_results",
       "team_id": "manchukuo"
     },
     {
-      "added_at": "2026-06-29T16:53:50.133522+00:00",
+      "added_at": "2026-06-29T17:17:56.075715+00:00",
       "alias": "Mapuche",
       "source": "martj42_results",
       "team_id": "mapuche"
     },
     {
-      "added_at": "2026-06-29T16:53:50.140442+00:00",
+      "added_at": "2026-06-29T17:17:56.082404+00:00",
       "alias": "Marshall Islands",
       "source": "martj42_results",
       "team_id": "marshall_islands"
     },
     {
-      "added_at": "2026-06-29T16:53:50.039060+00:00",
+      "added_at": "2026-06-29T17:17:55.983796+00:00",
       "alias": "Martinique",
       "source": "martj42_results",
       "team_id": "martinique"
     },
     {
-      "added_at": "2026-06-29T16:53:50.124914+00:00",
+      "added_at": "2026-06-29T17:17:56.067347+00:00",
       "alias": "Matabeleland",
       "source": "martj42_results",
       "team_id": "matabeleland"
     },
     {
-      "added_at": "2026-06-29T16:53:50.133524+00:00",
+      "added_at": "2026-06-29T17:17:56.075718+00:00",
       "alias": "Maule Sur",
       "source": "martj42_results",
       "team_id": "maule_sur"
     },
     {
-      "added_at": "2026-06-29T16:53:50.047250+00:00",
+      "added_at": "2026-06-29T17:17:55.991680+00:00",
       "alias": "Mauritania",
       "source": "martj42_results",
       "team_id": "mauritania"
     },
     {
-      "added_at": "2026-06-29T16:53:50.041976+00:00",
+      "added_at": "2026-06-29T17:17:55.986589+00:00",
       "alias": "Mauritius",
       "source": "martj42_results",
       "team_id": "mauritius"
     },
     {
-      "added_at": "2026-06-29T16:53:50.091422+00:00",
+      "added_at": "2026-06-29T17:17:56.034469+00:00",
       "alias": "Mayotte",
       "source": "martj42_results",
       "team_id": "mayotte"
     },
     {
-      "added_at": "2026-06-29T16:53:50.102048+00:00",
+      "added_at": "2026-06-29T17:17:56.044772+00:00",
       "alias": "Menorca",
       "source": "martj42_results",
       "team_id": "menorca"
     },
     {
-      "added_at": "2026-06-29T16:53:50.037255+00:00",
+      "added_at": "2026-06-29T17:17:55.982240+00:00",
       "alias": "Mexico",
       "source": "martj42_results",
       "team_id": "mexico"
     },
     {
-      "added_at": "2026-06-29T16:53:50.085981+00:00",
+      "added_at": "2026-06-29T17:17:56.029083+00:00",
       "alias": "Micronesia",
       "source": "martj42_results",
       "team_id": "micronesia"
     },
     {
-      "added_at": "2026-06-29T16:53:50.044856+00:00",
+      "added_at": "2026-06-29T17:17:55.989447+00:00",
       "alias": "Moldova",
       "source": "martj42_results",
       "team_id": "moldova"
     },
     {
-      "added_at": "2026-06-29T16:53:50.088321+00:00",
+      "added_at": "2026-06-29T17:17:56.031295+00:00",
       "alias": "Monaco",
       "source": "martj42_results",
       "team_id": "monaco"
     },
     {
-      "added_at": "2026-06-29T16:53:50.041436+00:00",
+      "added_at": "2026-06-29T17:17:55.986041+00:00",
       "alias": "Mongolia",
       "source": "martj42_results",
       "team_id": "mongolia"
     },
     {
-      "added_at": "2026-06-29T16:53:50.041853+00:00",
+      "added_at": "2026-06-29T17:17:55.986465+00:00",
       "alias": "Montenegro",
       "source": "martj42_results",
       "team_id": "montenegro"
     },
     {
-      "added_at": "2026-06-29T16:53:50.073528+00:00",
+      "added_at": "2026-06-29T17:17:56.016792+00:00",
       "alias": "Montserrat",
       "source": "martj42_results",
       "team_id": "montserrat"
     },
     {
-      "added_at": "2026-06-29T16:53:50.045493+00:00",
+      "added_at": "2026-06-29T17:17:55.990081+00:00",
       "alias": "Morocco",
       "source": "martj42_results",
       "team_id": "morocco"
     },
     {
-      "added_at": "2026-06-29T16:53:50.057302+00:00",
+      "added_at": "2026-06-29T17:17:56.001288+00:00",
       "alias": "Mozambique",
       "source": "martj42_results",
       "team_id": "mozambique"
     },
     {
-      "added_at": "2026-06-29T16:53:50.043159+00:00",
+      "added_at": "2026-06-29T17:17:55.987766+00:00",
       "alias": "Myanmar",
       "source": "martj42_results",
       "team_id": "myanmar"
     },
     {
-      "added_at": "2026-06-29T16:53:50.071304+00:00",
+      "added_at": "2026-06-29T17:17:56.014509+00:00",
       "alias": "Namibia",
       "source": "martj42_results",
       "team_id": "namibia"
     },
     {
-      "added_at": "2026-06-29T16:53:50.054994+00:00",
+      "added_at": "2026-06-29T17:17:55.998917+00:00",
       "alias": "Nepal",
       "source": "martj42_results",
       "team_id": "nepal"
     },
     {
-      "added_at": "2026-06-29T16:53:50.035920+00:00",
+      "added_at": "2026-06-29T17:17:55.980949+00:00",
       "alias": "Netherlands",
       "source": "martj42_results",
       "team_id": "netherlands"
     },
     {
-      "added_at": "2026-06-29T16:53:50.043274+00:00",
+      "added_at": "2026-06-29T17:17:55.987877+00:00",
       "alias": "New Caledonia",
       "source": "martj42_results",
       "team_id": "new_caledonia"
     },
     {
-      "added_at": "2026-06-29T16:53:50.037148+00:00",
+      "added_at": "2026-06-29T17:17:55.982115+00:00",
       "alias": "New Zealand",
       "source": "martj42_results",
       "team_id": "new_zealand"
     },
     {
-      "added_at": "2026-06-29T16:53:50.038675+00:00",
+      "added_at": "2026-06-29T17:17:55.983436+00:00",
       "alias": "Nicaragua",
       "source": "martj42_results",
       "team_id": "nicaragua"
     },
     {
-      "added_at": "2026-06-29T16:53:50.047263+00:00",
+      "added_at": "2026-06-29T17:17:55.991692+00:00",
       "alias": "Niger",
       "source": "martj42_results",
       "team_id": "niger"
     },
     {
-      "added_at": "2026-06-29T16:53:50.042782+00:00",
+      "added_at": "2026-06-29T17:17:55.987394+00:00",
       "alias": "Nigeria",
       "source": "martj42_results",
       "team_id": "nigeria"
     },
     {
-      "added_at": "2026-06-29T16:53:50.064871+00:00",
+      "added_at": "2026-06-29T17:17:56.008635+00:00",
       "alias": "Niue",
       "source": "martj42_results",
       "team_id": "niue"
     },
     {
-      "added_at": "2026-06-29T16:53:50.076941+00:00",
+      "added_at": "2026-06-29T17:17:56.020407+00:00",
       "alias": "North Macedonia",
       "source": "martj42_results",
       "team_id": "north_macedonia"
     },
     {
-      "added_at": "2026-06-29T16:53:50.044926+00:00",
+      "added_at": "2026-06-29T17:17:55.989517+00:00",
       "alias": "North Vietnam",
       "source": "martj42_results",
       "team_id": "north_vietnam"
     },
     {
-      "added_at": "2026-06-29T16:53:50.058606+00:00",
+      "added_at": "2026-06-29T17:17:56.002533+00:00",
       "alias": "Northern Cyprus",
       "source": "martj42_results",
       "team_id": "northern_cyprus"
     },
     {
-      "added_at": "2026-06-29T16:53:50.084603+00:00",
+      "added_at": "2026-06-29T17:17:56.027723+00:00",
       "alias": "Northern Mariana Islands",
       "source": "martj42_results",
       "team_id": "northern_mariana_islands"
     },
     {
-      "added_at": "2026-06-29T16:53:50.036059+00:00",
+      "added_at": "2026-06-29T17:17:55.981080+00:00",
       "alias": "Norway",
       "source": "martj42_results",
       "team_id": "norway"
     },
     {
-      "added_at": "2026-06-29T16:53:50.097636+00:00",
+      "added_at": "2026-06-29T17:17:56.040550+00:00",
       "alias": "Occitania",
       "source": "martj42_results",
       "team_id": "occitania"
     },
     {
-      "added_at": "2026-06-29T16:53:50.049930+00:00",
+      "added_at": "2026-06-29T17:17:55.993964+00:00",
       "alias": "Oman",
       "source": "martj42_results",
       "team_id": "oman"
     },
     {
-      "added_at": "2026-06-29T16:53:50.090723+00:00",
+      "added_at": "2026-06-29T17:17:56.033788+00:00",
       "alias": "Orkney",
       "source": "martj42_results",
       "team_id": "orkney"
     },
     {
-      "added_at": "2026-06-29T16:53:50.104598+00:00",
+      "added_at": "2026-06-29T17:17:56.047084+00:00",
       "alias": "Padania",
       "source": "martj42_results",
       "team_id": "padania"
     },
     {
-      "added_at": "2026-06-29T16:53:50.043382+00:00",
+      "added_at": "2026-06-29T17:17:55.987981+00:00",
       "alias": "Pakistan",
       "source": "martj42_results",
       "team_id": "pakistan"
     },
     {
-      "added_at": "2026-06-29T16:53:50.068682+00:00",
+      "added_at": "2026-06-29T17:17:56.012328+00:00",
       "alias": "Palau",
       "source": "martj42_results",
       "team_id": "palau"
     },
     {
-      "added_at": "2026-06-29T16:53:50.049912+00:00",
+      "added_at": "2026-06-29T17:17:55.993949+00:00",
       "alias": "Palestine",
       "source": "martj42_results",
       "team_id": "palestine"
     },
     {
-      "added_at": "2026-06-29T16:53:50.040671+00:00",
+      "added_at": "2026-06-29T17:17:55.985255+00:00",
       "alias": "Panama",
       "source": "martj42_results",
       "team_id": "panama"
     },
     {
-      "added_at": "2026-06-29T16:53:50.118734+00:00",
+      "added_at": "2026-06-29T17:17:56.061174+00:00",
       "alias": "Panjab",
       "source": "martj42_results",
       "team_id": "panjab"
     },
     {
-      "added_at": "2026-06-29T16:53:50.048385+00:00",
+      "added_at": "2026-06-29T17:17:55.992625+00:00",
       "alias": "Papua New Guinea",
       "source": "martj42_results",
       "team_id": "papua_new_guinea"
     },
     {
-      "added_at": "2026-06-29T16:53:50.036744+00:00",
+      "added_at": "2026-06-29T17:17:55.981698+00:00",
       "alias": "Paraguay",
       "source": "martj42_results",
       "team_id": "paraguay"
     },
     {
-      "added_at": "2026-06-29T16:53:50.126053+00:00",
+      "added_at": "2026-06-29T17:17:56.068454+00:00",
       "alias": "Parishes of Jersey",
       "source": "martj42_results",
       "team_id": "parishes_of_jersey"
     },
     {
-      "added_at": "2026-06-29T16:53:50.038337+00:00",
+      "added_at": "2026-06-29T17:17:55.983164+00:00",
       "alias": "Peru",
       "source": "martj42_results",
       "team_id": "peru"
     },
     {
-      "added_at": "2026-06-29T16:53:50.036369+00:00",
+      "added_at": "2026-06-29T17:17:55.981381+00:00",
       "alias": "Philippines",
       "source": "martj42_results",
       "team_id": "philippines"
     },
     {
-      "added_at": "2026-06-29T16:53:50.037084+00:00",
+      "added_at": "2026-06-29T17:17:55.982050+00:00",
       "alias": "Poland",
       "source": "martj42_results",
       "team_id": "poland"
     },
     {
-      "added_at": "2026-06-29T16:53:50.037087+00:00",
+      "added_at": "2026-06-29T17:17:55.982053+00:00",
       "alias": "Portugal",
       "source": "martj42_results",
       "team_id": "portugal"
     },
     {
-      "added_at": "2026-06-29T16:53:50.036978+00:00",
+      "added_at": "2026-06-29T17:17:55.981926+00:00",
       "alias": "Provence",
       "source": "martj42_results",
       "team_id": "provence"
     },
     {
-      "added_at": "2026-06-29T16:53:50.041246+00:00",
+      "added_at": "2026-06-29T17:17:55.985839+00:00",
       "alias": "Puerto Rico",
       "source": "martj42_results",
       "team_id": "puerto_rico"
     },
     {
-      "added_at": "2026-06-29T16:53:50.052849+00:00",
+      "added_at": "2026-06-29T17:17:55.996752+00:00",
       "alias": "Qatar",
       "source": "martj42_results",
       "team_id": "qatar"
     },
     {
-      "added_at": "2026-06-29T16:53:50.115258+00:00",
+      "added_at": "2026-06-29T17:17:56.057637+00:00",
       "alias": "Quebec",
       "source": "martj42_results",
       "team_id": "quebec"
     },
     {
-      "added_at": "2026-06-29T16:53:50.111998+00:00",
+      "added_at": "2026-06-29T17:17:56.054505+00:00",
       "alias": "Raetia",
       "source": "martj42_results",
       "team_id": "raetia"
     },
     {
-      "added_at": "2026-06-29T16:53:50.099804+00:00",
+      "added_at": "2026-06-29T17:17:56.042613+00:00",
       "alias": "Republic of St. Pauli",
       "source": "martj42_results",
       "team_id": "republic_of_st_pauli"
     },
     {
-      "added_at": "2026-06-29T16:53:50.086189+00:00",
+      "added_at": "2026-06-29T17:17:56.029286+00:00",
       "alias": "Rhodes",
       "source": "martj42_results",
       "team_id": "rhodes"
     },
     {
-      "added_at": "2026-06-29T16:53:50.101805+00:00",
+      "added_at": "2026-06-29T17:17:56.044577+00:00",
       "alias": "Romani people",
       "source": "martj42_results",
       "team_id": "romani_people"
     },
     {
-      "added_at": "2026-06-29T16:53:50.036781+00:00",
+      "added_at": "2026-06-29T17:17:55.981734+00:00",
       "alias": "Romania",
       "source": "martj42_results",
       "team_id": "romania"
     },
     {
-      "added_at": "2026-06-29T16:53:50.058168+00:00",
+      "added_at": "2026-06-29T17:17:56.002115+00:00",
       "alias": "Rwanda",
       "source": "martj42_results",
       "team_id": "rwanda"
     },
     {
-      "added_at": "2026-06-29T16:53:50.122422+00:00",
+      "added_at": "2026-06-29T17:17:56.064785+00:00",
       "alias": "Ry\u016bky\u016b",
       "source": "martj42_results",
       "team_id": "ryukyu"
     },
     {
-      "added_at": "2026-06-29T16:53:50.042032+00:00",
+      "added_at": "2026-06-29T17:17:55.986645+00:00",
       "alias": "R\u00e9union",
       "source": "martj42_results",
       "team_id": "reunion"
     },
     {
-      "added_at": "2026-06-29T16:53:50.086186+00:00",
+      "added_at": "2026-06-29T17:17:56.029283+00:00",
       "alias": "Saare County",
       "source": "martj42_results",
       "team_id": "saare_county"
     },
     {
-      "added_at": "2026-06-29T16:53:50.043794+00:00",
+      "added_at": "2026-06-29T17:17:55.988393+00:00",
       "alias": "Saarland",
       "source": "martj42_results",
       "team_id": "saarland"
     },
     {
-      "added_at": "2026-06-29T16:53:50.108490+00:00",
+      "added_at": "2026-06-29T17:17:56.050912+00:00",
       "alias": "Saint Barth\u00e9lemy",
       "source": "martj42_results",
       "team_id": "saint_barthelemy"
     },
     {
-      "added_at": "2026-06-29T16:53:50.127273+00:00",
+      "added_at": "2026-06-29T17:17:56.069656+00:00",
       "alias": "Saint Helena",
       "source": "martj42_results",
       "team_id": "saint_helena"
     },
     {
-      "added_at": "2026-06-29T16:53:50.040892+00:00",
+      "added_at": "2026-06-29T17:17:55.985481+00:00",
       "alias": "Saint Kitts and Nevis",
       "source": "martj42_results",
       "team_id": "saint_kitts_and_nevis"
     },
     {
-      "added_at": "2026-06-29T16:53:50.040644+00:00",
+      "added_at": "2026-06-29T17:17:55.985229+00:00",
       "alias": "Saint Lucia",
       "source": "martj42_results",
       "team_id": "saint_lucia"
     },
     {
-      "added_at": "2026-06-29T16:53:50.072365+00:00",
+      "added_at": "2026-06-29T17:17:56.015642+00:00",
       "alias": "Saint Martin",
       "source": "martj42_results",
       "team_id": "saint_martin"
     },
     {
-      "added_at": "2026-06-29T16:53:50.108874+00:00",
+      "added_at": "2026-06-29T17:17:56.051306+00:00",
       "alias": "Saint Pierre and Miquelon",
       "source": "martj42_results",
       "team_id": "saint_pierre_and_miquelon"
     },
     {
-      "added_at": "2026-06-29T16:53:50.046764+00:00",
+      "added_at": "2026-06-29T17:17:55.991247+00:00",
       "alias": "Saint Vincent and the Grenadines",
       "source": "martj42_results",
       "team_id": "saint_vincent_and_the_grenadines"
     },
     {
-      "added_at": "2026-06-29T16:53:50.060885+00:00",
+      "added_at": "2026-06-29T17:17:56.004782+00:00",
       "alias": "Samoa",
       "source": "martj42_results",
       "team_id": "samoa"
     },
     {
-      "added_at": "2026-06-29T16:53:50.073138+00:00",
+      "added_at": "2026-06-29T17:17:56.016411+00:00",
       "alias": "San Marino",
       "source": "martj42_results",
       "team_id": "san_marino"
     },
     {
-      "added_at": "2026-06-29T16:53:50.094011+00:00",
+      "added_at": "2026-06-29T17:17:56.037051+00:00",
       "alias": "Sark",
       "source": "martj42_results",
       "team_id": "sark"
     },
     {
-      "added_at": "2026-06-29T16:53:50.048530+00:00",
+      "added_at": "2026-06-29T17:17:55.992759+00:00",
       "alias": "Saudi Arabia",
       "source": "martj42_results",
       "team_id": "saudi_arabia"
     },
     {
-      "added_at": "2026-06-29T16:53:50.115280+00:00",
+      "added_at": "2026-06-29T17:17:56.057663+00:00",
       "alias": "Saugeais",
       "source": "martj42_results",
       "team_id": "saugeais"
     },
     {
-      "added_at": "2026-06-29T16:53:50.035489+00:00",
+      "added_at": "2026-06-29T17:17:55.980529+00:00",
       "alias": "Scotland",
       "source": "martj42_results",
       "team_id": "scotland"
     },
     {
-      "added_at": "2026-06-29T16:53:50.095751+00:00",
+      "added_at": "2026-06-29T17:17:56.038769+00:00",
       "alias": "Sealand",
       "source": "martj42_results",
       "team_id": "sealand"
     },
     {
-      "added_at": "2026-06-29T16:53:50.117253+00:00",
+      "added_at": "2026-06-29T17:17:56.059604+00:00",
       "alias": "Seborga",
       "source": "martj42_results",
       "team_id": "seborga"
     },
     {
-      "added_at": "2026-06-29T16:53:50.047197+00:00",
+      "added_at": "2026-06-29T17:17:55.991627+00:00",
       "alias": "Senegal",
       "source": "martj42_results",
       "team_id": "senegal"
     },
     {
-      "added_at": "2026-06-29T16:53:50.042860+00:00",
+      "added_at": "2026-06-29T17:17:55.987470+00:00",
       "alias": "Serbia",
       "source": "martj42_results",
       "team_id": "serbia"
     },
     {
-      "added_at": "2026-06-29T16:53:50.056300+00:00",
+      "added_at": "2026-06-29T17:17:56.000265+00:00",
       "alias": "Seychelles",
       "source": "martj42_results",
       "team_id": "seychelles"
     },
     {
-      "added_at": "2026-06-29T16:53:50.071601+00:00",
+      "added_at": "2026-06-29T17:17:56.014800+00:00",
       "alias": "Shetland",
       "source": "martj42_results",
       "team_id": "shetland"
     },
     {
-      "added_at": "2026-06-29T16:53:50.042780+00:00",
+      "added_at": "2026-06-29T17:17:55.987392+00:00",
       "alias": "Sierra Leone",
       "source": "martj42_results",
       "team_id": "sierra_leone"
     },
     {
-      "added_at": "2026-06-29T16:53:50.039625+00:00",
+      "added_at": "2026-06-29T17:17:55.984302+00:00",
       "alias": "Silesia",
       "source": "martj42_results",
       "team_id": "silesia"
     },
     {
-      "added_at": "2026-06-29T16:53:50.043711+00:00",
+      "added_at": "2026-06-29T17:17:55.988307+00:00",
       "alias": "Singapore",
       "source": "martj42_results",
       "team_id": "singapore"
     },
     {
-      "added_at": "2026-06-29T16:53:50.071270+00:00",
+      "added_at": "2026-06-29T17:17:56.014478+00:00",
       "alias": "Sint Maarten",
       "source": "martj42_results",
       "team_id": "sint_maarten"
     },
     {
-      "added_at": "2026-06-29T16:53:50.041111+00:00",
+      "added_at": "2026-06-29T17:17:55.985698+00:00",
       "alias": "Slovakia",
       "source": "martj42_results",
       "team_id": "slovakia"
     },
     {
-      "added_at": "2026-06-29T16:53:50.073700+00:00",
+      "added_at": "2026-06-29T17:17:56.016973+00:00",
       "alias": "Slovenia",
       "source": "martj42_results",
       "team_id": "slovenia"
     },
     {
-      "added_at": "2026-06-29T16:53:50.048388+00:00",
+      "added_at": "2026-06-29T17:17:55.992627+00:00",
       "alias": "Solomon Islands",
       "source": "martj42_results",
       "team_id": "solomon_islands"
     },
     {
-      "added_at": "2026-06-29T16:53:50.048515+00:00",
+      "added_at": "2026-06-29T17:17:55.992744+00:00",
       "alias": "Somalia",
       "source": "martj42_results",
       "team_id": "somalia"
     },
     {
-      "added_at": "2026-06-29T16:53:50.116632+00:00",
+      "added_at": "2026-06-29T17:17:56.058991+00:00",
       "alias": "Somaliland",
       "source": "martj42_results",
       "team_id": "somaliland"
     },
     {
-      "added_at": "2026-06-29T16:53:50.035961+00:00",
+      "added_at": "2026-06-29T17:17:55.980990+00:00",
       "alias": "South Africa",
       "source": "martj42_results",
       "team_id": "south_africa"
     },
     {
-      "added_at": "2026-06-29T16:53:50.115897+00:00",
+      "added_at": "2026-06-29T17:17:56.058210+00:00",
       "alias": "South Ossetia",
       "source": "martj42_results",
       "team_id": "south_ossetia"
     },
     {
-      "added_at": "2026-06-29T16:53:50.113075+00:00",
+      "added_at": "2026-06-29T17:17:56.055532+00:00",
       "alias": "South Sudan",
       "source": "martj42_results",
       "team_id": "south_sudan"
     },
     {
-      "added_at": "2026-06-29T16:53:50.064182+00:00",
+      "added_at": "2026-06-29T17:17:56.007960+00:00",
       "alias": "South Yemen",
       "source": "martj42_results",
       "team_id": "south_yemen"
     },
     {
-      "added_at": "2026-06-29T16:53:50.036892+00:00",
+      "added_at": "2026-06-29T17:17:55.981842+00:00",
       "alias": "Spain",
       "source": "martj42_results",
       "team_id": "spain"
     },
     {
-      "added_at": "2026-06-29T16:53:50.043393+00:00",
+      "added_at": "2026-06-29T17:17:55.987993+00:00",
       "alias": "Sri Lanka",
       "source": "martj42_results",
       "team_id": "sri_lanka"
     },
     {
-      "added_at": "2026-06-29T16:53:50.044985+00:00",
+      "added_at": "2026-06-29T17:17:55.989577+00:00",
       "alias": "Sudan",
       "source": "martj42_results",
       "team_id": "sudan"
     },
     {
-      "added_at": "2026-06-29T16:53:50.036953+00:00",
+      "added_at": "2026-06-29T17:17:55.981903+00:00",
       "alias": "Suriname",
       "source": "martj42_results",
       "team_id": "suriname"
     },
     {
-      "added_at": "2026-06-29T16:53:50.124797+00:00",
+      "added_at": "2026-06-29T17:17:56.067227+00:00",
       "alias": "Surrey",
       "source": "martj42_results",
       "team_id": "surrey"
     },
     {
-      "added_at": "2026-06-29T16:53:50.036057+00:00",
+      "added_at": "2026-06-29T17:17:55.981078+00:00",
       "alias": "Sweden",
       "source": "martj42_results",
       "team_id": "sweden"
     },
     {
-      "added_at": "2026-06-29T16:53:50.035892+00:00",
+      "added_at": "2026-06-29T17:17:55.980924+00:00",
       "alias": "Switzerland",
       "source": "martj42_results",
       "team_id": "switzerland"
     },
     {
-      "added_at": "2026-06-29T16:53:50.042832+00:00",
+      "added_at": "2026-06-29T17:17:55.987442+00:00",
       "alias": "Syria",
       "source": "martj42_results",
       "team_id": "syria"
     },
     {
-      "added_at": "2026-06-29T16:53:50.117827+00:00",
+      "added_at": "2026-06-29T17:17:56.060231+00:00",
       "alias": "Sz\u00e9kely Land",
       "source": "martj42_results",
       "team_id": "szekely_land"
     },
     {
-      "added_at": "2026-06-29T16:53:50.100896+00:00",
+      "added_at": "2026-06-29T17:17:56.043690+00:00",
       "alias": "S\u00e1pmi",
       "source": "martj42_results",
       "team_id": "sapmi"
     },
     {
-      "added_at": "2026-06-29T16:53:50.058021+00:00",
+      "added_at": "2026-06-29T17:17:56.001983+00:00",
       "alias": "S\u00e3o Tom\u00e9 and Pr\u00edncipe",
       "source": "martj42_results",
       "team_id": "sao_tome_and_principe"
     },
     {
-      "added_at": "2026-06-29T16:53:50.043533+00:00",
+      "added_at": "2026-06-29T17:17:55.988132+00:00",
       "alias": "Tahiti",
       "source": "martj42_results",
       "team_id": "tahiti"
     },
     {
-      "added_at": "2026-06-29T16:53:50.042905+00:00",
+      "added_at": "2026-06-29T17:17:55.987517+00:00",
       "alias": "Taiwan",
       "source": "martj42_results",
       "team_id": "taiwan"
     },
     {
-      "added_at": "2026-06-29T16:53:50.074721+00:00",
+      "added_at": "2026-06-29T17:17:56.018013+00:00",
       "alias": "Tajikistan",
       "source": "martj42_results",
       "team_id": "tajikistan"
     },
     {
-      "added_at": "2026-06-29T16:53:50.112790+00:00",
+      "added_at": "2026-06-29T17:17:56.055246+00:00",
       "alias": "Tamil Eelam",
       "source": "martj42_results",
       "team_id": "tamil_eelam"
     },
     {
-      "added_at": "2026-06-29T16:53:50.041645+00:00",
+      "added_at": "2026-06-29T17:17:55.986251+00:00",
       "alias": "Tanzania",
       "source": "martj42_results",
       "team_id": "tanzania"
     },
     {
-      "added_at": "2026-06-29T16:53:50.044275+00:00",
+      "added_at": "2026-06-29T17:17:55.988862+00:00",
       "alias": "Thailand",
       "source": "martj42_results",
       "team_id": "thailand"
     },
     {
-      "added_at": "2026-06-29T16:53:50.090669+00:00",
+      "added_at": "2026-06-29T17:17:56.033740+00:00",
       "alias": "Tibet",
       "source": "martj42_results",
       "team_id": "tibet"
     },
     {
-      "added_at": "2026-06-29T16:53:50.134932+00:00",
+      "added_at": "2026-06-29T17:17:56.077184+00:00",
       "alias": "Ticino",
       "source": "martj42_results",
       "team_id": "ticino"
     },
     {
-      "added_at": "2026-06-29T16:53:50.093378+00:00",
+      "added_at": "2026-06-29T17:17:56.036425+00:00",
       "alias": "Timor-Leste",
       "source": "martj42_results",
       "team_id": "timor_leste"
     },
     {
-      "added_at": "2026-06-29T16:53:50.044928+00:00",
+      "added_at": "2026-06-29T17:17:55.989520+00:00",
       "alias": "Togo",
       "source": "martj42_results",
       "team_id": "togo"
     },
     {
-      "added_at": "2026-06-29T16:53:50.060865+00:00",
+      "added_at": "2026-06-29T17:17:56.004762+00:00",
       "alias": "Tonga",
       "source": "martj42_results",
       "team_id": "tonga"
     },
     {
-      "added_at": "2026-06-29T16:53:50.045196+00:00",
+      "added_at": "2026-06-29T17:17:55.989785+00:00",
       "alias": "Tunisia",
       "source": "martj42_results",
       "team_id": "tunisia"
     },
     {
-      "added_at": "2026-06-29T16:53:50.074638+00:00",
+      "added_at": "2026-06-29T17:17:56.017927+00:00",
       "alias": "Turkmenistan",
       "source": "martj42_results",
       "team_id": "turkmenistan"
     },
     {
-      "added_at": "2026-06-29T16:53:50.085510+00:00",
+      "added_at": "2026-06-29T17:17:56.028629+00:00",
       "alias": "Turks and Caicos Islands",
       "source": "martj42_results",
       "team_id": "turks_and_caicos_islands"
     },
     {
-      "added_at": "2026-06-29T16:53:50.060879+00:00",
+      "added_at": "2026-06-29T17:17:56.004776+00:00",
       "alias": "Tuvalu",
       "source": "martj42_results",
       "team_id": "tuvalu"
     },
     {
-      "added_at": "2026-06-29T16:53:50.108256+00:00",
+      "added_at": "2026-06-29T17:17:56.050667+00:00",
       "alias": "Two Sicilies",
       "source": "martj42_results",
       "team_id": "two_sicilies"
     },
     {
-      "added_at": "2026-06-29T16:53:50.037999+00:00",
+      "added_at": "2026-06-29T17:17:55.982908+00:00",
       "alias": "Uganda",
       "source": "martj42_results",
       "team_id": "uganda"
     },
     {
-      "added_at": "2026-06-29T16:53:50.038520+00:00",
+      "added_at": "2026-06-29T17:17:55.983338+00:00",
       "alias": "Ukraine",
       "source": "martj42_results",
       "team_id": "ukraine"
     },
     {
-      "added_at": "2026-06-29T16:53:50.054473+00:00",
+      "added_at": "2026-06-29T17:17:55.998336+00:00",
       "alias": "United Arab Emirates",
       "source": "martj42_results",
       "team_id": "united_arab_emirates"
     },
     {
-      "added_at": "2026-06-29T16:53:50.120982+00:00",
+      "added_at": "2026-06-29T17:17:56.063387+00:00",
       "alias": "United Koreans in Japan",
       "source": "martj42_results",
       "team_id": "united_koreans_in_japan"
     },
     {
-      "added_at": "2026-06-29T16:53:50.084055+00:00",
+      "added_at": "2026-06-29T17:17:56.027208+00:00",
       "alias": "United States Virgin Islands",
       "source": "martj42_results",
       "team_id": "united_states_virgin_islands"
     },
     {
-      "added_at": "2026-06-29T16:53:50.035833+00:00",
+      "added_at": "2026-06-29T17:17:55.980872+00:00",
       "alias": "Uruguay",
       "source": "martj42_results",
       "team_id": "uruguay"
     },
     {
-      "added_at": "2026-06-29T16:53:50.074723+00:00",
+      "added_at": "2026-06-29T17:17:56.018015+00:00",
       "alias": "Uzbekistan",
       "source": "martj42_results",
       "team_id": "uzbekistan"
     },
     {
-      "added_at": "2026-06-29T16:53:50.043300+00:00",
+      "added_at": "2026-06-29T17:17:55.987903+00:00",
       "alias": "Vanuatu",
       "source": "martj42_results",
       "team_id": "vanuatu"
     },
     {
-      "added_at": "2026-06-29T16:53:50.092928+00:00",
+      "added_at": "2026-06-29T17:17:56.035960+00:00",
       "alias": "Vatican City",
       "source": "martj42_results",
       "team_id": "vatican_city"
     },
     {
-      "added_at": "2026-06-29T16:53:50.040673+00:00",
+      "added_at": "2026-06-29T17:17:55.985257+00:00",
       "alias": "Venezuela",
       "source": "martj42_results",
       "team_id": "venezuela"
     },
     {
-      "added_at": "2026-06-29T16:53:50.042536+00:00",
+      "added_at": "2026-06-29T17:17:55.987142+00:00",
       "alias": "Vietnam",
       "source": "martj42_results",
       "team_id": "vietnam"
     },
     {
-      "added_at": "2026-06-29T16:53:50.044757+00:00",
+      "added_at": "2026-06-29T17:17:55.989342+00:00",
       "alias": "Vietnam Republic",
       "source": "martj42_results",
       "team_id": "vietnam_republic"
     },
     {
-      "added_at": "2026-06-29T16:53:50.035518+00:00",
+      "added_at": "2026-06-29T17:17:55.980552+00:00",
       "alias": "Wales",
       "source": "martj42_results",
       "team_id": "wales"
     },
     {
-      "added_at": "2026-06-29T16:53:50.050507+00:00",
+      "added_at": "2026-06-29T17:17:55.994525+00:00",
       "alias": "Wallis Islands and Futuna",
       "source": "martj42_results",
       "team_id": "wallis_islands_and_futuna"
     },
     {
-      "added_at": "2026-06-29T16:53:50.128520+00:00",
+      "added_at": "2026-06-29T17:17:56.070866+00:00",
       "alias": "West Papua",
       "source": "martj42_results",
       "team_id": "west_papua"
     },
     {
-      "added_at": "2026-06-29T16:53:50.120978+00:00",
+      "added_at": "2026-06-29T17:17:56.063379+00:00",
       "alias": "Western Armenia",
       "source": "martj42_results",
       "team_id": "western_armenia"
     },
     {
-      "added_at": "2026-06-29T16:53:50.050949+00:00",
+      "added_at": "2026-06-29T17:17:55.994952+00:00",
       "alias": "Western Australia",
       "source": "martj42_results",
       "team_id": "western_australia"
     },
     {
-      "added_at": "2026-06-29T16:53:50.098338+00:00",
+      "added_at": "2026-06-29T17:17:56.041210+00:00",
       "alias": "Western Isles",
       "source": "martj42_results",
       "team_id": "western_isles"
     },
     {
-      "added_at": "2026-06-29T16:53:50.089660+00:00",
+      "added_at": "2026-06-29T17:17:56.032699+00:00",
       "alias": "Western Sahara",
       "source": "martj42_results",
       "team_id": "western_sahara"
     },
     {
-      "added_at": "2026-06-29T16:53:50.049921+00:00",
+      "added_at": "2026-06-29T17:17:55.993956+00:00",
       "alias": "Yemen",
       "source": "martj42_results",
       "team_id": "yemen"
     },
     {
-      "added_at": "2026-06-29T16:53:50.054358+00:00",
+      "added_at": "2026-06-29T17:17:55.998198+00:00",
       "alias": "Yemen DPR",
       "source": "martj42_results",
       "team_id": "yemen_dpr"
     },
     {
-      "added_at": "2026-06-29T16:53:50.071597+00:00",
+      "added_at": "2026-06-29T17:17:56.014797+00:00",
       "alias": "Ynys M\u00f4n",
       "source": "martj42_results",
       "team_id": "ynys_mon"
     },
     {
-      "added_at": "2026-06-29T16:53:50.124455+00:00",
+      "added_at": "2026-06-29T17:17:56.066886+00:00",
       "alias": "Yorkshire",
       "source": "martj42_results",
       "team_id": "yorkshire"
     },
     {
-      "added_at": "2026-06-29T16:53:50.132883+00:00",
+      "added_at": "2026-06-29T17:17:56.075025+00:00",
       "alias": "Yoruba Nation",
       "source": "martj42_results",
       "team_id": "yoruba_nation"
     },
     {
-      "added_at": "2026-06-29T16:53:50.036890+00:00",
-      "alias": "Yugoslavia",
-      "source": "martj42_results",
-      "team_id": "yugoslavia"
-    },
-    {
-      "added_at": "2026-06-29T16:53:50.041833+00:00",
+      "added_at": "2026-06-29T17:17:55.986445+00:00",
       "alias": "Zambia",
       "source": "martj42_results",
       "team_id": "zambia"
     },
     {
-      "added_at": "2026-06-29T16:53:50.042131+00:00",
+      "added_at": "2026-06-29T17:17:55.986744+00:00",
       "alias": "Zanzibar",
       "source": "martj42_results",
       "team_id": "zanzibar"
     },
     {
-      "added_at": "2026-06-29T16:53:50.041829+00:00",
+      "added_at": "2026-06-29T17:17:55.986443+00:00",
       "alias": "Zimbabwe",
       "source": "martj42_results",
       "team_id": "zimbabwe"
     },
     {
-      "added_at": "2026-06-29T16:53:49.972767+00:00",
+      "added_at": "2026-06-29T17:17:55.932689+00:00",
       "alias": "bosnia",
       "source": "builtin_default",
       "team_id": "bosnia_and_herzegovina"
     },
     {
-      "added_at": "2026-06-29T16:53:49.972772+00:00",
+      "added_at": "2026-06-29T17:17:55.932693+00:00",
       "alias": "bosnia & herzegovina",
       "source": "builtin_default",
       "team_id": "bosnia_and_herzegovina"
     },
     {
-      "added_at": "2026-06-29T16:53:49.972775+00:00",
+      "added_at": "2026-06-29T17:17:55.932696+00:00",
       "alias": "bosnia and herzegovina",
       "source": "builtin_default",
       "team_id": "bosnia_and_herzegovina"
     },
     {
-      "added_at": "2026-06-29T16:53:49.972769+00:00",
+      "added_at": "2026-06-29T17:17:55.932691+00:00",
       "alias": "bosnia-herzegovina",
       "source": "builtin_default",
       "team_id": "bosnia_and_herzegovina"
     },
     {
-      "added_at": "2026-06-29T16:53:49.972547+00:00",
+      "added_at": "2026-06-29T17:17:55.932604+00:00",
       "alias": "britain",
       "source": "builtin_default",
       "team_id": "england"
     },
     {
-      "added_at": "2026-06-29T16:53:49.972779+00:00",
+      "added_at": "2026-06-29T17:17:55.932699+00:00",
       "alias": "cabo verde",
       "source": "builtin_default",
       "team_id": "cape_verde"
     },
     {
-      "added_at": "2026-06-29T16:53:49.972781+00:00",
+      "added_at": "2026-06-29T17:17:55.932701+00:00",
       "alias": "cape verde",
       "source": "builtin_default",
       "team_id": "cape_verde"
     },
     {
-      "added_at": "2026-06-29T16:53:49.972787+00:00",
+      "added_at": "2026-06-29T17:17:55.932707+00:00",
       "alias": "czech",
       "source": "builtin_default",
       "team_id": "czech_republic"
     },
     {
-      "added_at": "2026-06-29T16:53:49.972739+00:00",
+      "added_at": "2026-06-29T17:17:55.932664+00:00",
       "alias": "czech republic",
       "source": "builtin_default",
       "team_id": "czech_republic"
     },
     {
-      "added_at": "2026-06-29T16:53:49.972743+00:00",
+      "added_at": "2026-06-29T17:17:55.932667+00:00",
       "alias": "czechia",
       "source": "builtin_default",
       "team_id": "czech_republic"
     },
     {
-      "added_at": "2026-06-29T16:53:49.972569+00:00",
+      "added_at": "2026-06-29T17:17:55.932727+00:00",
+      "alias": "czechoslovakia",
+      "source": "builtin_default",
+      "team_id": "czech_republic"
+    },
+    {
+      "added_at": "2026-06-29T17:17:55.932625+00:00",
       "alias": "c\u00f4te d\u2019ivoire",
       "source": "builtin_default",
       "team_id": "ivory_coast"
     },
     {
-      "added_at": "2026-06-29T16:53:49.972783+00:00",
+      "added_at": "2026-06-29T17:17:55.932725+00:00",
+      "alias": "east germany",
+      "source": "builtin_default",
+      "team_id": "germany"
+    },
+    {
+      "added_at": "2026-06-29T17:17:55.932703+00:00",
       "alias": "eswatini",
       "source": "builtin_default",
       "team_id": "eswatini"
     },
     {
-      "added_at": "2026-06-29T16:53:49.972544+00:00",
+      "added_at": "2026-06-29T17:17:55.932601+00:00",
       "alias": "great britain",
       "source": "builtin_default",
       "team_id": "england"
     },
     {
-      "added_at": "2026-06-29T16:53:49.972789+00:00",
+      "added_at": "2026-06-29T17:17:55.932709+00:00",
       "alias": "holland",
       "source": "builtin_default",
       "team_id": "netherlands"
     },
     {
-      "added_at": "2026-06-29T16:53:49.972752+00:00",
+      "added_at": "2026-06-29T17:17:55.932675+00:00",
       "alias": "iran",
       "source": "builtin_default",
       "team_id": "iran"
     },
     {
-      "added_at": "2026-06-29T16:53:49.972564+00:00",
+      "added_at": "2026-06-29T17:17:55.932721+00:00",
+      "alias": "ireland",
+      "source": "builtin_default",
+      "team_id": "ireland"
+    },
+    {
+      "added_at": "2026-06-29T17:17:55.932620+00:00",
       "alias": "ivory coast",
       "source": "builtin_default",
       "team_id": "ivory_coast"
     },
     {
-      "added_at": "2026-06-29T16:53:49.972794+00:00",
+      "added_at": "2026-06-29T17:17:55.932714+00:00",
       "alias": "korea",
       "source": "builtin_default",
       "team_id": "south_korea"
     },
     {
-      "added_at": "2026-06-29T16:53:49.972559+00:00",
+      "added_at": "2026-06-29T17:17:55.932615+00:00",
       "alias": "korea dpr",
       "source": "builtin_default",
       "team_id": "north_korea"
     },
     {
-      "added_at": "2026-06-29T16:53:49.972551+00:00",
+      "added_at": "2026-06-29T17:17:55.932608+00:00",
       "alias": "korea republic",
       "source": "builtin_default",
       "team_id": "south_korea"
     },
     {
-      "added_at": "2026-06-29T16:53:49.972557+00:00",
+      "added_at": "2026-06-29T17:17:55.932613+00:00",
       "alias": "korea south",
       "source": "builtin_default",
       "team_id": "south_korea"
     },
     {
-      "added_at": "2026-06-29T16:53:49.972562+00:00",
+      "added_at": "2026-06-29T17:17:55.932618+00:00",
       "alias": "north korea",
       "source": "builtin_default",
       "team_id": "north_korea"
     },
     {
-      "added_at": "2026-06-29T16:53:49.972799+00:00",
+      "added_at": "2026-06-29T17:17:55.932718+00:00",
       "alias": "northern ireland",
       "source": "builtin_default",
       "team_id": "northern_ireland"
     },
     {
-      "added_at": "2026-06-29T16:53:49.972796+00:00",
+      "added_at": "2026-06-29T17:17:55.932716+00:00",
       "alias": "republic of ireland",
       "source": "builtin_default",
       "team_id": "ireland"
     },
     {
-      "added_at": "2026-06-29T16:53:49.972745+00:00",
+      "added_at": "2026-06-29T17:17:55.932669+00:00",
       "alias": "russia",
       "source": "builtin_default",
       "team_id": "russia"
     },
     {
-      "added_at": "2026-06-29T16:53:49.972549+00:00",
+      "added_at": "2026-06-29T17:17:55.932731+00:00",
+      "alias": "serbia and montenegro",
+      "source": "builtin_default",
+      "team_id": "serbia"
+    },
+    {
+      "added_at": "2026-06-29T17:17:55.932606+00:00",
       "alias": "south korea",
       "source": "builtin_default",
       "team_id": "south_korea"
     },
     {
-      "added_at": "2026-06-29T16:53:49.972785+00:00",
+      "added_at": "2026-06-29T17:17:55.932734+00:00",
+      "alias": "soviet union",
+      "source": "builtin_default",
+      "team_id": "russia"
+    },
+    {
+      "added_at": "2026-06-29T17:17:55.932705+00:00",
       "alias": "swaziland",
       "source": "builtin_default",
       "team_id": "eswatini"
     },
     {
-      "added_at": "2026-06-29T16:53:49.972791+00:00",
+      "added_at": "2026-06-29T17:17:55.932711+00:00",
       "alias": "the netherlands",
       "source": "builtin_default",
       "team_id": "netherlands"
     },
     {
-      "added_at": "2026-06-29T16:53:49.972758+00:00",
+      "added_at": "2026-06-29T17:17:55.932681+00:00",
       "alias": "trinidad",
       "source": "builtin_default",
       "team_id": "trinidad_and_tobago"
     },
     {
-      "added_at": "2026-06-29T16:53:49.972761+00:00",
+      "added_at": "2026-06-29T17:17:55.932683+00:00",
       "alias": "trinidad & tobago",
       "source": "builtin_default",
       "team_id": "trinidad_and_tobago"
     },
     {
-      "added_at": "2026-06-29T16:53:49.972764+00:00",
+      "added_at": "2026-06-29T17:17:55.932686+00:00",
       "alias": "trinidad and tobago",
       "source": "builtin_default",
       "team_id": "trinidad_and_tobago"
     },
     {
-      "added_at": "2026-06-29T16:53:49.972747+00:00",
+      "added_at": "2026-06-29T17:17:55.932671+00:00",
       "alias": "turkey",
       "source": "builtin_default",
       "team_id": "turkiye"
     },
     {
-      "added_at": "2026-06-29T16:53:49.972749+00:00",
+      "added_at": "2026-06-29T17:17:55.932673+00:00",
       "alias": "t\u00fcrkiye",
       "source": "builtin_default",
       "team_id": "turkiye"
     },
     {
-      "added_at": "2026-06-29T16:53:49.972756+00:00",
+      "added_at": "2026-06-29T17:17:55.932679+00:00",
       "alias": "u.a.e.",
       "source": "builtin_default",
       "team_id": "united_arab_emirates"
     },
     {
-      "added_at": "2026-06-29T16:53:49.972530+00:00",
+      "added_at": "2026-06-29T17:17:55.932586+00:00",
       "alias": "u.s.a.",
       "source": "builtin_default",
       "team_id": "united_states"
     },
     {
-      "added_at": "2026-06-29T16:53:49.972542+00:00",
+      "added_at": "2026-06-29T17:17:55.932599+00:00",
       "alias": "uk",
       "source": "builtin_default",
       "team_id": "england"
     },
     {
-      "added_at": "2026-06-29T16:53:49.972534+00:00",
+      "added_at": "2026-06-29T17:17:55.932590+00:00",
       "alias": "united states",
       "source": "builtin_default",
       "team_id": "united_states"
     },
     {
-      "added_at": "2026-06-29T16:53:49.972538+00:00",
+      "added_at": "2026-06-29T17:17:55.932595+00:00",
       "alias": "united states of america",
       "source": "builtin_default",
       "team_id": "united_states"
     },
     {
-      "added_at": "2026-06-29T16:53:49.972524+00:00",
+      "added_at": "2026-06-29T17:17:55.932581+00:00",
       "alias": "us",
       "source": "builtin_default",
       "team_id": "united_states"
     },
     {
-      "added_at": "2026-06-29T16:53:50.071620+00:00",
+      "added_at": "2026-06-29T17:17:55.932754+00:00",
+      "alias": "usSR",
+      "source": "builtin_default",
+      "team_id": "russia"
+    },
+    {
+      "added_at": "2026-06-29T17:17:55.932722+00:00",
+      "alias": "west germany",
+      "source": "builtin_default",
+      "team_id": "germany"
+    },
+    {
+      "added_at": "2026-06-29T17:17:55.932729+00:00",
+      "alias": "yugoslavia",
+      "source": "builtin_default",
+      "team_id": "serbia"
+    },
+    {
+      "added_at": "2026-06-29T17:17:56.014817+00:00",
       "alias": "\u00c5land Islands",
       "source": "martj42_results",
       "team_id": "aland_islands"
     }
   ],
-  "updated_at": "2026-06-29T16:53:50.142483+00:00",
+  "updated_at": "2026-06-29T17:17:56.084519+00:00",
   "version": 1
 }

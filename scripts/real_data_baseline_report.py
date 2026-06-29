@@ -100,6 +100,12 @@ def _resolve_knockout_via_openfootball(raw_dir: Path, aliases: AliasRegistry) ->
     """
     out: dict[str, list[dict]] = {}
     for source_name, default_name, year in (
+        ("openfootball_worldcup_1990", "FIFA World Cup 1990", 1990),
+        ("openfootball_worldcup_1994", "FIFA World Cup 1994", 1994),
+        ("openfootball_worldcup_1998", "FIFA World Cup 1998", 1998),
+        ("openfootball_worldcup_2002", "FIFA World Cup 2002", 2002),
+        ("openfootball_worldcup_2006", "FIFA World Cup 2006", 2006),
+        ("openfootball_worldcup_2010", "FIFA World Cup 2010", 2010),
         ("openfootball_worldcup_2014", "FIFA World Cup 2014", 2014),
         ("openfootball_worldcup_2018", "FIFA World Cup 2018", 2018),
         ("openfootball_worldcup_2022", "FIFA World Cup 2022", 2022),

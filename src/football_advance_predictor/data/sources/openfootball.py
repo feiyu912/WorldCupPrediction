@@ -279,6 +279,23 @@ class OpenFootballTournamentProvider(MatchDataProvider):
                             extra={"match_id": match.match_id, "stage": match.stage},
                         )
                         return None
+                elif (
+                    home_goals_et is not None
+                    and away_goals_et is not None
+                    and (home_goals_et != home_goals or away_goals_et != away_goals)
+                ):
+                    # Older tournaments (e.g. 1990) sometimes have extra-time
+                    # scores but no penalty scores. ``score.et`` records the
+                    # score AFTER extra time; the side with the higher ET
+                    # score advanced.
+                    if home_goals_et != away_goals_et:
+                        home_advances = home_goals_et > away_goals_et
+                    else:
+                        logger.debug(
+                            "Skipping openfootball result: ET tied without penalties",
+                            extra={"match_id": match.match_id, "stage": match.stage},
+                        )
+                        return None
                 else:
                     # Drawn FT with no penalty info and no explicit winner:
                     # the advancer cannot be safely derived.

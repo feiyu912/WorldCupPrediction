@@ -306,10 +306,11 @@ class SourceDownloader:
     def _validate_schema(self, spec: SourceSpec, path: Path) -> bool:
         if not spec.expected_columns and not spec.expected_keys:
             return True
+        import csv
+        import json
+
         try:
             if path.suffix == ".csv":
-                import csv
-
                 with path.open("r", encoding="utf-8", newline="") as f:
                     reader = csv.DictReader(f)
                     headers = tuple(reader.fieldnames or ())
@@ -345,10 +346,11 @@ def _utc_now_iso() -> str:
     def _validate_schema(self, spec: SourceSpec, path: Path) -> bool:
         if not spec.expected_columns and not spec.expected_keys:
             return True
+        import csv
+        import json
+
         try:
             if path.suffix == ".csv":
-                import csv
-
                 with path.open("r", encoding="utf-8", newline="") as f:
                     reader = csv.DictReader(f)
                     headers = tuple(reader.fieldnames or ())

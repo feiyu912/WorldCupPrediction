@@ -1,6 +1,6 @@
 {
   "schema_version": 1,
-  "updated_at": "2026-06-29T00:00:00Z",
+  "updated_at": "2026-06-30T00:00:00Z",
   "sources": {
     "martj42_results": {
       "kind": "results_csv",
@@ -18,12 +18,68 @@
       "expected_columns": ["date", "home_team", "away_team", "winner"],
       "description": "Penalty shootout results. Used to derive the advancer on knockout matches that ended in a 90-minute draw."
     },
+    "openfootball_worldcup_1990": {
+      "kind": "openfootball_worldcup",
+      "url_template": "https://raw.githubusercontent.com/openfootball/worldcup.json/master/1990/worldcup.json",
+      "pinned_sha": "master",
+      "local_filename": "openfootball_worldcup_1990.json",
+      "expected_keys": ["name", "matches"],
+      "description": "Open Football 1990 World Cup dataset. 24-team format: 8 R16 + 4 QF + 2 SF + 1 F = 15 ties."
+    },
+    "openfootball_worldcup_1994": {
+      "kind": "openfootball_worldcup",
+      "url_template": "https://raw.githubusercontent.com/openfootball/worldcup.json/master/1994/worldcup.json",
+      "pinned_sha": "master",
+      "local_filename": "openfootball_worldcup_1994.json",
+      "expected_keys": ["name", "matches"],
+      "description": "Open Football 1994 World Cup dataset. 16-team format: 8 R16 + 4 QF + 2 SF + 1 F = 15 ties."
+    },
+    "openfootball_worldcup_1998": {
+      "kind": "openfootball_worldcup",
+      "url_template": "https://raw.githubusercontent.com/openfootball/worldcup.json/master/1998/worldcup.json",
+      "pinned_sha": "master",
+      "local_filename": "openfootball_worldcup_1998.json",
+      "expected_keys": ["name", "matches"],
+      "description": "Open Football 1998 World Cup dataset. 32-team format: 15 ties."
+    },
+    "openfootball_worldcup_2002": {
+      "kind": "openfootball_worldcup",
+      "url_template": "https://raw.githubusercontent.com/openfootball/worldcup.json/master/2002/worldcup.json",
+      "pinned_sha": "master",
+      "local_filename": "openfootball_worldcup_2002.json",
+      "expected_keys": ["name", "matches"],
+      "description": "Open Football 2002 World Cup dataset. 32-team format: 15 ties."
+    },
+    "openfootball_worldcup_2006": {
+      "kind": "openfootball_worldcup",
+      "url_template": "https://raw.githubusercontent.com/openfootball/worldcup.json/master/2006/worldcup.json",
+      "pinned_sha": "master",
+      "local_filename": "openfootball_worldcup_2006.json",
+      "expected_keys": ["name", "matches"],
+      "description": "Open Football 2006 World Cup dataset. 32-team format: 15 ties."
+    },
+    "openfootball_worldcup_2010": {
+      "kind": "openfootball_worldcup",
+      "url_template": "https://raw.githubusercontent.com/openfootball/worldcup.json/master/2010/worldcup.json",
+      "pinned_sha": "master",
+      "local_filename": "openfootball_worldcup_2010.json",
+      "expected_keys": ["name", "matches"],
+      "description": "Open Football 2010 World Cup dataset. 32-team format: 15 ties."
+    },
+    "openfootball_worldcup_2014": {
+      "kind": "openfootball_worldcup",
+      "url_template": "https://raw.githubusercontent.com/openfootball/worldcup.json/master/2014/worldcup.json",
+      "pinned_sha": "master",
+      "local_filename": "openfootball_worldcup_2014.json",
+      "expected_keys": ["name", "matches"],
+      "description": "Open Football 2014 World Cup dataset. Provides per-match round metadata for the 2014 World Cup."
+    },
     "openfootball_worldcup_2018": {
       "kind": "openfootball_worldcup",
       "url_template": "https://raw.githubusercontent.com/openfootball/worldcup.json/master/2018/worldcup.json",
       "pinned_sha": "master",
       "local_filename": "openfootball_worldcup_2018.json",
-      "expected_keys": ["name", "matches", "rounds"],
+      "expected_keys": ["name", "matches"],
       "description": "Open Football 2018 World Cup dataset. Provides per-match round metadata for the 2018 World Cup."
     },
     "openfootball_worldcup_2022": {
@@ -31,16 +87,8 @@
       "url_template": "https://raw.githubusercontent.com/openfootball/worldcup.json/master/2022/worldcup.json",
       "pinned_sha": "master",
       "local_filename": "openfootball_worldcup_2022.json",
-      "expected_keys": ["name", "matches", "rounds"],
+      "expected_keys": ["name", "matches"],
       "description": "Open Football 2022 World Cup dataset. Provides per-match round metadata for the 2022 World Cup."
-    },
-    "openfootball_worldcup_2014": {
-      "kind": "openfootball_worldcup",
-      "url_template": "https://raw.githubusercontent.com/openfootball/worldcup.json/master/2014/worldcup.json",
-      "pinned_sha": "master",
-      "local_filename": "openfootball_worldcup_2014.json",
-      "expected_keys": ["name", "matches", "rounds"],
-      "description": "Open Football 2014 World Cup dataset. Provides per-match round metadata for the 2014 World Cup."
     },
     "statsbomb_open_data": {
       "kind": "statsbomb_open_data",

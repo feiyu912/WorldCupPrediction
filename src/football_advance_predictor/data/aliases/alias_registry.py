@@ -70,6 +70,14 @@ _DEFAULT_ALIASES: dict[str, str] = {
     "korea": "south_korea",
     "republic of ireland": "ireland",
     "northern ireland": "northern_ireland",
+    "ireland": "ireland",
+    "west germany": "germany",
+    "east germany": "germany",
+    "czechoslovakia": "czech_republic",
+    "yugoslavia": "serbia",
+    "serbia and montenegro": "serbia",
+    "soviet union": "russia",
+    "usSR": "russia",
 }
 
 

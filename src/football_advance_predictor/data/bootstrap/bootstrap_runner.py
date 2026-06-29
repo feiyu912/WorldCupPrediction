@@ -223,9 +223,15 @@ class BootstrapRunner:
         #    and any duplicates are dropped by the dedup key.
         builder = KnockoutManifestBuilder(aliases)
         for source_name, default_name in (
+            ("openfootball_worldcup_1990", "FIFA World Cup 1990"),
+            ("openfootball_worldcup_1994", "FIFA World Cup 1994"),
+            ("openfootball_worldcup_1998", "FIFA World Cup 1998"),
+            ("openfootball_worldcup_2002", "FIFA World Cup 2002"),
+            ("openfootball_worldcup_2006", "FIFA World Cup 2006"),
+            ("openfootball_worldcup_2010", "FIFA World Cup 2010"),
+            ("openfootball_worldcup_2014", "FIFA World Cup 2014"),
             ("openfootball_worldcup_2018", "FIFA World Cup 2018"),
             ("openfootball_worldcup_2022", "FIFA World Cup 2022"),
-            ("openfootball_worldcup_2014", "FIFA World Cup 2014"),
         ):
             try:
                 spec = self.registry.get(source_name)

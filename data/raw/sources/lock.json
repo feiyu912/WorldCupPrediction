@@ -1,5 +1,5 @@
 {
-  "created_at": "2026-06-29T15:11:54.638660+00:00",
+  "created_at": "2026-06-29T17:16:41.551190+00:00",
   "schema_version": 1,
   "sources": {
     "martj42_results": {
@@ -8,7 +8,7 @@
       "raw_sha256": "df6a30676640fc647f2af51d387765996f75c7cda10d70d7c81ef9180c23df08",
       "requested_ref": "HEAD",
       "resolved_sha": "0006be80a08de2eeaa5eaefb81e91754b8159f16",
-      "retrieved_at": "2026-06-29T15:11:56.526579+00:00",
+      "retrieved_at": "2026-06-29T17:16:42.800453+00:00",
       "source_url": "https://raw.githubusercontent.com/martj42/international_results/0006be80a08de2eeaa5eaefb81e91754b8159f16/results.csv"
     },
     "martj42_shootouts": {
@@ -17,9 +17,90 @@
       "raw_sha256": "e52e503badc11021d5d243ddf2288346f63ad028bf8de75ae9cfb72c5475d807",
       "requested_ref": "HEAD",
       "resolved_sha": "0006be80a08de2eeaa5eaefb81e91754b8159f16",
-      "retrieved_at": "2026-06-29T15:11:57.865777+00:00",
+      "retrieved_at": "2026-06-29T17:16:43.718655+00:00",
       "source_url": "https://raw.githubusercontent.com/martj42/international_results/0006be80a08de2eeaa5eaefb81e91754b8159f16/shootouts.csv"
+    },
+    "openfootball_worldcup_1990": {
+      "local_path": "/Users/kaicheng/PycharmProjects/WorldCupPrediction/data/raw/sources/openfootball_worldcup_1990.json",
+      "name": "openfootball_worldcup_1990",
+      "raw_sha256": "77be0a9ca518c6f1346f90d1669bfbe45c69c084fabffc611dd65c615ab2d146",
+      "requested_ref": "master",
+      "resolved_sha": "30ed17959a661a5f394150f049d9cd2f283cd993",
+      "retrieved_at": "2026-06-29T17:16:45.658695+00:00",
+      "source_url": "https://raw.githubusercontent.com/openfootball/worldcup.json/master/1990/worldcup.json"
+    },
+    "openfootball_worldcup_1994": {
+      "local_path": "/Users/kaicheng/PycharmProjects/WorldCupPrediction/data/raw/sources/openfootball_worldcup_1994.json",
+      "name": "openfootball_worldcup_1994",
+      "raw_sha256": "ff290bc3f040d1d7e134e6ff96aa34543e53947f4bc9fc1699942ebf59b1361e",
+      "requested_ref": "master",
+      "resolved_sha": "30ed17959a661a5f394150f049d9cd2f283cd993",
+      "retrieved_at": "2026-06-29T17:16:46.298219+00:00",
+      "source_url": "https://raw.githubusercontent.com/openfootball/worldcup.json/master/1994/worldcup.json"
+    },
+    "openfootball_worldcup_1998": {
+      "local_path": "/Users/kaicheng/PycharmProjects/WorldCupPrediction/data/raw/sources/openfootball_worldcup_1998.json",
+      "name": "openfootball_worldcup_1998",
+      "raw_sha256": "6addf8d8ee4befad154c36943233b9f4db89032531cc37992c7d212433b779a6",
+      "requested_ref": "master",
+      "resolved_sha": "30ed17959a661a5f394150f049d9cd2f283cd993",
+      "retrieved_at": "2026-06-29T17:16:46.977921+00:00",
+      "source_url": "https://raw.githubusercontent.com/openfootball/worldcup.json/master/1998/worldcup.json"
+    },
+    "openfootball_worldcup_2002": {
+      "local_path": "/Users/kaicheng/PycharmProjects/WorldCupPrediction/data/raw/sources/openfootball_worldcup_2002.json",
+      "name": "openfootball_worldcup_2002",
+      "raw_sha256": "10a452ba237a07876efde0d29bb00dd824b0a87cd452f9f5d2763b6ff1ed0c71",
+      "requested_ref": "master",
+      "resolved_sha": "30ed17959a661a5f394150f049d9cd2f283cd993",
+      "retrieved_at": "2026-06-29T17:16:48.427206+00:00",
+      "source_url": "https://raw.githubusercontent.com/openfootball/worldcup.json/master/2002/worldcup.json"
+    },
+    "openfootball_worldcup_2006": {
+      "local_path": "/Users/kaicheng/PycharmProjects/WorldCupPrediction/data/raw/sources/openfootball_worldcup_2006.json",
+      "name": "openfootball_worldcup_2006",
+      "raw_sha256": "de004d88a0a374b054ed3bc8bfcbb5b4b12abc3b837b6b949a4dc8750eef3eba",
+      "requested_ref": "master",
+      "resolved_sha": "30ed17959a661a5f394150f049d9cd2f283cd993",
+      "retrieved_at": "2026-06-29T17:16:48.897917+00:00",
+      "source_url": "https://raw.githubusercontent.com/openfootball/worldcup.json/master/2006/worldcup.json"
+    },
+    "openfootball_worldcup_2010": {
+      "local_path": "/Users/kaicheng/PycharmProjects/WorldCupPrediction/data/raw/sources/openfootball_worldcup_2010.json",
+      "name": "openfootball_worldcup_2010",
+      "raw_sha256": "dd36ad80ca6caf0bb2e1aff350d97d5b322e1e130a241e44fcd5f5c424b6f356",
+      "requested_ref": "master",
+      "resolved_sha": "30ed17959a661a5f394150f049d9cd2f283cd993",
+      "retrieved_at": "2026-06-29T17:16:49.737201+00:00",
+      "source_url": "https://raw.githubusercontent.com/openfootball/worldcup.json/master/2010/worldcup.json"
+    },
+    "openfootball_worldcup_2014": {
+      "local_path": "/Users/kaicheng/PycharmProjects/WorldCupPrediction/data/raw/sources/openfootball_worldcup_2014.json",
+      "name": "openfootball_worldcup_2014",
+      "raw_sha256": "a5614bec9bccb26d4eb639607eb7fabceef98fee6743b910985132f13e26977f",
+      "requested_ref": "master",
+      "resolved_sha": "30ed17959a661a5f394150f049d9cd2f283cd993",
+      "retrieved_at": "2026-06-29T17:16:50.098954+00:00",
+      "source_url": "https://raw.githubusercontent.com/openfootball/worldcup.json/master/2014/worldcup.json"
+    },
+    "openfootball_worldcup_2018": {
+      "local_path": "/Users/kaicheng/PycharmProjects/WorldCupPrediction/data/raw/sources/openfootball_worldcup_2018.json",
+      "name": "openfootball_worldcup_2018",
+      "raw_sha256": "1fb1038ca41e81887c994560fdf5e2bb014eedda7ea7f2e0cd2c5bced5711017",
+      "requested_ref": "master",
+      "resolved_sha": "30ed17959a661a5f394150f049d9cd2f283cd993",
+      "retrieved_at": "2026-06-29T17:16:51.659483+00:00",
+      "source_url": "https://raw.githubusercontent.com/openfootball/worldcup.json/master/2018/worldcup.json"
+    },
+    "openfootball_worldcup_2022": {
+      "local_path": "/Users/kaicheng/PycharmProjects/WorldCupPrediction/data/raw/sources/openfootball_worldcup_2022.json",
+      "name": "openfootball_worldcup_2022",
+      "raw_sha256": "5b81ae4dd5f2da1f0083f9da987e95e10b898e399c53dcd6bc28c0d016e4dcdd",
+      "requested_ref": "master",
+      "resolved_sha": "30ed17959a661a5f394150f049d9cd2f283cd993",
+      "retrieved_at": "2026-06-29T17:16:53.497829+00:00",
+      "source_url": "https://raw.githubusercontent.com/openfootball/worldcup.json/master/2022/worldcup.json"
     }
   },
-  "updated_at": "2026-06-29T17:06:03.233519+00:00"
+  "updated_at": "2026-06-29T17:17:55.932279+00:00"
 }
