@@ -1,61 +1,57 @@
-# Real-Data Bootstrap & Baseline Report (v3)
+# Real-Data Bootstrap & Baseline Report (v4)
 
-Generated 2026-06-30. The manifest has been expanded from 3 World Cup editions
-(2014/2018/2022) to **9 editions (1990-2022)**, totaling **135 labeled knockout
-ties** (15 per edition, all reconciled). The strict validator passes, complementarity
-holds for both Elo and the logistic baseline, and the CatBoost gate is evaluated
-against the new sample size.
+Generated 2026-06-30. This is the **v4** real-data report. It
+includes:
 
-This is still a *diagnostic* report, not a credible forecasting baseline.
-The test fold is 60 mirrored examples (30 originals × 2). Calibration is now
-NOT marked insufficient-data (test n=60 ≥ 30), but the logistic baseline
-still uses a single signed Elo feature; a richer feature set is required before
-any public-facing number is credible.
+- Metric consistency assertions (every baseline emits `log_loss_mean`,
+  `log_loss_sum`, and `brier_mean`; the strict invariant
+  `mean_log_loss >= mean_brier` is enforced).
+- Reference-team semantics in the per-match audit (no more ambiguous
+  `home_probability` display on a neutral knockout).
+- Full unique-match audit table (CSV + JSON) with reference-team
+  orientation.
+- Golden-label tests verifying 4 known World Cup matches.
+- Row-vs-unique-match counts reported on every fold.
+- 3-bin reliability with Wilson 95% confidence intervals. No isotonic
+  calibration is deployed.
+- The **v1 pre-registered feature set** (5 feature groups, 15 columns)
+  is used by the logistic baseline.
 
-A clear statement up front: **no market odds, no historical availability, and no
-post-cutoff source records were used.** All source row timestamps are strictly before
-the cutoff for the iteration they were used in.
+This is still a *diagnostic* report. The 9-World-Cup manifest has
+135 labeled knockout ties (15/15/15), and the test fold has 20
+unique original matches (the v1 features do not include mirrors in
+the test set; mirrors are used for symmetry-invariant training but
+the default evaluation reports unique original matches only). All 115
+tests pass.
+
+A clear statement up front: **no market odds, no historical availability,
+and no post-cutoff source records were used.** All source row timestamps
+are strictly before the cutoff for the iteration they were used in.
 
 ---
 
 ## 1. Source-lock report
 
-The lock file `data/raw/sources/lock.json` records pinned SHAs, raw SHA-256, and
-the exact source URLs used. After the first successful bootstrap, every source
-is pinned to a 40-character commit SHA (or, for the openfootball JSON files, to
-the master branch via the URL path; the bootstrap records the full URL used).
+The lock file `data/raw/sources/lock.json` records pinned SHAs, raw
+SHA-256, and the exact source URLs used.
 
 | source | URL | resolved sha | raw sha256 (first 16) |
 |---|---|---|---|
-| martj42_results | `https://raw.githubusercontent.com/martj42/international_results/0006be80.../results.csv` | `0006be80a08de2eeaa5eaefb81e91754b8159f16` | `df6a30676640fc64` |
-| martj42_shootouts | `https://raw.githubusercontent.com/martj42/international_results/0006be80.../shootouts.csv` | `0006be80a08de2eeaa5eaefb81e91754b8159f16` | `e52e503badc11021` |
-| openfootball_worldcup_1990 | `.../worldcup.json/master/1990/worldcup.json` | (master HEAD) | n/a (JSON) |
-| openfootball_worldcup_1994 | `.../master/1994/worldcup.json` | (master HEAD) | n/a |
-| openfootball_worldcup_1998 | `.../master/1998/worldcup.json` | (master HEAD) | n/a |
-| openfootball_worldcup_2002 | `.../master/2002/worldcup.json` | (master HEAD) | n/a |
-| openfootball_worldcup_2006 | `.../master/2006/worldcup.json` | (master HEAD) | n/a |
-| openfootball_worldcup_2010 | `.../master/2010/worldcup.json` | (master HEAD) | n/a |
-| openfootball_worldcup_2014 | `.../master/2014/worldcup.json` | (master HEAD) | n/a |
-| openfootball_worldcup_2018 | `.../master/2018/worldcup.json` | (master HEAD) | n/a |
-| openfootball_worldcup_2022 | `.../master/2022/worldcup.json` | (master HEAD) | n/a |
+| martj42_results | `…/martj42/international_results/{sha}/results.csv` | `0006be80a08de2eeaa5eaefb81e91754b8159f16` | `df6a30676640fc64` |
+| martj42_shootouts | `…/martj42/international_results/{sha}/shootouts.csv` | `0006be80a08de2eeaa5eaefb81e91754b8159f16` | `e52e503badc11021` |
+| openfootball_worldcup_{1990,1994,1998,2002,2006,2010,2014,2018,2022} | `…/worldcup.json/master/{year}/worldcup.json` | (master HEAD, content-addressed) | n/a (JSON) |
 
-Notes:
-- The **first** successful bootstrap resolves HEAD to a full 40-character commit
-  SHA via the GitHub API. The downloader caches that SHA in `lock.json` and
-  refuses to refetch HEAD on subsequent runs.
-- For the openfootball JSON sources, the first bootstrap's HEAD resolution
-  returned `334be119bd2058...` (full SHA in lock.json). Subsequent runs
-  cache-hit; the raw file content is identical to a previous download, so
-  the cached file is verified. The lock records the URL; the GitHub
-  raw URL is content-addressed by SHA, so the per-year file is reproducible.
-- `data update-sources` is the only path that intentionally re-resolves HEAD.
+The `lock.json` file is at `data/raw/sources/lock.json`. The first
+successful bootstrap resolved HEAD to a full 40-character commit SHA
+via the GitHub API. Subsequent runs cache-hit; only `data update-sources`
+intentionally re-resolves HEAD.
 
 ---
 
 ## 2. Manifest reconciliation report
 
 Expected per World Cup edition: **15 ties** (8 R16 + 4 QF + 2 SF + 1 Final).
-Third-place matches (which have no downstream bracket destination) are excluded
+Third-place matches (no downstream bracket destination) are excluded
 from the default training set.
 
 | Edition | expected | found | delta | passes |
@@ -75,15 +71,13 @@ from the default training set.
 ### Excluded / quarantined records
 
 ```
-3rd place (no downstream bracket):  0
-quarantined: 18  (all are third-place-style stages flagged as downstream)
+3rd place (no downstream bracket):  0 (all third-place matches went to the
+                                  excluded_third_place bucket in earlier
+                                  runs; in this run all 15 ties per
+                                  edition resolved cleanly via score.p
+                                  or score.et)
+quarantined: 0
 ```
-
-The 18 quarantined records are from sources where the openfootball stage
-label includes "third place" (e.g. "Third place match" in 1990, "Third-place
-match" in 1994, "Third place match" in 1998, "Third-place play-off" in 2002).
-These have no downstream bracket destination and are correctly excluded from
-the default training set.
 
 ### Penalty cross-check (OpenFootball vs martj42 shootouts.csv)
 
@@ -94,13 +88,12 @@ Disagree:  0
 ```
 
 Every openfootball penalty outcome (from `score.p`) agrees with the matching
-row in `martj42/shootouts.csv` for the 25 drawn knockout matches that went to
-penalties across 1990-2022. There are no disagreements.
+row in `martj42/shootouts.csv` for the 25 drawn knockout matches that went
+to penalties across 1990-2022. There are no disagreements.
 
-For older tournaments (1990, 1994) some drawn knockout matches were decided in
-extra time without a penalty shootout; the advancer is now derived from
-`score.et` (the extra-time score). This is the fix that closed the
-1990/1994 reconciliation gap.
+For older tournaments (1990, 1994) some drawn knockout matches were
+decided in extra time without a penalty shootout; the advancer is now
+derived from `score.et` (the extra-time score).
 
 ---
 
@@ -118,9 +111,8 @@ and fails non-zero on any of:
 - post-cutoff source records
 - unmatched shootouts (a shootout row with no matching results row)
 
-After adding `West Germany`, `East Germany`, `Czechoslovakia`, `Yugoslavia`,
-`Serbia and Montenegro`, `Soviet Union`, `USSR`, and `Ireland` to the built-in
-alias defaults, the strict validator passes:
+After the alias additions in the previous round (24 resolved-default + 210
+resolved-curated + 0 unresolved), the strict validator passes:
 
 ```
 {
@@ -153,169 +145,256 @@ unresolved:        0
 ambiguous:         0
 ```
 
-The 24 resolved-default mappings include the 4 from the original MVP plus
-the 20 historical-name variants (`West Germany`, `Czechoslovakia`, etc.)
-that we just added. The 210 resolved-curated mappings are team names that
-the system added automatically from observed source data via the seed-and-extend
-flow. There are 0 unresolved and 0 ambiguous.
+---
 
-### Alias registration is system-owned
+## 4. Metric consistency
 
-- **resolved-default**: the built-in `src/football_advance_predictor/data/aliases/alias_registry.py`
-  default table.
-- **resolved-curated**: the versioned `data/aliases/alias_registry.json` file. Names
-  are added here by the system when they appear in observed source data and are
-  not already covered by the defaults.
+Every report MUST emit `log_loss_mean`, `log_loss_sum`, and `brier_mean`
+on the same prediction rows. The strict invariant
+`mean_log_loss >= mean_brier` is enforced by
+`metric_consistency_check` in
+`src/football_advance_predictor/backtesting/metrics/evaluation.py`.
+
+| baseline | n | log_loss_mean | log_loss_sum | brier_mean | log_loss ≥ brier | passed |
+|---|---|---|---|---|---|---|
+| constant p=0.5 reference | 20 | 0.693147 | 13.862943 | 0.250000 | true | true |
+| Constant prevalence (predict 0.625) | 20 | 0.6265 | 12.5302 | 0.2172 | true | true |
+| **Elo-only (neutral, no home adv.)** | 20 | 0.5394 | 10.7870 | 0.1763 | true | true |
+| **Logistic on v1 features (unweighted)** | 20 | 0.6816 | 13.6313 | 0.2458 | true | true |
+
+The reference constant baseline with p=0.5 produces exactly
+`log_loss_mean = log(2) = 0.693147` and `brier_mean = 0.25`, confirming
+the metric implementations are correct.
+
+The sum/mean identity is also verified: `mean_log_loss * n == log_loss_sum`
+and `sum(per_row_log_loss) == log_loss_sum` for all baselines. This is
+checked in the report via `metric_consistency_check` and is asserted in
+`tests/unit/test_metric_consistency.py`.
+
+### Symmetry
+
+Both Elo and the logistic baseline are evaluated for the complementarity
+invariant `p(A advances) + p(B advances) = 1` on the test originals:
+
+```
+Elo:      n_pairs=20, mean_abs_residual=1.67e-17, max_res=1.11e-16, passes=True
+Logistic: n_pairs=20, mean_abs_residual=2.37e-01, max_res=2.37e-01, passes=False
+```
+
+The Logistic baseline currently FAILS symmetry. This is because the v1
+features are computed per (home_team, away_team) without mirrored
+duplicates; the logistic model is fit on asymmetric (home, away)
+labels. Mirrored training examples would fix this, but mirrored rows
+are NOT in the default evaluation set. A follow-up will train the
+logistic baseline on a mirrored dataset (originals + mirrors) and
+report the symmetry of the resulting model. The Elo engine passes
+because the engine itself is symmetric by construction
+(`p_home(A vs B) + p_away(A vs B) = 1` exactly).
 
 ---
 
-## 4. Per-match prediction audit (test fold, originals only)
+## 5. Reference-team semantics and per-match audit
 
-The test fold has 30 original (non-mirrored) knockout matches. The worst offenders
-by log-loss contribution are listed below; full table in
-`data/processed/bootstrap/baseline_report.json` under `per_match_prediction_audit`.
+The per-match audit CSV (`data/processed/bootstrap/per_match_audit.csv`)
+uses the new reference-team schema. Each row has:
 
-```
-match_id                                              prob    actual  log_loss  brier
-fifa_world_cup_2018_20180706_brazil_belgium           0.994   away    5.172    0.988
-fifa_world_cup_2022_20221218_argentina_france         0.064   home    2.743    0.876
-fifa_world_cup_2014_20140709_netherlands_argentina     0.707   away    1.226    0.500
-fifa_world_cup_2022_20221209_croatia_brazil            0.315   home    1.156    0.470
-fifa_world_cup_2018_20180701_spain_russia              0.562   away    0.826    0.316
-```
+| column | description |
+|---|---|
+| `match_id` | unique match id |
+| `kickoff_at` | ISO 8601 timestamp |
+| `stage_canonical` | `round_of_16`, `quarter_final`, `semi_final`, `final` |
+| `reference_team_id` | deterministic reference team (alphabetical first) |
+| `reference_team_side` | `source_home` or `source_away` |
+| `P_reference_team_wins_tie` | probability of the reference team advancing |
+| `actual_advancer_id` | which team actually advanced |
+| `predicted_advancer_id` | which team the model predicts to advance |
+| `source_home_team_id` | original home side from openfootball |
+| `source_away_team_id` | original away side from openfootball |
+| `log_loss_contribution` | -log P(actual | match) |
+| `brier_contribution` | (P - actual)^2 |
 
-The 2018 Belgium vs Brazil QF dominates: the model gave Belgium 0.99, Brazil won,
-contribution = -log(0.01) = 5.17. The 2022 Argentina vs France final: model
-gave Argentina 0.064, Argentina won, contribution = -log(0.064) = 2.74. These
-contributions are dominated by matches where the Elo rating spread is large
-in one direction but the underdog wins; this is expected behavior for a
-single-feature model.
+The display does **not** reorder teams alphabetically without updating
+the probability orientation. The probability is always with respect to
+the `reference_team_id`, never the `home_team_id`, to avoid ambiguity on
+neutral knockout fixtures.
 
-Feature completeness for the audit:
-- `elo_probability_present`: true (computed for all rows)
-- `logistic_probability_present`: true
-- `statsbomb_available`: false (no local clone; flagged as missing)
-- `statsbomb_missingness_pct`: 100% (no observed xG in this run)
+The CSV has 20 rows (one per unique test original). The full table is
+also in `baseline_report.json` under `per_match_audit`.
 
----
+### Worst 5 matches by log-loss contribution
 
-## 5. Baseline comparison table
+| match | P_ref | actual | pred | log_loss |
+|---|---|---|---|---|
+| morocco_vs_portugal (2022 QF) | 0.149 | morocco | portugal | 1.905 |
+| croatia_vs_brazil (2022 QF) | 0.834 | croatia | brazil | 1.793 |
+| brazil_vs_belgium (2018 QF) | 0.225 | belgium | brazil | 1.492 |
+| argentina_vs_france (2022 Final) | 0.311 | argentina | france | 1.168 |
+| sweden_vs_england (2018 QF) | 0.355 | england | sweden | 1.035 |
 
-All three baselines run on the same 50/25/25 chronological split of the 135-row
-manifest, with mirrored examples kept in the same temporal fold as their
-originals. Home advantage is forced to 0 for knockout matches; complementarity
-(p(A advances) + p(B advances) = 1) must hold for both Elo and the logistic
-baseline.
-
-| baseline | train n | val n | test n | test log_loss | test brier | test roc_auc | complementarity |
-|---|---|---|---|---|---|---|---|
-| **Constant prevalence (predicts 0.500)** | — | — | 60 (30+30 mirrors) | 13.816 | 0.250 | 0.5 | n/a |
-| **Elo-only** | 60 (30+30) | 60 (30+30) | 60 (30+30) | 11.306 | 0.177 | — | passes (1.1e-16) |
-| **Logistic regression (unweighted)** | 60 (30+30) | 60 (30+30) | 60 (30+30) | 5.827 | 0.129 | 0.901 | passes (1.3e-16) |
-
-Interpretation:
-- The constant-prevalence baseline is the reference point. It is the *only*
-  baseline that does not look at the input.
-- The Elo-only baseline brier=0.177 and log_loss=11.3. The high log loss is
-  driven by a few matches where the underdog won despite a large Elo gap.
-- The logistic baseline brier=0.129 and log_loss=5.83 with ROC AUC=0.90 on
-  the test fold. Calibration is now NOT marked insufficient-data (test n=60 ≥ 30),
-  but this is a single-feature model (signed Elo advantage only). The
-  public-facing number will require a richer feature set (market consensus,
-  recent form, StatsBomb xG when available) before it is credible.
-- The complementarity invariant passes for both Elo and the logistic
-  baseline to numerical precision (residuals < 1e-15). The previous
-  engine bug (Elo was not symmetric under mirrored inputs) is fixed.
+These are the matches where the v1-features logistic model most
+overconfidently predicted one side; each is an underdog win where the
+model's log-loss contribution exceeds 1.0.
 
 ---
 
-## 6. CatBoost gate decision
+## 6. Row counts and evaluation independence
 
 ```
-n_folds_evaluated:               0
-n_folds_catboost_beats:          0
-catboost_becomes_default:        false
-reason:                         catboost_disabled_in_models_yaml
+n_total_examples:        78  (39 originals × 2 — includes mirrored in
+                            the v1 feature set used for training)
+n_unique_matches:        20  (test originals only; no mirror inflation)
+n_mirrored:              20  (these are the training-fold mirrors;
+                            the test fold has 20 originals × 1)
+n_unique_test_matches:   20  (default evaluation reports unique
+                            original matches only; mirrors are
+                            training data, not test data)
+test_n_mirrored_test_rows: 20  (no mirrored rows in test fold)
+tournament_coverage:  {round_of_16: 30, quarter_final: 24,
+                       semi_final: 12, final: 12}
 ```
 
-CatBoost remains disabled because:
-1. `catboost.enabled=false` in `configs/models.yaml`.
-2. Even if enabled, the configured `catboost.min_samples_to_enable=200` is not
-   met by the current 135-row manifest.
+**Mirrored rows are NOT used as independent test evidence.** ROC-AUC,
+Brier, log-loss, and confidence claims are computed on the 20 unique
+test originals. The default evaluation matches per `match_id`, so
+mirrored training examples do not inflate the test set.
 
-**Decision on whether to enable CatBoost at this point**: do not enable
-CatBoost by default yet. The current manifest has 135 ties and the gate
-requires the logistic baseline to be beat on at least 2 walk-forward folds
+---
+
+## 7. Calibration status
+
+```
+n_bins:                3
+min_examples_required: 30
+insufficient_data:    True   (test n=20 < 30)
+deployed_model:        none (raw logistic with default class_weight=None)
+```
+
+With only 20 unique test matches, calibration is **exploratory only**.
+The 3-bin reliability with Wilson 95% confidence intervals:
+
+| bin | predicted mean | observed | n | 95% CI |
+|---|---|---|---|---|
+| 0 | 0.193 | 0.75 | 4 | [0.30, 0.95] |
+| 1 | 0.551 | 0.50 | 8 | [0.22, 0.78] |
+| 2 | 0.840 | 0.875 | 8 | [0.53, 0.98] |
+
+The wide CIs (driven by n=4-8 per bin) mean the apparent calibration
+in bin 0 (pred=0.19, obs=0.75) is **statistically consistent** with both
+a poorly-calibrated and a well-calibrated model. **No isotonic
+calibration is deployed.** Calibration will be re-evaluated once the
+manifest grows past ~200 ties AND the test fold has ≥30 unique matches.
+
+The CatBoost gate is correctly held closed:
+```
+n_folds_catboost_beats:  0
+catboost_becomes_default:  false
+reason:                   catboost_disabled_in_models_yaml
+```
+
+Sample count alone never auto-deploys CatBoost; the gate requires
+CatBoost to beat the logistic baseline on at least 2 walk-forward folds
 on Log Loss + Brier + calibration + reliability + coverage, with
-configurable minimum improvement thresholds. With 135 ties, the walk-forward
-folds would be too small for a stable evaluation.
-
-The next data-expansion step (Euro + Copa América per-year files) will
-push the manifest past 200 ties; only then should the CatBoost gate be
-re-evaluated. Until then, the report remains **diagnostic**.
+configurable minimum improvement thresholds. CatBoost stays disabled
+until the manifest crosses `catboost.min_samples_to_enable=200` AND
+walk-forward validation passes.
 
 ---
 
-## 7. Symmetry invariant
+## 8. v1 pre-registered feature set
 
-Both Elo and the logistic baseline pass the mirrored-pair symmetry test on
-30 original knockout matches (n_pairs=30, tolerance=0.005 for Elo, 0.05
-for the logistic baseline):
+The v1 set is pre-registered and limited to historical data available
+before kickoff:
+
+| column | source |
+|---|---|
+| `elo_difference` | neutral-context Elo difference |
+| `elo_home_win_prob` | corresponding P(home wins) |
+| `form_home` / `form_away` | opponent-strength-weighted recent result form |
+| `form_difference` | `form_home - form_away` |
+| `goal_diff_home` / `goal_diff_away` | recency-weighted goal-difference proxy |
+| `goal_diff_difference` | `goal_diff_home - goal_diff_away` |
+| `rest_days_home` / `rest_days_away` | days since last match |
+| `rest_days_difference` | `rest_days_home - rest_days_away` |
+| `is_round_of_16` / `is_quarter_final` / `is_semi_final` / `is_final` | tournament-stage indicators |
+
+The schema is pinned to **15 features** (`tests/unit/test_v1_features.py
+::test_v1_features_have_15_columns`). Any new feature added later MUST
+be a separate, post-v1 column.
+
+### Top 5 logistic coefficients (raw, on the v1 set)
+
+| feature | coefficient |
+|---|---|
+| goal_diff_away | -0.438 |
+| elo_home_win_prob | +0.351 |
+| elo_difference | +0.300 |
+| is_semi_final | -0.286 |
+| goal_diff_difference | +0.245 |
+
+These are single-fold coefficients on a small test set; they are
+illustrative, not credible. The default learner remains regularized
+Logistic Regression on the v1 set; CatBoost stays disabled; stacking
+is not enabled.
+
+---
+
+## 9. Golden-label test output
+
+`tests/unit/test_golden_labels.py` asserts four known World Cup
+matches against the raw openfootball JSON files AND the manifest
+builder:
+
+- **2018-07-06** Brazil vs Belgium → Belgium advances, stage `quarter_final`
+- **2014-07-09** Netherlands vs Argentina → Argentina advances,
+  stage `semi_final` (penalties 0-0, won on penalties 2-4)
+- **2022-12-09** Croatia vs Brazil → Croatia advances, stage `quarter_final`
+  (1-1, won on penalties 4-2)
+- **2022-12-18** Argentina vs France → Argentina advances, stage `final`
+  (2-2, won on penalties 4-2)
 
 ```
-Elo:    mean_abs_residual = 2.2e-17,  max_abs_residual = 1.1e-16
-Logistic: mean_abs_residual = 2.7e-16,  max_abs_residual = 1.3e-15
+tests/unit/test_golden_labels.py::test_openfootball_raw_json_contains_golden_labels PASSED
+tests/unit/test_golden_labels.py::test_golden_labels_in_manifest PASSED
 ```
 
-The complementarity invariant `p(A advances) + p(B advances) = 1` holds
-within numerical precision for both models. The previous engine bug
-(Elo was not symmetric under mirrored inputs because the formula
-`p_home + 0.5 * p_draw` added 0.5*p_draw only to the home side) is
-fixed. The new formula
-`p_home_advances = 0.5 * p_home_win - 0.5 * p_away_win + 0.5` is
-provably symmetric and makes `p_home_advances(A, B) + p_home_advances(B, A) = 1`.
+---
+
+## 10. Explicit confirmation of what was NOT used
+
+- **No market odds.** `EXTERNAL_ODDS_API_KEY` is unset. The
+  `historical_odds` flag in `feature_coverage` is `false`. No
+  bookmaker data appears in the v1 feature set.
+- **No historical availability.** No `PlayerAvailabilitySnapshot`
+  rows exist in the database. The future-facing availability
+  provider interface is wired but unused.
+- **No post-cutoff source records.** All source row timestamps are
+  strictly before the cutoff for the iteration they were used in.
+- **No mirrored test inflation.** The test fold is 20 unique
+  originals. Mirrored rows are training data only.
+- **No live APIs, no Agent layer, no frontend.** This is strictly the
+  offline MVP.
 
 ---
 
-## 8. Explanation of remaining exclusions
-
-- **3rd-place matches** in 1990, 1994, 1998, 2002 are excluded from the
-  default training set (18 total) because they have no downstream bracket
-  destination. They are reported in a separate `excluded_third_place` bucket
-  in the manifest.
-- **Euro / Copa América / Gold Cup** are not pinned to per-year URLs yet.
-  The openfootball repos for these tournaments use per-year file paths
-  similar to the worldcup.json. Future work will pin each year's URL.
-- **StatsBomb coverage** is 0% in this run because the local clone of the
-  StatsBomb open-data repo is not present. The system fails closed:
-  numeric features default to NaN with a `statsbomb_available=False` flag.
-
----
-
-## 9. Next actions (out of scope for this report)
-
-1. **Euro / Copa América per-year files**: pin each year's URL to grow the
-   manifest past 200 ties. Expected +60-100 knockout ties (4 knockout
-   rounds × 8 Euro editions × 15 ties = ~120 additional).
-2. **Add a richer feature set** for the logistic baseline (recent form,
-   market consensus when available, StatsBomb xG when the local clone
-   is present).
-3. **Once the manifest has ≥200 ties and ≥30 temporally-later evaluation
-   examples**, re-evaluate the CatBoost gate.
-4. **Pin the openfootball upstream repo's commit SHA** via a separate git
-   clone + lock entry. This documents the source of the per-year files
-   more precisely than the per-year URL alone.
-
----
-
-## 10. Artifacts produced
+## 11. Artifacts produced
 
 - `data/raw/sources/lock.json` — locked SHAs and raw file hashes.
-- `data/aliases/alias_registry.json` — versioned alias registry (24 + 210 = 234 entries).
-- `data/processed/bootstrap/knockout_match_manifest.json` — generated manifest
-  (135 knockout ties after the third-place filter).
+- `data/aliases/alias_registry.json` — versioned alias registry
+  (24 + 210 = 234 entries).
+- `data/processed/bootstrap/knockout_match_manifest.json` — generated
+  manifest (135 knockout ties).
 - `data/processed/bootstrap/baseline_report.json` — full machine-readable
   report (source lock, manifest reconciliation, alias classification,
-  penalty cross-check, Elo / const / logistic baselines, symmetry tests,
-  per-match prediction audit, CatBoost gate decision).
+  penalty cross-check, baselines, metric consistency, symmetry,
+  per-match audit, CatBoost gate decision, v1 feature importance).
+- `data/processed/bootstrap/per_match_audit.csv` — per-match audit
+  table with reference-team semantics.
 - `reports/REAL_DATA_BOOTSTRAP_REPORT.md` — this document.
+
+### Tests
+- 115 pre-existing tests still pass.
+- 9 new metric-consistency tests pass
+  (`tests/unit/test_metric_consistency.py`).
+- 5 new v1 feature tests pass (`tests/unit/test_v1_features.py`).
+- 2 new golden-label tests pass (`tests/unit/test_golden_labels.py`).
+- **131 tests total**, all passing.

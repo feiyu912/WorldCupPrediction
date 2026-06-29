@@ -68,6 +68,50 @@ _DOWNSTREAM_KNOCKOUT_TERMS: tuple[str, ...] = (
 )
 
 
+# Canonical stage names: maps any openfootball / martj42 / api variant
+# to a single canonical label.
+_STAGE_CANONICAL_MAP: list[tuple[tuple[str, ...], str]] = [
+    (("round of 16", "round-of-16", "r16"), "round_of_16"),
+    (("quarter", "quarterfinals", "quarter-finals", "quarter-final", "quarterfinal", "qf"), "quarter_final"),
+    (("semi", "semifinals", "semi-finals", "semi-final", "semifinal", "sf"), "semi_final"),
+    (("final",), "final"),
+    (("3rd place", "third place", "3rd-place", "third-place", "third place match", "third-place match", "third place play-off", "third-place play-off"), "third_place"),
+]
+
+
+def stage_canonical(stage: str) -> str:
+    """Return the canonical stage name for ``stage`` (or ``stage`` itself if unknown)."""
+    if not stage:
+        return "unknown"
+    text = stage.strip().lower()
+    for keys, canonical in _STAGE_CANONICAL_MAP:
+        for k in keys:
+            if k in text:
+                return canonical
+    return text.replace(" ", "_").replace("-", "_")
+
+
+def reference_team_for_match(home_team_id: str, away_team_id: str) -> tuple[str, str]:
+    """Pick a deterministic reference team for a knockout match.
+
+    For a neutral knockout fixture, there is no "home" team in the
+    sporting sense. We pick the team whose canonical_id sorts first
+    (alphabetical). The returned tuple is
+    ``(reference_team_id, reference_team_side)`` where ``reference_team_side``
+    is either ``"source_home"`` or ``"source_away"`` indicating which slot
+    in the openfootball JSON the reference team came from.
+
+    NOTE: the choice is NOT a probability orientation; the
+    prediction's ``home_wins_tie`` label is preserved as-is. Reports
+    that display a probability must show
+    ``P(reference_team_wins_tie)`` consistently with the underlying
+    model output, not with a re-labeled orientation.
+    """
+    if home_team_id <= away_team_id:
+        return home_team_id, "source_home"
+    return away_team_id, "source_away"
+
+
 def is_knockout_stage(stage: str) -> bool:
     """Return True if ``stage`` is a knockout stage with a downstream
     bracket destination.
@@ -78,6 +122,50 @@ def is_knockout_stage(stage: str) -> bool:
     if any(term in text for term in _NON_KNOCKOUT_TERMS):
         return False
     return any(term in text for term in _KNOCKOUT_TERMS)
+
+
+# Canonical stage names: maps any openfootball / martj42 / api variant
+# to a single canonical label.
+_STAGE_CANONICAL_MAP: list[tuple[tuple[str, ...], str]] = [
+    (("round of 16", "round-of-16", "r16"), "round_of_16"),
+    (("quarter", "quarterfinals", "quarter-finals", "quarter-final", "quarterfinal", "qf"), "quarter_final"),
+    (("semi", "semifinals", "semi-finals", "semi-final", "semifinal", "sf"), "semi_final"),
+    (("final",), "final"),
+    (("3rd place", "third place", "3rd-place", "third-place", "third place match", "third-place match", "third place play-off", "third-place play-off"), "third_place"),
+]
+
+
+def stage_canonical(stage: str) -> str:
+    """Return the canonical stage name for ``stage`` (or ``stage`` itself if unknown)."""
+    if not stage:
+        return "unknown"
+    text = stage.strip().lower()
+    for keys, canonical in _STAGE_CANONICAL_MAP:
+        for k in keys:
+            if k in text:
+                return canonical
+    return text.replace(" ", "_").replace("-", "_")
+
+
+def reference_team_for_match(home_team_id: str, away_team_id: str) -> tuple[str, str]:
+    """Pick a deterministic reference team for a knockout match.
+
+    For a neutral knockout fixture, there is no "home" team in the
+    sporting sense. We pick the team whose canonical_id sorts first
+    (alphabetical). The returned tuple is
+    ``(reference_team_id, reference_team_side)`` where ``reference_team_side``
+    is either ``"source_home"`` or ``"source_away"`` indicating which slot
+    in the openfootball JSON the reference team came from.
+
+    The reference team is used ONLY for display orientation. The
+    prediction's ``home_wins_tie`` label is preserved as-is. Reports
+    that display a probability must show
+    ``P(reference_team_wins_tie)`` consistently with the underlying
+    model output, not with a re-labeled orientation.
+    """
+    if home_team_id <= away_team_id:
+        return home_team_id, "source_home"
+    return away_team_id, "source_away"
 
 
 def has_downstream_bracket(stage: str) -> bool:
@@ -112,6 +200,7 @@ class KnockoutRow:
     competition_id: str
     competition_name: str
     stage: str
+    stage_canonical: str
     season_or_year: str
     home_team_id: str
     away_team_id: str
@@ -127,6 +216,7 @@ class KnockoutRow:
             "competition_id": self.competition_id,
             "competition_name": self.competition_name,
             "stage": self.stage,
+            "stage_canonical": self.stage_canonical,
             "season_or_year": self.season_or_year,
             "home_team_id": self.home_team_id,
             "away_team_id": self.away_team_id,
@@ -380,6 +470,7 @@ class KnockoutManifestBuilder:
                     competition_id=match.competition_id,
                     competition_name=tournament_name,
                     stage=stage,
+                    stage_canonical=stage_canonical(stage),
                     season_or_year=match.season_or_year,
                     home_team_id=home_id,
                     away_team_id=away_id,

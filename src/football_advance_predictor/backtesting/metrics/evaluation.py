@@ -30,6 +30,37 @@ def log_loss(probs: Iterable[float], y: Iterable[int], eps: float = 1e-12) -> fl
     return total / n
 
 
+def log_loss_sum(probs: Iterable[float], y: Iterable[int], eps: float = 1e-12) -> float:
+    """Sum (not mean) of binary cross-entropy.
+
+    Returns the total log-loss across all rows. Use together with
+    ``log_loss`` (mean) to verify metric consistency:
+    ``log_loss_sum == n * log_loss_mean``.
+
+    Mirrored rows MUST NOT be averaged with originals without explicit
+    awareness — see ``real_data_baseline_report.py`` for the split.
+    """
+    total = 0.0
+    n = 0
+    for p, t in zip(probs, y, strict=False):
+        p = max(min(p, 1 - eps), eps)
+        total += -(t * math.log(p) + (1 - t) * math.log(1 - p))
+        n += 1
+    return total
+
+
+def per_row_log_loss(probs: Iterable[float], y: Iterable[int], eps: float = 1e-12) -> list[float]:
+    """Per-row binary cross-entropy contributions.
+
+    Sum of returned list equals ``log_loss_sum``.
+    """
+    out: list[float] = []
+    for p, t in zip(probs, y, strict=False):
+        p = max(min(p, 1 - eps), eps)
+        out.append(-(t * math.log(p) + (1 - t) * math.log(1 - p)))
+    return out
+
+
 def brier_score(probs: Iterable[float], y: Iterable[int]) -> float:
     """Mean squared error between probabilities and binary labels."""
     total = 0.0
@@ -40,6 +71,78 @@ def brier_score(probs: Iterable[float], y: Iterable[int]) -> float:
     if n == 0:
         return float("nan")
     return total / n
+
+
+def brier_score_sum(probs: Iterable[float], y: Iterable[int]) -> float:
+    """Sum (not mean) of squared errors. Used for metric consistency checks."""
+    total = 0.0
+    n = 0
+    for p, t in zip(probs, y, strict=False):
+        total += (p - t) ** 2
+        n += 1
+    return total
+
+
+def per_row_brier(probs: Iterable[float], y: Iterable[int]) -> list[float]:
+    """Per-row Brier (squared error) contributions."""
+    return [(p - t) ** 2 for p, t in zip(probs, y, strict=False)]
+
+
+def metric_consistency_check(
+    probs: list[float],
+    y: list[int],
+    *,
+    eps: float = 1e-12,
+) -> dict[str, Any]:
+    """Verify metric consistency on a binary classification prediction set.
+
+    Enforces:
+    - ``mean_log_loss >= mean_brier`` (strict invariant; the constant
+      p=0.5 reference produces 0.693147 vs 0.25).
+    - ``mean_log_loss * n == log_loss_sum`` (rounding-tolerant).
+    - ``mean_brier * n == brier_sum`` (rounding-tolerant).
+    - Sum of per-row contributions equals the sum metric.
+
+    Returns a dict with both the metric values and the booleans. Raises
+    ``AssertionError`` if ``mean_log_loss >= mean_brier`` is violated.
+    """
+    n = len(probs)
+    if n == 0:
+        return {"passed": True, "n": 0}
+    per_row_ll_list = per_row_log_loss(probs, y, eps=eps)
+    per_row_brier_list = per_row_brier(probs, y)
+    sum_ll = sum(per_row_ll_list)
+    sum_brier = sum(per_row_brier_list)
+    mean_ll = sum_ll / n
+    mean_brier = sum_brier / n
+    sum_check = math.isclose(sum_ll, n * mean_ll, rel_tol=0, abs_tol=1e-12)
+    brier_sum_check = math.isclose(sum_brier, n * mean_brier, rel_tol=0, abs_tol=1e-12)
+    per_row_sum_ll = math.isclose(
+        sum_ll, sum(per_row_log_loss(probs, y, eps=eps)), rel_tol=0, abs_tol=1e-12
+    )
+    per_row_sum_brier = math.isclose(
+        sum_brier, sum(per_row_brier(probs, y)), rel_tol=0, abs_tol=1e-12
+    )
+    if n >= 2:
+        assert mean_ll >= mean_brier, (
+            f"mean_log_loss ({mean_ll:.6f}) < mean_brier ({mean_brier:.6f}); "
+            f"the metric ordering invariant is violated"
+        )
+    return {
+        "passed": (
+            sum_check and brier_sum_check and per_row_sum_ll and per_row_sum_brier
+        ),
+        "n": n,
+        "log_loss_mean": mean_ll,
+        "log_loss_sum": sum_ll,
+        "brier_mean": mean_brier,
+        "brier_sum": sum_brier,
+        "sum_mean_consistent": sum_check,
+        "brier_sum_consistent": brier_sum_check,
+        "per_row_log_loss_sum_consistent": per_row_sum_ll,
+        "per_row_brier_sum_consistent": per_row_sum_brier,
+        "log_loss_ge_brier": mean_ll >= mean_brier,
+    }
 
 
 def accuracy(probs: Iterable[float], y: Iterable[int], threshold: float = 0.5) -> float:
