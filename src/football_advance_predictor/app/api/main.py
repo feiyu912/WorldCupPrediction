@@ -2,10 +2,14 @@
 
 from __future__ import annotations
 
+import json
+from contextlib import asynccontextmanager
 from pathlib import Path
 from typing import Any
 
-from fastapi import Depends, FastAPI, HTTPException
+from fastapi import Depends, FastAPI, HTTPException, Request
+from fastapi.responses import JSONResponse
+from sqlalchemy.exc import IntegrityError
 from sqlalchemy.orm import Session
 
 from football_advance_predictor.core.config import get_settings
@@ -16,7 +20,7 @@ from football_advance_predictor.data.adapters import (
 )
 from football_advance_predictor.data.ingestion.ingestion_service import IngestionService
 from football_advance_predictor.data.snapshots.snapshot_service import FeatureSnapshotService
-from football_advance_predictor.db.session import get_session, init_db
+from football_advance_predictor.db.session import get_session, init_db, session_scope
 from football_advance_predictor.ledger.ledger_service import LedgerService
 from football_advance_predictor.models.calibration.calibrator import Calibrator
 from football_advance_predictor.models.catboost_model.catboost_model import CatBoostModel
@@ -33,18 +37,59 @@ from football_advance_predictor.schemas.predictions import (
 )
 from football_advance_predictor.services.prediction_service import PredictionService
 
-app = FastAPI(title="Football Advance Predictor", version="0.1.0")
 logger = get_logger(__name__)
-_settings = get_settings()
-configure_logging(_settings.log_level)
 
 
-@app.on_event("startup")
-def _startup() -> None:
+@asynccontextmanager
+async def lifespan(_app: FastAPI):
+    """FastAPI lifespan handler: bootstrap schema on startup."""
     try:
         init_db()
     except Exception as exc:  # pragma: no cover - DB might not be running
         logger.warning("init_db failed; continuing without schema bootstrap", extra={"error": str(exc)})
+    yield
+
+
+def _build_app() -> FastAPI:
+    settings = get_settings()
+    configure_logging(settings.log_level)
+    application = FastAPI(
+        title="Football Advance Predictor",
+        version="0.1.0",
+        lifespan=lifespan,
+    )
+    _register_exception_handlers(application)
+    return application
+
+
+def _register_exception_handlers(application: FastAPI) -> None:
+    @application.exception_handler(IntegrityError)
+    async def _on_integrity_error(_request: Request, exc: IntegrityError) -> JSONResponse:
+        return JSONResponse(
+            status_code=409,
+            content={"detail": "Database integrity error", "error": str(exc.orig)},
+        )
+
+    @application.exception_handler(FileNotFoundError)
+    async def _on_file_not_found(_request: Request, exc: FileNotFoundError) -> JSONResponse:
+        return JSONResponse(
+            status_code=404,
+            content={"detail": "Resource not found", "error": str(exc)},
+        )
+
+    @application.exception_handler(ValueError)
+    async def _on_value_error(_request: Request, exc: ValueError) -> JSONResponse:
+        return JSONResponse(
+            status_code=400,
+            content={"detail": "Invalid request", "error": str(exc)},
+        )
+
+
+app = _build_app()
+
+
+def _reports_dir() -> Path:
+    return get_settings().reports_dir
 
 
 @app.get("/health")
@@ -203,8 +248,7 @@ def evaluate_prediction(
 
 @app.get("/backtests")
 def list_backtests() -> dict[str, Any]:
-    settings = get_settings()
-    base = Path("reports")
+    base = _reports_dir()
     if not base.exists():
         return {"backtests": []}
     items = []
@@ -215,12 +259,9 @@ def list_backtests() -> dict[str, Any]:
 
 @app.get("/backtests/{run_id}")
 def get_backtest(run_id: str) -> dict[str, Any]:
-    base = Path("reports")
-    summary = base / f"{run_id}_summary.json"
+    summary = _reports_dir() / f"{run_id}_summary.json"
     if not summary.exists():
         raise HTTPException(status_code=404, detail="Backtest not found")
-    import json
-
     with summary.open("r", encoding="utf-8") as f:
         return json.load(f)
 
@@ -233,19 +274,16 @@ def get_backtest(run_id: str) -> dict[str, Any]:
 @app.get("/reports/model-comparison")
 def model_comparison(model_versions: str) -> dict[str, Any]:
     versions = [v.strip() for v in model_versions.split(",") if v.strip()]
-    with session_scope_fresh() as session:
+    with session_scope() as session:
         service = LedgerService(session)
         return {"comparison": service.compare_model_versions(versions)}
 
 
 @app.get("/reports/calibration")
 def calibration_report(run_id: str) -> dict[str, Any]:
-    base = Path("reports")
-    path = base / f"{run_id}_summary.json"
+    path = _reports_dir() / f"{run_id}_summary.json"
     if not path.exists():
         raise HTTPException(status_code=404, detail="Report not found")
-    import json
-
     with path.open("r", encoding="utf-8") as f:
         data = json.load(f)
     return {
@@ -267,25 +305,3 @@ def feature_importance(model_version: str) -> dict[str, Any]:
         raise HTTPException(status_code=404, detail="Model not found")
     model = CatBoostModel.load(artifact.artifact_path)
     return {"model_version": model_version, "importance": model.feature_importance()}
-
-
-# ---------------------------------------------------------------------------
-# Local helpers
-# ---------------------------------------------------------------------------
-
-
-def session_scope_fresh():
-    from contextlib import contextmanager
-
-    from football_advance_predictor.db.session import _session_factory
-
-    @contextmanager
-    def _ctx():
-        SessionLocal = _session_factory()
-        s = SessionLocal()
-        try:
-            yield s
-        finally:
-            s.close()
-
-    return _ctx()

@@ -1,0 +1,35 @@
+# Model configuration. The default base model is regularized logistic
+# regression. CatBoost is opt-in via the ``catboost.enabled`` flag and
+# is ONLY enabled when the generated knockout manifest reaches the
+# documented minimum sample size and passes walk-forward validation.
+models:
+  baseline:
+    kind: "logistic_regression"
+    logistic_regression:
+      C: 1.0
+      max_iter: 1000
+      random_state: 42
+      penalty: "l2"
+      class_weight: "balanced"
+      solver: "lbfgs"
+      add_missingness_indicators: true
+      min_samples_required: 64
+  catboost:
+    enabled: false
+    min_samples_to_enable: 200
+    # When enabled, CatBoost hyperparameters.
+    catboost:
+      iterations: 500
+      learning_rate: 0.05
+      depth: 6
+      l2_leaf_reg: 3.0
+      random_seed: 42
+  stacker:
+    method: "logistic_regression"
+    logistic_regression:
+      C: 1.0
+      max_iter: 1000
+      random_state: 42
+  calibration:
+    method: "isotonic"
+    reliability_bins: 10

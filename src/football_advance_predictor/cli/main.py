@@ -45,6 +45,7 @@ backtest_app = typer.Typer(help="Backtest commands")
 report_app = typer.Typer(help="Report commands")
 ingest_app = typer.Typer(help="Ingestion commands")
 ledger_app = typer.Typer(help="Ledger commands")
+data_app = typer.Typer(help="Data bootstrap commands")
 
 app.add_typer(predict_app, name="predict")
 app.add_typer(features_app, name="features")
@@ -53,6 +54,7 @@ app.add_typer(backtest_app, name="backtest")
 app.add_typer(report_app, name="report")
 app.add_typer(ingest_app, name="ingest")
 app.add_typer(ledger_app, name="ledger")
+app.add_typer(data_app, name="data")
 
 
 def _setup() -> None:
@@ -233,6 +235,53 @@ def backtest_run(
             calibration_config=CalibrationConfig.from_dict(cal_cfg),
         )
     typer.echo(json.dumps(result, indent=2, default=str))
+
+
+# ---------------------------------------------------------------------------
+# Data bootstrap
+# ---------------------------------------------------------------------------
+
+
+@data_app.command("bootstrap")
+def data_bootstrap(
+    offline: bool = typer.Option(
+        False, "--offline", help="Skip the network; use only cached sources."
+    ),
+) -> None:
+    """End-to-end data bootstrap.
+
+    Downloads pinned sources, validates schemas, seeds the alias
+    registry, builds the knockout manifest, and writes artifacts.
+    Fails loudly on ambiguous data.
+    """
+    from football_advance_predictor.data.bootstrap.bootstrap_runner import (
+        BootstrapRunner,
+    )
+    from football_advance_predictor.data.bootstrap.source_registry import (
+        SourceRegistry,
+    )
+
+    settings = get_settings()
+    configure_logging(settings.log_level)
+    repo_root = Path(__file__).resolve().parents[3]
+    registry_path = repo_root / "data" / "raw" / "sources" / "registry.json"
+    raw_dir = repo_root / "data" / "raw" / "sources"
+    aliases_dir = repo_root / "data" / "aliases"
+    artifacts_dir = repo_root / "data" / "processed" / "bootstrap"
+    if not SourceRegistry(registry_path)._data:  # type: ignore[attr-defined]
+        typer.echo(f"Source registry missing: {registry_path}", err=True)
+        raise typer.Exit(code=1)
+    runner = BootstrapRunner(
+        registry_path=registry_path,
+        raw_dir=raw_dir,
+        aliases_dir=aliases_dir,
+        artifacts_dir=artifacts_dir,
+        offline=offline,
+    )
+    report = runner.run()
+    typer.echo(json.dumps(report.to_dict(), indent=2, default=str))
+    if report.errors:
+        raise typer.Exit(code=1)
 
 
 # ---------------------------------------------------------------------------
