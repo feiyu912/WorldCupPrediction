@@ -1,32 +1,35 @@
 """Knockout manifest builder.
 
-Merges tournament-specific result providers into a single,
-deduplicated list of reliably-labeled knockout fixtures. The
-manifest is the input to training and backtesting of the advance
-predictor.
+Generates a unified, deduped list of labeled knockout matches from
+multiple provider sources (martj42 results, openfootball worldcup/euro/
+copa-america/gold-cup). Knockout matches are identified by their stage
+string.
 
-The builder never touches the network or the database — it operates
-on in-memory lists returned by the registered providers.
+The label ``home_wins_tie`` is set True when the home team wins the tie
+AND advances to a downstream bracket destination. Third-place matches
+have no downstream destination and are excluded from the default
+training set.
+
+The default training set is R16 + QF + SF + Final for each supported
+tournament, which gives 15 matches per World Cup edition
+(8 R16 + 4 QF + 2 SF + 1 Final = 15).
 """
 
 from __future__ import annotations
 
 import re
-from collections.abc import Iterable
+from collections import Counter
 from dataclasses import dataclass, field
 from datetime import datetime
 from typing import Any, Protocol
 
 from football_advance_predictor.core.logging import get_logger
+from football_advance_predictor.core.time import to_utc
 from football_advance_predictor.data.aliases.alias_registry import AliasRegistry
 from football_advance_predictor.schemas.matches import MatchIn, MatchResultIn
 
 logger = get_logger(__name__)
 
-
-# ---------------------------------------------------------------------------
-# Stage classification
-# ---------------------------------------------------------------------------
 
 # Substrings (lowercased) that mark a fixture as a knockout stage.
 _KNOCKOUT_TERMS: tuple[str, ...] = (
@@ -42,20 +45,51 @@ _KNOCKOUT_TERMS: tuple[str, ...] = (
     "semi-final",
     "semifinal",
     "final",
-    "3rd place",
+)
+
+# Substrings that disqualify a fixture even if it contains a knockout term.
+_NON_KNOCKOUT_TERMS: tuple[str, ...] = (
+    "group",
+    "league",
+    "round robin",
+    "round-robin",
+    "matchday",
     "third place",
-    "play-off",
-    "playoff",
-    "knockout",
+    "3rd place",
+)
+
+# Substrings that mark a fixture as having a downstream bracket
+# destination. Used to filter out third-place matches (which don't).
+_DOWNSTREAM_KNOCKOUT_TERMS: tuple[str, ...] = (
+    "round of 16",
+    "quarter",
+    "semi",
+    "final",
 )
 
 
 def is_knockout_stage(stage: str) -> bool:
-    """Return True if ``stage`` contains any knockout term (case-insensitive)."""
+    """Return True if ``stage`` is a knockout stage with a downstream
+    bracket destination.
+    """
     text = (stage or "").strip().lower()
     if not text:
         return False
+    if any(term in text for term in _NON_KNOCKOUT_TERMS):
+        return False
     return any(term in text for term in _KNOCKOUT_TERMS)
+
+
+def has_downstream_bracket(stage: str) -> bool:
+    """Return True when the knockout winner advances to a later round.
+
+    Used to filter out third-place finals, which have no downstream
+    destination.
+    """
+    text = (stage or "").strip().lower()
+    if not text:
+        return False
+    return any(term in text for term in _DOWNSTREAM_KNOCKOUT_TERMS)
 
 
 # ---------------------------------------------------------------------------
@@ -65,7 +99,13 @@ def is_knockout_stage(stage: str) -> bool:
 
 @dataclass
 class KnockoutRow:
-    """A single reliably-labeled knockout fixture."""
+    """A single reliably-labeled knockout fixture.
+
+    The label ``home_wins_tie`` is True iff the home team wins the
+    tie and advances to a downstream bracket destination. Third-place
+    matches are excluded from the default training set because they
+    have no downstream destination.
+    """
 
     match_id: str
     kickoff_at: datetime
@@ -77,8 +117,8 @@ class KnockoutRow:
     away_team_id: str
     home_goals_90: int | None
     away_goals_90: int | None
-    home_advances: bool
-    source: str  # which provider contributed it
+    home_wins_tie: bool
+    source: str
 
     def to_dict(self) -> dict[str, Any]:
         return {
@@ -92,102 +132,95 @@ class KnockoutRow:
             "away_team_id": self.away_team_id,
             "home_goals_90": self.home_goals_90,
             "away_goals_90": self.away_goals_90,
-            "home_advances": self.home_advances,
+            "home_wins_tie": self.home_wins_tie,
             "source": self.source,
         }
 
 
 @dataclass
 class QuarantineReason:
-    """A single knockout fixture that was rejected and the reason."""
+    """A reason a match was excluded from the manifest."""
 
     raw_match_id: str
     reason: str
     detail: str
+    kickoff_at: str | None = None
+    home_team_id: str | None = None
+    away_team_id: str | None = None
+    stage: str | None = None
+    tournament_name: str | None = None
 
     def to_dict(self) -> dict[str, Any]:
         return {
             "raw_match_id": self.raw_match_id,
             "reason": self.reason,
             "detail": self.detail,
+            "kickoff_at": self.kickoff_at,
+            "home_team_id": self.home_team_id,
+            "away_team_id": self.away_team_id,
+            "stage": self.stage,
+            "tournament_name": self.tournament_name,
         }
 
 
 @dataclass
 class KnockoutManifest:
-    """Merged, deduplicated list of knockout fixtures."""
+    """A generated manifest of labeled knockout fixtures."""
 
     rows: list[KnockoutRow] = field(default_factory=list)
     tournament_coverage: dict[str, int] = field(default_factory=dict)
     quarantined: list[QuarantineReason] = field(default_factory=list)
-    total: int = 0
+    excluded_third_place: list[QuarantineReason] = field(default_factory=list)
+    expected_vs_found: dict[str, dict[str, Any]] = field(default_factory=dict)
+
+    @property
+    def total(self) -> int:
+        return len(self.rows)
 
     def to_dict(self) -> dict[str, Any]:
         return {
             "total": self.total,
             "tournament_coverage": dict(self.tournament_coverage),
             "quarantined_count": len(self.quarantined),
+            "excluded_third_place_count": len(self.excluded_third_place),
+            "expected_vs_found": dict(self.expected_vs_found),
             "rows": [r.to_dict() for r in self.rows],
             "quarantined": [q.to_dict() for q in self.quarantined],
+            "excluded_third_place": [q.to_dict() for q in self.excluded_third_place],
         }
 
 
-# ---------------------------------------------------------------------------
-# Provider protocol (duck-typed)
-# ---------------------------------------------------------------------------
+class _Provider(Protocol):
+    name: str
+    tournament_name: str
 
-
-class _ResultProvider(Protocol):
-    """Minimal provider surface the builder relies on."""
-
-    def fetch_matches(self) -> Iterable[MatchIn]: ...
-    def fetch_results(self) -> Iterable[MatchResultIn]: ...
-
-
-# ---------------------------------------------------------------------------
-# Slug helpers
-# ---------------------------------------------------------------------------
-
-_SLUG_NON_ALNUM = re.compile(r"[^a-z0-9]+")
-
-
-def _slugify_competition(value: str) -> str:
-    """Return an alphanum-only lowercase slug suitable for a match id."""
-    text = (value or "").strip().lower()
-    text = _SLUG_NON_ALNUM.sub("", text)
-    return text or "unknown"
-
-
-# ---------------------------------------------------------------------------
-# Builder
-# ---------------------------------------------------------------------------
+    def fetch_matches(self) -> list[MatchIn]: ...
+    def fetch_results(self) -> list[MatchResultIn]: ...
 
 
 class KnockoutManifestBuilder:
-    """Build a deduplicated knockout manifest from one or more providers.
+    """Build a :class:`KnockoutManifest` from one or more provider sources.
 
-    Providers are processed in the order they are added (registration
-    order). For each (kickoff_at, home_team_id, away_team_id) tuple,
-    the first provider that contributes a row wins; subsequent
-    matches on the same key are quarantined with reason
-    ``"duplicate_across_providers"``.
+    Args:
+        alias_registry: System-owned team alias registry used to
+            canonicalize team names.
+        expected_per_tournament: Optional mapping of tournament name
+            -> expected knockout count for reconciliation. Defaults
+            to {R16 + QF + SF + Final} = 15 per edition.
     """
 
-    def __init__(self, alias_registry: AliasRegistry) -> None:
-        self.alias_registry = alias_registry
-        self._providers: list[tuple[str, Any]] = []
+    DEFAULT_EXPECTED_PER_TOURNAMENT = 15
 
-    # ------------------------------------------------------------------
-    # Configuration
-    # ------------------------------------------------------------------
+    def __init__(
+        self,
+        alias_registry: AliasRegistry,
+        expected_per_tournament: dict[str, int] | None = None,
+    ) -> None:
+        self.alias_registry = alias_registry
+        self._providers: list[_Provider] = []
+        self._expected_per_tournament = expected_per_tournament or {}
 
     def add_provider(self, name: str, provider: Any) -> None:
-        """Register a result provider.
-
-        The provider is duck-typed: it must expose ``fetch_matches()``
-        and ``fetch_results()``. The ``name`` is recorded as the
-        ``source`` of any row contributed by this provider.
-        """
         if provider is None:
             raise ValueError("Provider must not be None")
         for attr in ("fetch_matches", "fetch_results"):
@@ -198,247 +231,215 @@ class KnockoutManifestBuilder:
         self._providers.append((name, provider))
         logger.info("Registered knockout provider", extra={"provider": name})
 
-    # ------------------------------------------------------------------
-    # Build
-    # ------------------------------------------------------------------
-
     def build(self) -> KnockoutManifest:
         """Run all providers, dedupe, and return a populated manifest."""
         manifest = KnockoutManifest()
-
-        # (kickoff_at isoformat, home_id, away_id) -> generated match_id
-        # so subsequent collisions can be quarantined.
-        seen_keys: set[tuple[str, str, str]] = set()
-        # match_id -> True for collision suffix tracking.
-        seen_ids: set[str] = set()
+        seen: set[tuple[datetime, str, str]] = set()
+        tournament_counts: Counter[str] = Counter()
 
         for provider_name, provider in self._providers:
+            tournament_name = getattr(provider, "tournament_name", provider_name)
             try:
-                matches_iter = provider.fetch_matches()
-                matches = list(matches_iter) if matches_iter is not None else []
-            except Exception as exc:  # pragma: no cover - defensive
-                logger.warning(
-                    "Provider fetch_matches failed",
-                    extra={"provider": provider_name, "error": str(exc)},
+                matches = provider.fetch_matches()
+            except Exception as exc:
+                manifest.quarantined.append(
+                    QuarantineReason(
+                        raw_match_id="<provider>",
+                        reason="provider_fetch_matches_failed",
+                        detail=f"{provider_name}: {exc}",
+                        tournament_name=tournament_name,
+                    )
                 )
-                matches = []
-
+                continue
             try:
-                results_iter = provider.fetch_results()
-                results = list(results_iter) if results_iter is not None else []
-            except Exception as exc:  # pragma: no cover - defensive
-                logger.warning(
-                    "Provider fetch_results failed",
-                    extra={"provider": provider_name, "error": str(exc)},
+                results = {r.match_id: r for r in provider.fetch_results()}
+            except Exception as exc:
+                manifest.quarantined.append(
+                    QuarantineReason(
+                        raw_match_id="<provider>",
+                        reason="provider_fetch_results_failed",
+                        detail=f"{provider_name}: {exc}",
+                        tournament_name=tournament_name,
+                    )
                 )
-                results = []
+                results = {}
 
-            matches_by_id: dict[str, MatchIn] = {}
-            for m in matches:
-                mid = getattr(m, "match_id", None)
-                if mid:
-                    matches_by_id[mid] = m
+            for match in matches:
+                stage = (match.stage or "").strip()
+                kickoff_iso = (
+                    match.kickoff_at.isoformat() if match.kickoff_at else None
+                )
+                home_id = self.alias_registry.resolve(match.home_team_id, source=provider_name)
+                away_id = self.alias_registry.resolve(match.away_team_id, source=provider_name)
 
-            for result in results:
-                raw_id = getattr(result, "match_id", "") or ""
-                match = matches_by_id.get(raw_id)
-                if match is None:
-                    continue  # nothing to attach a result to
-
-                # 1. Knockout stage filter.
-                stage = getattr(match, "stage", "") or ""
                 if not is_knockout_stage(stage):
-                    manifest.quarantined.append(
+                    # Group or matchday stage — quietly ignore (no quarantine spam).
+                    continue
+
+                # Third-place finals are knockout stages but have no
+                # downstream bracket destination. Exclude from the
+                # default training set; record as a separate exclusion
+                # bucket so the reconciliation report can show them.
+                if not has_downstream_bracket(stage):
+                    manifest.excluded_third_place.append(
                         QuarantineReason(
-                            raw_match_id=raw_id,
-                            reason="not_knockout_stage",
-                            detail=f"Stage {stage!r} is not a knockout stage.",
+                            raw_match_id=match.match_id,
+                            reason="third_place_no_downstream_bracket",
+                            detail=f"stage={stage!r} excluded from default training set",
+                            kickoff_at=kickoff_iso,
+                            home_team_id=home_id,
+                            away_team_id=away_id,
+                            stage=stage,
+                            tournament_name=tournament_name,
                         )
                     )
                     continue
 
-                kickoff = getattr(match, "kickoff_at", None)
-                if not isinstance(kickoff, datetime):
+                if home_id == "unknown" or away_id == "unknown":
                     manifest.quarantined.append(
                         QuarantineReason(
-                            raw_match_id=raw_id,
-                            reason="missing_kickoff",
-                            detail="Match has no kickoff_at timestamp.",
-                        )
-                    )
-                    continue
-
-                home_raw = getattr(match, "home_team_id", "") or ""
-                away_raw = getattr(match, "away_team_id", "") or ""
-                home_id = self._canonicalize(home_raw)
-                away_id = self._canonicalize(away_raw)
-
-                # 3. Unknown team quarantine.
-                if not home_id or home_id == "unknown" or not away_id or away_id == "unknown":
-                    manifest.quarantined.append(
-                        QuarantineReason(
-                            raw_match_id=raw_id,
+                            raw_match_id=match.match_id,
                             reason="unknown_team",
-                            detail=f"home={home_raw!r} away={away_raw!r}",
+                            detail=f"home={home_id!r} away={away_id!r}",
+                            kickoff_at=kickoff_iso,
+                            home_team_id=home_id,
+                            away_team_id=away_id,
+                            stage=stage,
+                            tournament_name=tournament_name,
                         )
                     )
                     continue
 
-                # 4. Missing scores quarantine.
-                home_goals_90 = getattr(result, "home_goals_90", None)
-                away_goals_90 = getattr(result, "away_goals_90", None)
-                if home_goals_90 is None or away_goals_90 is None:
+                kickoff = to_utc(match.kickoff_at)
+                key = (kickoff, home_id, away_id)
+                if key in seen:
                     manifest.quarantined.append(
                         QuarantineReason(
-                            raw_match_id=raw_id,
-                            reason="missing_scores",
-                            detail=(
-                                f"home_goals_90={home_goals_90!r} "
-                                f"away_goals_90={away_goals_90!r}"
-                            ),
-                        )
-                    )
-                    continue
-
-                # 5. Determine home_advances.
-                home_advances = self._resolve_advancer(result, home_goals_90, away_goals_90)
-                if home_advances is None:
-                    manifest.quarantined.append(
-                        QuarantineReason(
-                            raw_match_id=raw_id,
-                            reason="no_advancer_on_draw",
-                            detail=(
-                                f"90-minute draw with no shootout result "
-                                f"({home_goals_90}-{away_goals_90})."
-                            ),
-                        )
-                    )
-                    continue
-
-                # 2. Duplicate key quarantine (full kickoff_at isoformat).
-                date_key = kickoff.isoformat()
-                dedupe_key = (date_key, home_id, away_id)
-                if dedupe_key in seen_keys:
-                    manifest.quarantined.append(
-                        QuarantineReason(
-                            raw_match_id=raw_id,
+                            raw_match_id=match.match_id,
                             reason="duplicate_across_providers",
-                            detail=(
-                                f"({date_key}, {home_id}, {away_id}) "
-                                f"already contributed by a prior provider."
-                            ),
+                            detail=f"({kickoff_iso}, {home_id}, {away_id})",
+                            kickoff_at=kickoff_iso,
+                            home_team_id=home_id,
+                            away_team_id=away_id,
+                            stage=stage,
+                            tournament_name=tournament_name,
                         )
                     )
                     continue
-                seen_keys.add(dedupe_key)
 
-                # 6. Build the match_id with collision suffix.
-                competition_id = getattr(match, "competition_id", "") or ""
-                competition_name = (
-                    competition_id
-                    or getattr(match, "competition_name", None)
-                    or getattr(provider, "tournament_name", None)
-                    or competition_id
-                    or "unknown"
-                )
-                slug = _slugify_competition(
-                    competition_id or competition_name
-                )
-                date_slug = kickoff.strftime("%Y%m%d")
-                base_id = f"{slug}_{date_slug}_{home_id}_{away_id}"
-                generated_id = base_id
-                suffix = 1
-                while generated_id in seen_ids:
-                    suffix += 1
-                    generated_id = f"{base_id}-{suffix}"
-                seen_ids.add(generated_id)
+                result = results.get(match.match_id)
+                if result is None:
+                    manifest.quarantined.append(
+                        QuarantineReason(
+                            raw_match_id=match.match_id,
+                            reason="missing_result",
+                            detail="provider has no result for this match",
+                            kickoff_at=kickoff_iso,
+                            home_team_id=home_id,
+                            away_team_id=away_id,
+                            stage=stage,
+                            tournament_name=tournament_name,
+                        )
+                    )
+                    continue
 
-                season_or_year = (
-                    getattr(match, "season_or_year", None)
-                    or str(kickoff.year)
-                )
+                if result.home_goals_90 is None or result.away_goals_90 is None:
+                    manifest.quarantined.append(
+                        QuarantineReason(
+                            raw_match_id=match.match_id,
+                            reason="missing_scores",
+                            detail="home_goals_90/away_goals_90 are null",
+                            kickoff_at=kickoff_iso,
+                            home_team_id=home_id,
+                            away_team_id=away_id,
+                            stage=stage,
+                            tournament_name=tournament_name,
+                        )
+                    )
+                    continue
+
+                if result.home_goals_90 == result.away_goals_90:
+                    if getattr(result, "home_advances", None) is None:
+                        manifest.quarantined.append(
+                            QuarantineReason(
+                                raw_match_id=match.match_id,
+                                reason="no_advancer_on_draw",
+                                detail="knockout match drawn 90 minutes with no advancer",
+                                kickoff_at=kickoff_iso,
+                                home_team_id=home_id,
+                                away_team_id=away_id,
+                                stage=stage,
+                                tournament_name=tournament_name,
+                            )
+                        )
+                        continue
 
                 row = KnockoutRow(
-                    match_id=generated_id,
+                    match_id=_synth_match_id(match.match_id, tournament_name, kickoff, home_id, away_id),
                     kickoff_at=kickoff,
-                    competition_id=competition_id or competition_name,
-                    competition_name=competition_name,
+                    competition_id=match.competition_id,
+                    competition_name=tournament_name,
                     stage=stage,
-                    season_or_year=season_or_year,
+                    season_or_year=match.season_or_year,
                     home_team_id=home_id,
                     away_team_id=away_id,
-                    home_goals_90=home_goals_90,
-                    away_goals_90=away_goals_90,
-                    home_advances=bool(home_advances),
+                    home_goals_90=result.home_goals_90,
+                    away_goals_90=result.away_goals_90,
+                    # The provider schema is ``home_advances`` (raw boolean);
+                    # the manifest label is ``home_wins_tie`` (the same value,
+                    # semantically "home wins the tie and advances").
+                    home_wins_tie=bool(result.home_advances),
                     source=provider_name,
                 )
                 manifest.rows.append(row)
-                manifest.tournament_coverage[competition_name] = (
-                    manifest.tournament_coverage.get(competition_name, 0) + 1
-                )
+                seen.add(key)
+                tournament_counts[tournament_name] += 1
 
-        manifest.total = len(manifest.rows)
+        manifest.tournament_coverage = dict(tournament_counts)
+        manifest.expected_vs_found = _expected_vs_found(
+            tournament_counts=tournament_counts,
+            expected_per_tournament=self._expected_per_tournament
+            or {n: self.DEFAULT_EXPECTED_PER_TOURNAMENT for n in tournament_counts},
+        )
         logger.info(
             "Built knockout manifest",
             extra={
-                "rows": manifest.total,
-                "tournaments": len(manifest.tournament_coverage),
+                "rows": len(manifest.rows),
                 "quarantined": len(manifest.quarantined),
+                "excluded_third_place": len(manifest.excluded_third_place),
+                "tournaments": dict(tournament_counts),
             },
         )
         return manifest
 
-    # ------------------------------------------------------------------
-    # Helpers
-    # ------------------------------------------------------------------
 
-    def _canonicalize(self, raw: str) -> str:
-        if not raw:
-            return "unknown"
-        try:
-            return self.alias_registry.resolve(raw)
-        except Exception as exc:  # pragma: no cover - defensive
-            logger.warning(
-                "Alias resolution failed",
-                extra={"raw": raw, "error": str(exc)},
-            )
-            return raw or "unknown"
+def _expected_vs_found(
+    tournament_counts: dict[str, int],
+    expected_per_tournament: dict[str, int],
+) -> dict[str, dict[str, Any]]:
+    out: dict[str, dict[str, Any]] = {}
+    for tournament, found in sorted(tournament_counts.items()):
+        expected = expected_per_tournament.get(tournament)
+        out[tournament] = {
+            "expected": expected,
+            "found": found,
+            "passes": (expected is None) or (found == expected),
+            "delta": (None if expected is None else found - expected),
+        }
+    for tournament, expected in expected_per_tournament.items():
+        if tournament not in tournament_counts:
+            out[tournament] = {
+                "expected": expected,
+                "found": 0,
+                "passes": False,
+                "delta": -expected,
+            }
+    return out
 
-    @staticmethod
-    def _resolve_advancer(
-        result: MatchResultIn,
-        home_goals_90: int,
-        away_goals_90: int,
-    ) -> bool | None:
-        """Return True/False for home-advances, or None if undetermined.
 
-        Resolution order:
-        1. ``result.home_advances`` if explicitly set on the result record.
-        2. If 90-minute goals decide a winner, use that.
-        3. If 90-minute goals are tied, use the penalty shootout result.
-        4. Otherwise ``None`` (caller quarantines with ``no_advancer_on_draw``).
-        """
-        # 1. Provider-supplied value wins when present.
-        try:
-            value = getattr(result, "home_advances", None)
-            if value is True or value is False:
-                return bool(value)
-        except Exception:
-            pass
-
-        # 2. Winner by 90-minute goals.
-        if home_goals_90 > away_goals_90:
-            return True
-        if home_goals_90 < away_goals_90:
-            return False
-
-        # 3. Shootout decides a 90-minute draw.
-        pen_home = getattr(result, "penalties_home", None)
-        pen_away = getattr(result, "penalties_away", None)
-        if pen_home is None or pen_away is None:
-            return None
-        if pen_home > pen_away:
-            return True
-        if pen_home < pen_away:
-            return False
-        return None
+def _synth_match_id(
+    raw: str, tournament: str, kickoff: datetime, home: str, away: str
+) -> str:
+    slug = re.sub(r"[^a-z0-9]+", "_", tournament.lower()).strip("_")
+    date = kickoff.strftime("%Y%m%d")
+    return f"{slug}_{date}_{home}_{away}"

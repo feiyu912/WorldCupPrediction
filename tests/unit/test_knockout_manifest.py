@@ -118,13 +118,14 @@ def test_non_knockout_matches_are_excluded(registry: AliasRegistry) -> None:
     builder.add_provider("p1", FakeProvider([match_qf, match_grp], [result_qf, result_grp]))
     manifest = builder.build()
 
+    # Only the knockout match is accepted; group stages are filtered
+    # out (no quarantine noise for non-knockout rows).
     assert len(manifest.rows) == 1
     assert manifest.rows[0].match_id.endswith("brazil_argentina")
-
-    reasons = [q.reason for q in manifest.quarantined]
-    assert "not_knockout_stage" in reasons
-    # Total only counts accepted rows.
     assert manifest.total == 1
+    assert manifest.quarantined == []
+    # The third-place variant is excluded with its own bucket.
+    assert manifest.excluded_third_place == []
 
 
 def test_knockout_with_no_result_is_quarantined(registry: AliasRegistry) -> None:
@@ -238,15 +239,22 @@ def test_tournament_coverage_dict_sums_to_total(registry: AliasRegistry) -> None
 
 
 def test_is_knockout_stage_helper() -> None:
+    # Downstream-bracket knockout stages
     assert is_knockout_stage("Quarter-final") is True
     assert is_knockout_stage("quarter-final") is True
     assert is_knockout_stage("Semi-final") is True
     assert is_knockout_stage("Final") is True
     assert is_knockout_stage("Round of 16") is True
-    assert is_knockout_stage("3rd place") is True
+    # Third-place finals are NOT downstream-bracket knockouts (the
+    # helper excludes them so they go to the excluded_third_place
+    # bucket in the manifest rather than the default training set).
+    assert is_knockout_stage("3rd place") is False
+    assert is_knockout_stage("Match for third place") is False
+    # Group / league / matchday stages
     assert is_knockout_stage("Group A") is False
     assert is_knockout_stage("group") is False
     assert is_knockout_stage("Group Stage") is False
+    assert is_knockout_stage("Matchday 1") is False
     assert is_knockout_stage("") is False
 
 

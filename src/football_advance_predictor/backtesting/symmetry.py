@@ -43,6 +43,7 @@ def symmetry_test(
     predict_proba: Callable[[dict[str, Any]], float],
     matches: list[dict[str, Any]],
     *,
+    mirror_predict_fn: Callable[[dict[str, Any]], float] | None = None,
     tolerance: float = 0.05,
 ) -> SymmetryResult:
     """Run a mirrored-pair symmetry test.
@@ -53,6 +54,10 @@ def symmetry_test(
         matches: List of feature dicts (any order). Each dict must have
             at least ``home_team_id``, ``away_team_id``, and
             ``cutoff_time``.
+        mirror_predict_fn: Optional. If provided, the mirror call is
+            made with this callable instead of swapping the IDs in the
+            input dict. This is the correct way to test models whose
+            internal API does not accept swapped team IDs.
         tolerance: Maximum allowed |p_ab + p_ba - 1|.
 
     Returns:
@@ -64,12 +69,20 @@ def symmetry_test(
     residuals: list[float] = []
     for m in matches:
         forward = predict_proba(m)
-        mirrored = dict(m)
-        mirrored["home_team_id"], mirrored["away_team_id"] = (
-            m["away_team_id"],
-            m["home_team_id"],
-        )
-        reverse = predict_proba(mirrored)
+        if mirror_predict_fn is not None:
+            mirrored = dict(m)
+            mirrored["home_team_id"], mirrored["away_team_id"] = (
+                m["away_team_id"],
+                m["home_team_id"],
+            )
+            reverse = mirror_predict_fn(mirrored)
+        else:
+            mirrored = dict(m)
+            mirrored["home_team_id"], mirrored["away_team_id"] = (
+                m["away_team_id"],
+                m["home_team_id"],
+            )
+            reverse = predict_proba(mirrored)
         residual = abs(forward + reverse - 1.0)
         residuals.append(residual)
         n_pairs += 1

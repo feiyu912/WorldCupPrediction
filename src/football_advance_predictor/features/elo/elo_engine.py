@@ -151,28 +151,49 @@ class DynamicEloEngine:
     ) -> float:
         """Return P(home team advances) under the configured tie model.
 
-        Under ``draw_treated_as_50_50``, a 90-minute draw is treated as
-        a 50/50 advancement, so the home advance probability becomes
-        the probability of either a regulation win OR a 90-minute draw
-        (since 0.5 of draws go to the home side).
+        The advance probabilities for the two sides MUST sum to 1 within
+        numerical tolerance (complementarity invariant).
+
+        Under ``draw_treated_as_50_50`` a 90-minute draw is treated as
+        50/50 advancement. Using the symmetric identity::
+
+            p_draw = 1 - p_home_win - p_away_win
+            p_home_advances = 0.5 * p_home_win - 0.5 * p_away_win + 0.5
+
+        which makes p_home_advances(B, A) = 1 - p_home_advances(A, B) for
+        any rating gap. The earlier formula
+        ``p_home_win + 0.5 * p_draw`` was NOT symmetric and broke the
+        complementarity invariant.
         """
         p_home_win = self.predict_home_win_probability(
             home_team_id, away_team_id, as_of_time, neutral_venue=neutral_venue
         )
-        p_away_win = 1.0 - self.predict_home_win_probability(
-            home_team_id, away_team_id, as_of_time, neutral_venue=neutral_venue
-        )
+        p_away_win = 1.0 - p_home_win
         if self.config.tie_resolution == "draw_treated_as_50_50":
-            # We need an estimate of the draw probability. Use a
-            # neutral 0.27 prior for the 90-minute draw in knockout.
-            p_draw = 0.27
-            return p_home_win + 0.5 * p_draw
+            return 0.5 * p_home_win - 0.5 * p_away_win + 0.5
         if self.config.tie_resolution == "no_draw_assume_extra_time":
             return max(p_home_win, 0.5)
         if self.config.tie_resolution == "no_draw_penalties_50_50":
             return 0.5
         # Default: ignore draws.
         return p_home_win
+
+    def predict_away_advance_probability(
+        self,
+        home_team_id: str,
+        away_team_id: str,
+        as_of_time: datetime,
+        neutral_venue: bool = False,
+    ) -> float:
+        """Return P(away team advances) under the configured tie model.
+
+        The complement of :meth:`predict_home_advance_probability`. Exposed
+        as a separate method so the symmetry invariant can be checked
+        directly.
+        """
+        return 1.0 - self.predict_home_advance_probability(
+            home_team_id, away_team_id, as_of_time, neutral_venue=neutral_venue
+        )
 
     def generate_rating_history(self) -> list[dict[str, Any]]:
         """Return the rating history as a list of dicts."""
