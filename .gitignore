@@ -28,6 +28,10 @@ data/aliases/alias_registry.json
 data/aliases/unresolved.jsonl
 data/processed/*
 !data/processed/.gitkeep
+!data/processed/bootstrap/baseline_report.json
+!data/processed/bootstrap/knockout_match_manifest.json
+!data/processed/bootstrap/bootstrap_report.json
+!data/processed/bootstrap/source_manifest.json
 data/warehouse.duckdb
 data/warehouse.duckdb.wal
 

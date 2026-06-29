@@ -213,8 +213,7 @@ class OpenFootballTournamentProvider(MatchDataProvider):
         kickoff = self._parse_datetime(raw.get("date"))
         home_team_id, home_raw = self._resolve_team(raw.get("team1"))
         away_team_id, away_raw = self._resolve_team(raw.get("team2"))
-        home_goals = self._parse_int(raw.get("score1"))
-        away_goals = self._parse_int(raw.get("score2"))
+        home_goals, away_goals = self._extract_scores(raw)
         match_id = self._build_match_id(raw, kickoff, home_raw, away_raw)
         winner_team_id: str | None = None
         if home_goals is not None and away_goals is not None and home_goals != away_goals:
@@ -232,7 +231,7 @@ class OpenFootballTournamentProvider(MatchDataProvider):
             winner_team_id=winner_team_id,
             advancing_team_id=None,
             neutral_venue=True,
-            venue_name=None,
+            venue_name=raw.get("ground"),
             city=None,
             country=None,
             source=SOURCE_NAME,
@@ -241,22 +240,22 @@ class OpenFootballTournamentProvider(MatchDataProvider):
     def _match_to_result(self, match: MatchIn, raw: dict[str, Any]) -> MatchResultIn | None:
         """Build a :class:`MatchResultIn` or return ``None``.
 
-        Requires valid 90-minute scores (``score1`` / ``score2``). The
-        advancer is derived from the explicit ``winner`` field (``1`` /
-        ``2``); falls back to score comparison when the field is absent
-        or the match is a draw.
+        Supports two layouts:
+        - ``{"score1": int, "score2": int, "winner": 1|2, "score1et": ...}``
+        - ``{"score": {"ft": [h, a], "ht": [h, a]}}`` (no explicit winner)
+        The advancer is derived from the explicit ``winner`` field when
+        present; otherwise from the FT score comparison.
         """
-        if match.home_goals is None or match.away_goals is None:
+        home_goals, away_goals = self._extract_scores(raw)
+        if home_goals is None or away_goals is None:
             logger.debug(
                 "Skipping openfootball result: missing scores",
                 extra={"match_id": match.match_id},
             )
             return None
 
-        home_goals_et = self._parse_int(raw.get("score1et"))
-        away_goals_et = self._parse_int(raw.get("score2et"))
-        penalties_home = self._parse_int(raw.get("score1pen"))
-        penalties_away = self._parse_int(raw.get("score2pen"))
+        home_goals_et, away_goals_et = self._extract_et_scores(raw)
+        penalties_home, penalties_away = self._extract_penalties(raw)
 
         winner_field = raw.get("winner")
         home_advances: bool
@@ -265,28 +264,37 @@ class OpenFootballTournamentProvider(MatchDataProvider):
         elif isinstance(winner_field, str) and winner_field.strip() in ("1", "2"):
             home_advances = winner_field.strip() == "1"
         else:
-            match_type = (raw.get("type") or "").strip().lower()
-            if match.home_goals == match.away_goals and match_type == "draw":
-                logger.debug(
-                    "Skipping openfootball result: drawn group match",
-                    extra={"match_id": match.match_id, "stage": match.stage},
-                )
-                return None
-            if match.home_goals == match.away_goals:
-                # No explicit winner for a drawn knockout match; cannot
-                # derive safely.
-                logger.debug(
-                    "Skipping openfootball result: drawn knockout with no winner",
-                    extra={"match_id": match.match_id, "stage": match.stage},
-                )
-                return None
-            home_advances = match.home_goals > match.away_goals
+            if home_goals == away_goals:
+                # Drawn FT: try the penalty score (score.pen) to derive
+                # the shootout winner. This recovers matches like the
+                # 2022 World Cup Final which went to penalties without
+                # an explicit ``winner`` field in the source JSON.
+                if penalties_home is not None and penalties_away is not None:
+                    if penalties_home != penalties_away:
+                        home_advances = penalties_home > penalties_away
+                    else:
+                        # Penalties tied is impossible in real football.
+                        logger.debug(
+                            "Skipping openfootball result: tied penalties",
+                            extra={"match_id": match.match_id, "stage": match.stage},
+                        )
+                        return None
+                else:
+                    # Drawn FT with no penalty info and no explicit winner:
+                    # the advancer cannot be safely derived.
+                    logger.debug(
+                        "Skipping openfootball result: drawn FT with no advancer",
+                        extra={"match_id": match.match_id, "stage": match.stage},
+                    )
+                    return None
+            else:
+                home_advances = home_goals > away_goals
 
         return MatchResultIn(
             match_id=match.match_id,
             final_status="final",
-            home_goals_90=match.home_goals,
-            away_goals_90=match.away_goals,
+            home_goals_90=home_goals,
+            away_goals_90=away_goals,
             home_goals_et=home_goals_et,
             away_goals_et=away_goals_et,
             penalties_home=penalties_home,
@@ -294,6 +302,55 @@ class OpenFootballTournamentProvider(MatchDataProvider):
             home_advances=home_advances,
             result_verified_at=to_utc(match.kickoff_at),
         )
+
+    def _extract_scores(self, raw: dict[str, Any]) -> tuple[int | None, int | None]:
+        """Pull full-time scores out of either layout."""
+        # Layout 1: flat score1 / score2.
+        flat_h = self._parse_int(raw.get("score1"))
+        flat_a = self._parse_int(raw.get("score2"))
+        if flat_h is not None and flat_a is not None:
+            return flat_h, flat_a
+        # Layout 2: nested {"score": {"ft": [h, a]}}.
+        score_obj = raw.get("score")
+        if isinstance(score_obj, dict):
+            ft = score_obj.get("ft")
+            if isinstance(ft, (list, tuple)) and len(ft) >= 2:
+                h = self._parse_int(ft[0])
+                a = self._parse_int(ft[1])
+                if h is not None or a is not None:
+                    return h, a
+        return flat_h, flat_a
+
+    def _extract_et_scores(
+        self, raw: dict[str, Any]
+    ) -> tuple[int | None, int | None]:
+        flat_h = self._parse_int(raw.get("score1et"))
+        flat_a = self._parse_int(raw.get("score2et"))
+        if flat_h is not None and flat_a is not None:
+            return flat_h, flat_a
+        score_obj = raw.get("score")
+        if isinstance(score_obj, dict):
+            et = score_obj.get("et")
+            if isinstance(et, (list, tuple)) and len(et) >= 2:
+                return self._parse_int(et[0]), self._parse_int(et[1])
+        return None, None
+
+    def _extract_penalties(
+        self, raw: dict[str, Any]
+    ) -> tuple[int | None, int | None]:
+        flat_h = self._parse_int(raw.get("score1pen"))
+        flat_a = self._parse_int(raw.get("score2pen"))
+        if flat_h is not None and flat_a is not None:
+            return flat_h, flat_a
+        score_obj = raw.get("score")
+        if isinstance(score_obj, dict):
+            # The per-year JSON file uses ``p`` for penalty score; older
+            # revisions use ``pen``. Try both.
+            for key in ("pen", "p"):
+                pen = score_obj.get(key)
+                if isinstance(pen, (list, tuple)) and len(pen) >= 2:
+                    return self._parse_int(pen[0]), self._parse_int(pen[1])
+        return None, None
 
     # ------------------------------------------------------------------
     # Helpers

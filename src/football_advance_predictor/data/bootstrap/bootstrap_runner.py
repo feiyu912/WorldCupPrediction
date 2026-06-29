@@ -217,18 +217,11 @@ class BootstrapRunner:
             logger.info("Seeded alias registry", extra={"added": added, "size": aliases.size()})
         report.alias_registry_size = aliases.size()
 
-        # 4. Build the knockout manifest.
+        # 4. Build the knockout manifest. The openfootball providers come
+        #    FIRST so that per-match round labels are used; the martj42
+        #    provider (which has no per-row stage) is processed last
+        #    and any duplicates are dropped by the dedup key.
         builder = KnockoutManifestBuilder(aliases)
-        results_csv = self._resolve_path("martj42_results", "martj42_results.csv")
-        shootouts_csv = self._resolve_path("martj42_shootouts", "martj42_shootouts.csv")
-        if results_csv is not None and shootouts_csv is not None:
-            provider = MartJ42ResultsProvider(
-                results_path=results_csv,
-                shootouts_path=shootouts_csv,
-                alias_registry=aliases,
-            )
-            provider.tournament_name = "international_friendly_and_competitive"
-            builder.add_provider("martj42_results", provider)
         for source_name, default_name in (
             ("openfootball_worldcup_2018", "FIFA World Cup 2018"),
             ("openfootball_worldcup_2022", "FIFA World Cup 2022"),
@@ -245,6 +238,16 @@ class BootstrapRunner:
                 path=target, alias_registry=aliases, tournament_name=default_name
             )
             builder.add_provider(source_name, provider)
+        results_csv = self._resolve_path("martj42_results", "martj42_results.csv")
+        shootouts_csv = self._resolve_path("martj42_shootouts", "martj42_shootouts.csv")
+        if results_csv is not None and shootouts_csv is not None:
+            provider = MartJ42ResultsProvider(
+                results_path=results_csv,
+                shootouts_path=shootouts_csv,
+                alias_registry=aliases,
+            )
+            provider.tournament_name = "international_friendly_and_competitive"
+            builder.add_provider("martj42_results", provider)
         manifest = builder.build()
         report.knockout_manifest = manifest
         report.unresolved_aliases = aliases.unresolved_names()
